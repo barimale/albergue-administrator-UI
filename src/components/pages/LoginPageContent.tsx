@@ -314,7 +314,7 @@ const Title = () => {
                     textAlign: 'left',
                     fontFamily: 'Signoria-Bold',
                     width: '100%',
-                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '32px',
+                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '22px' : '12px',
                     textShadow: `1px 1px black`,
                 }}>
                 {t("Login")}
