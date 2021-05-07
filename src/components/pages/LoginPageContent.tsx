@@ -6,7 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import React, { useState } from 'react';
-import { Button, CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
 import { Ornament } from '../molecules/common/Ornament';
 import { thirdMain } from '../../customTheme';
 import { Divider } from '../molecules/desktop/MenuButtons';
@@ -65,51 +65,57 @@ const LoginModal = () =>{
             boxShadow: `${theme.shadows[2]}`
         }}
       >
-        <Fade in={true}>
-            <div style={{
-                height: 'auto',
-                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '40%' : '90%',
-                backgroundColor: `${thirdMain}`,
-                display: 'flex',
-                flexDirection: 'column',
-                alignContent: 'center',
-                alignItems: 'stretch',
-                // borderTop: `10px solid ${theme.palette.primary.main}`
+          <Box boxShadow={10} style={{
+              height: 'auto',
+              width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '40%' : '90%',
+          }}>
+            <Fade 
+                in={true} 
+                style={{
+                    width: '100%', 
+                    height: '100%'
             }}>
-                <AppBar position="sticky" 
-                    style={{
-                        paddingTop: context === DeviceType.isDesktopOrLaptop ? '0px' : '0px',
-                        paddingBottom: '0px',
-                        backgroundColor: `${theme.palette.primary.main}`,
-                        boxShadow: 'unset',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'revert'
-                    // borderTop: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
+                <div style={{
+                    backgroundColor: `${thirdMain}`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignContent: 'center',
+                    alignItems: 'stretch',
                 }}>
-                    <img
+                    <AppBar position="sticky" 
                         style={{
-                            height: context.valueOf() === DeviceType.isDesktopOrLaptop ? '30px' : '30px',
-                            width: 'auto',
-                            alignSelf: 'center',
-                            padding: '0px',
-                            paddingLeft: '32px',
-                            backgroundColor: 'transparent'
-                        }}
-                        src={"/logo.png"}
-                        alt={"logo"} />
-                    <ApplicationName />
-                    <LanguageSetter />
-                </AppBar>
-                <Title/>
-                <Divider style={{
-                    opacity: '0.6'
-                }}/>
-                {/* <LoginHeader/> */}
-                {/* <Divider /> */}
-                <LoginForm />
-            </div>
-        </Fade>
+                            paddingTop: context === DeviceType.isDesktopOrLaptop ? '0px' : '0px',
+                            paddingBottom: '0px',
+                            backgroundColor: `${theme.palette.primary.main}`,
+                            boxShadow: 'unset',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'revert'
+                    }}>
+                        <img
+                            style={{
+                                height: context.valueOf() === DeviceType.isDesktopOrLaptop ? '30px' : '30px',
+                                width: 'auto',
+                                alignSelf: 'center',
+                                padding: '0px',
+                                paddingLeft: '20px',
+                                backgroundColor: 'transparent'
+                            }}
+                            src={"/logo.png"}
+                            alt={"logo"} />
+                        <ApplicationName />
+                        <LanguageSetter />
+                    </AppBar>
+                    <Title/>
+                    <Divider style={{
+                        opacity: '0.6'
+                    }}/>
+                    {/* <LoginHeader/> */}
+                    {/* <Divider /> */}
+                    <LoginForm />
+                </div>
+            </Fade>
+        </Box>
     </Modal>
     }
     </DeviceContextConsumer>
@@ -156,14 +162,14 @@ const LoginForm = () => {
             }}>
             {props => (
                 <Form
-                style={{
-                    padding: '32px', 
-                    paddingTop: '0px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignContent: 'center',
-                    backgroundColor: `${theme.palette.common.white}`,
-                    borderLeft: `10px solid ${theme.palette.primary.main}`
+                    style={{
+                        padding: '32px', 
+                        paddingTop: '0px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignContent: 'center',
+                        backgroundColor: `${theme.palette.common.white}`,
+                        borderLeft: `20px solid ${theme.palette.primary.main}`
                 }}>
                 <>
                     <LoginFormContent {...props}/>                  
@@ -178,6 +184,7 @@ const LoginForm = () => {
                             variant="contained"
                             color="primary"
                             style={{
+                                borderRadius: '0px',
                                 marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
                                 fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
                             }}
@@ -193,8 +200,8 @@ const LoginForm = () => {
                             )}
                             {sendingInProgress === false && (
                             <>
-                                <VpnKeyTwoToneIcon style={{paddingRight: '10px'}}/>
-                                {t("Login").toUpperCase()}
+                                <VpnKeyTwoToneIcon style={{paddingRight: '10px'}} fontSize="small"/>
+                                {t("Sign in")}
                             </>
                             )}
                         </Button>
@@ -206,82 +213,6 @@ const LoginForm = () => {
     }
     </DeviceContextConsumer>
     );
-}
-
-const LoginHeader = () => {
-    const { t } = useTranslation();
-    const theme = useTheme();
-    const classes = useStyles();
-
-    return (
-    <DeviceContextConsumer>
-    {context =>
-        <div style={{
-            width: '100%',
-            height: 'auto',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignContent: 'center'
-        }}>
-            <img
-                style={{
-                    height: context.valueOf() === DeviceType.isDesktopOrLaptop ? '30px' : '30px',
-                    width: 'auto',
-                    alignSelf: 'center',
-                    padding: '0px',
-                    paddingLeft: '0px',
-                    backgroundColor: 'transparent'
-                }}
-                src={"/logo.png"}
-                alt={"logo"} />
-            <div 
-                style={{
-                    paddingLeft: '20px'
-            }}>
-                <Typography
-                    align={'center'}
-                    style={{
-                        paddingLeft: '0px',
-                        margin: '0px',
-                        color: `${theme.palette.common.white}`,
-                        WebkitTapHighlightColor: 'transparent',
-                        fontSize: context === DeviceType.isDesktopOrLaptop ? '12px' : '10px',
-                        textAlign: 'center',
-                        fontFamily: 'Signoria-Bold',
-                    }}>
-                    {t("Header title.Line1")}
-                </Typography>
-                <Typography
-                    align={'center'}
-                    style={{
-                        paddingLeft: '0px',
-                        margin: '0px',
-                        color: `${theme.palette.common.white}`,
-                        WebkitTapHighlightColor: 'transparent',
-                        fontSize: context === DeviceType.isDesktopOrLaptop ? '12px' : '10px',
-                        textAlign: 'center',
-                        fontFamily: 'Signoria-Bold'
-                    }}>
-                    {t("Header title.Line2")}
-                </Typography>
-                <Typography
-                    align={'center'}
-                    style={{
-                        paddingLeft: '0px',
-                        margin: '0px',
-                        color: `${theme.palette.common.white}`,
-                        WebkitTapHighlightColor: 'transparent',
-                        fontSize: context === DeviceType.isDesktopOrLaptop ? '12px' : '10px',
-                        textAlign: 'center',
-                        fontFamily: 'Signoria-Bold'
-                    }}>
-                    {t("Header title.Line3")}
-                </Typography>
-            </div>
-        </div>
-    }
-    </DeviceContextConsumer>);
 }
 
 const Title = () => {
@@ -314,7 +245,7 @@ const Title = () => {
                     textAlign: 'left',
                     fontFamily: 'Signoria-Bold',
                     width: '100%',
-                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '22px' : '12px',
+                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px',
                     textShadow: `1px 1px black`,
                 }}>
                 {t("Login")}
