@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@font-face {
+  font-family: 'Signoria-Bold';
+  src:local('Signoria-Bold'), url('./assets/fonts/Signoria-Bold.ttf.woff') format('woff'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+.pointerOverEffect {
+  opacity: 1;
+  transition: all .3s ease-in-out;
+}
+
+.pointerOverEffect:hover {
+  opacity: 0.6;
+}
+
+.custom-list ul.space_list li { 
+  margin-bottom: 1em; 
+}
+
+.custom-list li {
+  margin-bottom: 20px;
+}
+
+.custom-list li:last-child {
+margin-bottom: 0px;
+}
+
+.custom-list ul {
+  padding-left: 20px;
+  padding: 1px;  
+  padding-left: 40px;
+}
+
+.facility-list li {
+  margin-bottom: 10px;
+}
+
+.facility-list li:last-child {
+margin-bottom: 0px;
+}
+
+div.leaflet-control-layers-overlays label div {
+  display: flex;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  align-items: center;
+}
+
+div.leaflet-control-layers-overlays label div input{
+  filter: grayscale(100%);
+}
+
+div.leaflet-control-layers-overlays label div span{
+  padding-left: 5px;
+  padding-top: 1px;
+}
+
+.fade-in-image {
+  animation: fadeIn 5s;
+  -webkit-animation: fadeIn 5s;
+  -moz-animation: fadeIn 5s;
+  -o-animation: fadeIn 5s;
+  -ms-animation: fadeIn 5s;
+}
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
