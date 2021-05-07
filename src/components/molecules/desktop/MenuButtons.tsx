@@ -52,7 +52,9 @@ export default function MenuButtons(props: any) {
 export const Divider = (props: any) =>{
 
   return(
-    <div style={{
+    <div 
+    {...props}
+    style={{
       paddingLeft: '0px',
       paddingRight: '0px',
       height: '0px',
@@ -63,7 +65,6 @@ export const Divider = (props: any) =>{
         height: '0px',
         width:  '100%',
         borderTop: `0.5px solid black`,
-        // opacity: 0.5
       }}/>
     </div>
   );

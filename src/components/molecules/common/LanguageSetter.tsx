@@ -25,14 +25,14 @@ const LanguageSetter = (props: any) => {
     { context =>
       <>
         <div style={{
-          left: context === DeviceType.isDesktopOrLaptop ? 'unset' : '90%',
-          position: context === DeviceType.isDesktopOrLaptop ? 'relative' : 'absolute',
-          WebkitTransform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)',
-          transform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)'
+          // left: context === DeviceType.isDesktopOrLaptop ? 'unset' : '90%',
+          // position: context === DeviceType.isDesktopOrLaptop ? 'relative' : 'absolute',
+          // WebkitTransform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)',
+          // transform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)'
         }}>
             <IconButton
             style={{
-              color: `${theme.palette.secondary.main}`
+              color: `${theme.palette.common.white}`
             }}
             aria-controls="language-menu"
             aria-haspopup="true"
@@ -68,27 +68,16 @@ const LanguageSetter = (props: any) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
           TransitionComponent={Fade}
-          anchorReference={context.valueOf() === DeviceType.isDesktopOrLaptop ? "anchorEl": "anchorPosition"}
-          anchorPosition={
-            context.valueOf() === DeviceType.isDesktopOrLaptop ?
-            undefined :
-            {
-              top: props.top,
-              left: props.width - 100
-            }}
+          anchorReference={context.valueOf() === DeviceType.isDesktopOrLaptop ? "anchorEl": "anchorEl"}
           anchorOrigin={
-            context.valueOf() === DeviceType.isDesktopOrLaptop ?
             {
             vertical: 'bottom',
-            horizontal: 'center',
-          }: undefined}
-          transformOrigin={
-            context.valueOf() === DeviceType.isDesktopOrLaptop ?
-            {
+            horizontal: 'center'
+          }}
+          transformOrigin={{
             vertical: 'top',
-            horizontal: 'center',
-            }: 
-            undefined}
+            horizontal: 'center'
+            }}
           >
             <Languages handleClose={handleClose} />
         </Menu>

@@ -15,6 +15,8 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import * as Yup from 'yup';
 import { UsernameField } from "../molecules/common/UsernameField";
 import { PasswordField } from "../molecules/common/PasswordField";
+import LanguageSetter from '../molecules/common/LanguageSetter';
+import AppBar from '@material-ui/core/AppBar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,12 +69,38 @@ const LoginModal = () =>{
                 display: 'flex',
                 flexDirection: 'column',
                 alignContent: 'center',
-                alignItems: 'stretch'
+                alignItems: 'stretch',
+                // borderTop: `10px solid ${theme.palette.primary.main}`
             }}>
-                <Ornament />
-                <ApplicationName />
-                <Ornament />
-                <Divider />
+                <AppBar position="sticky" 
+                    style={{
+                        paddingTop: context === DeviceType.isDesktopOrLaptop ? '0px' : '0px',
+                        paddingBottom: '0px',
+                        backgroundColor: `${theme.palette.primary.main}`,
+                        boxShadow: 'unset',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'revert'
+                    // borderTop: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
+                }}>
+                    <img
+                        style={{
+                            height: context.valueOf() === DeviceType.isDesktopOrLaptop ? '30px' : '30px',
+                            width: 'auto',
+                            alignSelf: 'center',
+                            padding: '0px',
+                            paddingLeft: '32px',
+                            backgroundColor: 'transparent'
+                        }}
+                        src={"/logo.png"}
+                        alt={"logo"} />
+                    <ApplicationName />
+                    <LanguageSetter />
+                </AppBar>
+                <Title/>
+                <Divider style={{
+                    opacity: '0.6'
+                }}/>
                 {/* <LoginHeader/> */}
                 {/* <Divider /> */}
                 <LoginForm />
@@ -136,8 +164,7 @@ const LoginForm = () => {
                     <div 
                     style={{
                         display: 'flex',
-                        flexDirection: 'row',
-                        alignContent: 'flex-end'
+                        flexDirection: 'row'
                     }}>
                         <Button
                             disabled={sendingInProgress}
@@ -251,6 +278,44 @@ const LoginHeader = () => {
     </DeviceContextConsumer>);
 }
 
+const Title = () => {
+    const { t } = useTranslation();
+    const theme = useTheme();
+    const classes = useStyles();
+
+    return (
+    <DeviceContextConsumer>
+    {context =>
+        <div style={{
+            width: '100%',
+            height: 'auto',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignContent: 'center',
+            paddingTop: '10px',
+            paddingBottom: '10px'
+        }}>
+            <Typography
+                align={'center'}
+                style={{
+                    margin: '0px',
+                    color: `${theme.palette.common.white}`,
+                    WebkitTapHighlightColor: 'transparent',
+                    fontSize: context === DeviceType.isDesktopOrLaptop ? '30px' : '20px',
+                    textAlign: 'left',
+                    fontFamily: 'Signoria-Bold',
+                    width: '100%',
+                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '32px',
+                    textShadow: `1px 1px black`,
+                }}>
+                {t("Login")}
+            </Typography>
+        </div>
+    }
+    </DeviceContextConsumer>);
+}
+
 const ApplicationName = () => {
     const { t } = useTranslation();
     const theme = useTheme();
@@ -276,11 +341,9 @@ const ApplicationName = () => {
                     margin: '0px',
                     color: `${theme.palette.common.white}`,
                     WebkitTapHighlightColor: 'transparent',
-                    fontSize: context === DeviceType.isDesktopOrLaptop ? '34px' : '20px',
+                    fontSize: context === DeviceType.isDesktopOrLaptop ? '20px' : '15px',
                     textAlign: 'center',
                     fontFamily: 'Signoria-Bold',
-                    textDecoration: 'underline',
-                    textDecorationColor: `${theme.palette.primary.main}`,
                 }}>
                 {t("Administration console")}
             </Typography>
