@@ -17,7 +17,6 @@ export const UsernameField = (props: FormikProps<LoginDetails>) => {
           id="username"
           name="username"
           label={t("Username")}
-          // autoComplete="given-name"
           margin="dense"
           error={Boolean(props.touched.username && props.errors.username)}
           helperText={props.touched.username && props.errors.username}

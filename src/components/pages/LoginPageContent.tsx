@@ -11,12 +11,13 @@ import { Ornament } from '../molecules/common/Ornament';
 import { thirdMain } from '../../customTheme';
 import { Divider } from '../molecules/desktop/MenuButtons';
 import { Form, Formik, FormikProps } from 'formik';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone';
 import * as Yup from 'yup';
 import { UsernameField } from "../molecules/common/UsernameField";
 import { PasswordField } from "../molecules/common/PasswordField";
 import LanguageSetter from '../molecules/common/LanguageSetter';
 import AppBar from '@material-ui/core/AppBar';
+import { shadows } from '@material-ui/system';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,6 +60,9 @@ const LoginModal = () =>{
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 1000,
+        }}
+        style={{
+            boxShadow: `${theme.shadows[2]}`
         }}
       >
         <Fade in={true}>
@@ -157,7 +161,9 @@ const LoginForm = () => {
                     paddingTop: '0px',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignContent: 'center'
+                    alignContent: 'center',
+                    backgroundColor: `${theme.palette.common.white}`,
+                    borderLeft: `10px solid ${theme.palette.primary.main}`
                 }}>
                 <>
                     <LoginFormContent {...props}/>                  
@@ -173,7 +179,7 @@ const LoginForm = () => {
                             color="primary"
                             style={{
                                 marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '14px'
+                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
                             }}
                             onClick={async ()=>{
                                 await props.submitForm();
@@ -187,7 +193,7 @@ const LoginForm = () => {
                             )}
                             {sendingInProgress === false && (
                             <>
-                                <VpnKeyIcon style={{paddingRight: '10px'}}/>
+                                <VpnKeyTwoToneIcon style={{paddingRight: '10px'}}/>
                                 {t("Login").toUpperCase()}
                             </>
                             )}
@@ -287,14 +293,16 @@ const Title = () => {
     <DeviceContextConsumer>
     {context =>
         <div style={{
-            width: '100%',
+            width: 'auto',
             height: 'auto',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
             alignContent: 'center',
             paddingTop: '10px',
-            paddingBottom: '10px'
+            paddingBottom: '10px',
+            borderLeft: `20px solid ${theme.palette.primary.main}`,
+            borderTop: `1px solid ${theme.palette.primary.main}`
         }}>
             <Typography
                 align={'center'}
@@ -363,7 +371,7 @@ const LoginFormContent = (props: FormikProps<LoginDetails>) =>{
               display: 'flex',
               flexDirection: 'column',
               alignContent: 'center',
-              width: '100%'
+              width: '100%',
           }}>
               <UsernameField {...props}/>
               <PasswordField {...props}/>

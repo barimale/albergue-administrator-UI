@@ -32,7 +32,8 @@ const LanguageSetter = (props: any) => {
         }}>
             <IconButton
             style={{
-              color: `${theme.palette.common.white}`
+              color: `${theme.palette.common.white}`,
+              height: '100%'
             }}
             aria-controls="language-menu"
             aria-haspopup="true"
