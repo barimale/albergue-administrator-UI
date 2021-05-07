@@ -16,7 +16,7 @@ function LocalizedApp() {
   useEffect(()=>{
     //TODO: get based on customhook localstorage
 
-    setIsLoggedIn(true);
+    setIsLoggedIn(false);
   }, []);
   
   return (
@@ -33,10 +33,7 @@ function LocalizedApp() {
               <I18nextProvider i18n={i18n}>
                 <DeviceContextProvider>
                   <BrowserRouter>
-                  {/* TODO: login modal */}
-                    <MainLayout>
                       <Routes/>
-                    </MainLayout>
                   </BrowserRouter>
                 </DeviceContextProvider>
               </I18nextProvider>

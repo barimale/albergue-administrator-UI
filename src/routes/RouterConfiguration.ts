@@ -3,7 +3,7 @@ import { Title as ContactTitle, Path as ContactPath } from "../components/screen
 import { Title as TheWayTitle, Path as TheWayPath } from "../components/screens/TheWayPage";
 import { Title as AroundPortoTitle, Path as AroundPortoPath } from "../components/screens/AroundPortoPage";
 import { Title as GalleryTitle, Path as GalleryPath } from "../components/screens/GalleryPage";
-import { Title as ActivitiesTitle, Path as ActivitiesPath } from "../components/screens/ActivitiesPage";
+import { Title as ActivitiesTitle, Path as ActivitiesPath } from "../components/screens/LoginPage";
 import { Title as ShopTitle, Path as ShopPath } from "../components/screens/ShopPage";
 import { Title as WelcomeTitle } from "../components/screens/WelcomePage";
 import { HomePath } from "./Routes";

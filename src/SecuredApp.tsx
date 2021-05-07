@@ -4,9 +4,8 @@ import i18n from './i18n';
 import CustomMuiThemeProvider from './customTheme';
 import { DeviceContextProvider } from './contexts/DeviceContext';
 import { MainLayout } from './components/templates/MainLayout';
-import Routes from './routes/Routes';
+import SecuredRoutes from './routes/SecuredRoutes';
 import { BrowserRouter } from 'react-router-dom';
-import React from 'react';
 
 function SecuredApp() {  
   
@@ -17,7 +16,7 @@ function SecuredApp() {
           <DeviceContextProvider>
             <BrowserRouter>
               <MainLayout>
-                <Routes/>
+                <SecuredRoutes/>
               </MainLayout>
             </BrowserRouter>
           </DeviceContextProvider>
