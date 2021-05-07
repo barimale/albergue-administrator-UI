@@ -148,6 +148,19 @@ const LoginForm = () => {
         password: ""
       };
 
+    const onSubmit = async (value: LoginDetails) =>{
+        try{
+            setSendingInProgress(true);
+
+            setTimeout(() => {
+                setSendingInProgress(false);
+
+            }, 3000);
+
+        }finally{
+        }
+    }
+
     return(
     <DeviceContextConsumer>
     {context =>
@@ -158,7 +171,7 @@ const LoginForm = () => {
             validateOnChange={true}
             validationSchema={LoginSchema}
             onSubmit={async (value: LoginDetails)=>{
-            // await onSubmit(value);
+            await onSubmit(value);
             }}>
             {props => (
                 <Form
@@ -184,6 +197,7 @@ const LoginForm = () => {
                             variant="contained"
                             color="primary"
                             style={{
+                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
                                 borderRadius: '0px',
                                 marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
                                 fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
@@ -192,15 +206,20 @@ const LoginForm = () => {
                                 await props.submitForm();
                             }}>
                             {sendingInProgress === true && (
-                            <>
-                                <CircularProgress color={'inherit'} style={{
-                                height: '26px', width: '26px', marginRight: '10px'}}/>
-                                {t("...").toUpperCase()}
-                            </>
+                                <CircularProgress 
+                                    color={'inherit'} 
+                                    style={{
+                                        height: '28px',
+                                        width: '28px'
+                                }}/>
                             )}
                             {sendingInProgress === false && (
                             <>
-                                <VpnKeyTwoToneIcon style={{paddingRight: '10px'}} fontSize="small"/>
+                                <VpnKeyTwoToneIcon
+                                    fontSize="small"
+                                    style={{
+                                        paddingRight: '10px'
+                                }}/>
                                 {t("Sign in")}
                             </>
                             )}
