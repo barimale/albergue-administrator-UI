@@ -6,8 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
-import { Ornament } from '../molecules/common/Ornament';
+import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { thirdMain } from '../../customTheme';
 import { Divider } from '../molecules/desktop/MenuButtons';
 import { Form, Formik, FormikProps } from 'formik';
@@ -17,7 +16,6 @@ import { UsernameField } from "../molecules/common/UsernameField";
 import { PasswordField } from "../molecules/common/PasswordField";
 import LanguageSetter from '../molecules/common/LanguageSetter';
 import AppBar from '@material-ui/core/AppBar';
-import { shadows } from '@material-ui/system';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

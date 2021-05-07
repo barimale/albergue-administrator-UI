@@ -3,9 +3,10 @@ import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import sizeMe from 'react-sizeme';
 import { useTranslation } from 'react-i18next';
-import { Fade, Slide, useTheme } from '@material-ui/core';
+import { Fade, useTheme } from '@material-ui/core';
 import { Languages } from './Languages';
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
+import TranslateIcon from '@material-ui/icons/Translate';
 
 const LanguageSetter = (props: any) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -25,15 +26,12 @@ const LanguageSetter = (props: any) => {
     { context =>
       <>
         <div style={{
-          // left: context === DeviceType.isDesktopOrLaptop ? 'unset' : '90%',
-          // position: context === DeviceType.isDesktopOrLaptop ? 'relative' : 'absolute',
-          // WebkitTransform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)',
-          // transform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)'
         }}>
             <IconButton
             style={{
               color: `${theme.palette.common.white}`,
-              height: '100%'
+              height: '100%',
+              paddingRight: '32px'
             }}
             aria-controls="language-menu"
             aria-haspopup="true"
@@ -53,9 +51,13 @@ const LanguageSetter = (props: any) => {
                   width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '100px': '62px',
                   fontWeight: 'normal',
                   textAlign: 'center',
-                  verticalAlign: 'center'
+                  verticalAlign: 'center',
+                  alignContent: 'baseline',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end'
               }}>
-                {/* <img id='myImage' src={`http://www.geonames.org/flags/x/${i18n.language}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%', paddingRight: '5px'}}/> */}
+                <TranslateIcon fontSize="small" style={{paddingRight: '10px', height: '100%'}}/>
                 {i18n.language.toUpperCase()}
               </div>
             </div>
