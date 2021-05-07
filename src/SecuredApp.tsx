@@ -11,17 +11,11 @@ function SecuredApp() {
   
   return (
     <div className="App">
-      <CustomMuiThemeProvider>
-        <I18nextProvider i18n={i18n}>
-          <DeviceContextProvider>
-            <BrowserRouter>
-              <MainLayout>
-                <SecuredRoutes/>
-              </MainLayout>
-            </BrowserRouter>
-          </DeviceContextProvider>
-        </I18nextProvider>
-      </CustomMuiThemeProvider>
+      <BrowserRouter>
+        <MainLayout>
+          <SecuredRoutes/>
+        </MainLayout>
+      </BrowserRouter>
     </div>
   );
 }

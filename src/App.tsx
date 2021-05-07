@@ -3,6 +3,9 @@ import i18n from './i18n';
 import React, { useEffect } from 'react';
 import { LoadingInProgress } from "./components/molecules/common/LoadingInProgress";
 import LocalizedApp from "./LocalizedApp";
+import { I18nextProvider } from 'react-i18next';
+import CustomMuiThemeProvider from './customTheme';
+import { DeviceContextProvider } from './contexts/DeviceContext';
 
 function App() {  
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -16,15 +19,19 @@ function App() {
   }, []);
   
   return (
-    <>
+    <CustomMuiThemeProvider>
       {isLoading.valueOf() === true ?(
         <div className="App">
           <LoadingInProgress/>
         </div>
       ):(
-        <LocalizedApp />
+        <I18nextProvider i18n={i18n}>
+          <DeviceContextProvider>
+            <LocalizedApp />
+          </DeviceContextProvider>
+        </I18nextProvider>
       )}
-    </>
+    </CustomMuiThemeProvider>
   );
 }
 

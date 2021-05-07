@@ -1,9 +1,5 @@
 import './App.css';
-import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n';
-import CustomMuiThemeProvider from './customTheme';
-import { DeviceContextProvider } from './contexts/DeviceContext';
-import { MainLayout } from './components/templates/MainLayout';
+import { AuthContextProvider } from './contexts/AuthContext';
 import Routes from './routes/Routes';
 import { BrowserRouter } from 'react-router-dom';
 import React, { useEffect } from 'react';
@@ -20,7 +16,8 @@ function LocalizedApp() {
   }, []);
   
   return (
-      isLoggedIn === undefined ? (
+    <AuthContextProvider>
+      {isLoggedIn === undefined ? (
         <div className="App">
           <LoadingInProgress/>
         </div>
@@ -29,18 +26,13 @@ function LocalizedApp() {
           <SecuredApp/>
         ):(
           <div className="App">
-            <CustomMuiThemeProvider>
-              <I18nextProvider i18n={i18n}>
-                <DeviceContextProvider>
-                  <BrowserRouter>
-                      <Routes/>
-                  </BrowserRouter>
-                </DeviceContextProvider>
-              </I18nextProvider>
-            </CustomMuiThemeProvider>
+            <BrowserRouter>
+                <Routes/>
+            </BrowserRouter>
           </div>
         )
-      )
+      )}
+    </AuthContextProvider>
   );
 }
 
