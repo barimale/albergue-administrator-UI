@@ -218,7 +218,6 @@ const LoginForm = () => {
 const Title = () => {
     const { t } = useTranslation();
     const theme = useTheme();
-    const classes = useStyles();
 
     return (
     <DeviceContextConsumer>
@@ -258,7 +257,6 @@ const Title = () => {
 const ApplicationName = () => {
     const { t } = useTranslation();
     const theme = useTheme();
-    const classes = useStyles();
 
     return (
     <DeviceContextConsumer>
@@ -292,7 +290,6 @@ const ApplicationName = () => {
 }
 
 const LoginFormContent = (props: FormikProps<LoginDetails>) =>{
-    const { t } = useTranslation();
   
       return(
         <DeviceContextConsumer>
