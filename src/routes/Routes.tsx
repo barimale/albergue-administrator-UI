@@ -2,7 +2,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { LoginPage, Path as LoginPath } from "../components/screens/LoginPage";
 
 export const HomePath = "/";
-export const appBaseRouteKey = "/";
+export const appBaseRouteKey = "";
 
 export default function Routes(){
     return(
