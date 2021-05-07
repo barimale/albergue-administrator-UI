@@ -1,13 +1,10 @@
 import Header from "../organisms/Header";
-import Footer from "../organisms/Footer";
 import { useState } from "react";
 import { DeviceContextConsumer, DeviceType } from "../../contexts/DeviceContext";
 import { useMediaQuery } from 'react-responsive';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useHistory } from "react-router-dom";
-import { Grid } from "@material-ui/core";
-import SiderLeft from "../organisms/Sider";
 import { useTheme } from "@material-ui/core";
 
 const usePrevious = (value: any) => {
@@ -83,13 +80,6 @@ export const MainLayout = (props : any) =>  {
                 height: '100%',
                 width: '100%'
                 }}>
-                  <Grid container spacing={0} style={{width: 'max-content', verticalAlign: 'center', height: 'inherit'}}>
-                    <Grid item style={{height: 'inherit'}}>
-                      <SiderLeft onSize={(size: any)=>{
-                            setSiderWidth(size.width || 0);
-                      }}/>
-                    </Grid>
-                  </Grid>
                   <MainBackground style={{height: 'inherit', width:'100%'}}>
                     {props.children}
                   </MainBackground>
@@ -100,11 +90,6 @@ export const MainLayout = (props : any) =>  {
                 </MainBackground>
               )}
           </div>
-          <Footer 
-            siderWidth={siderWidth}
-            onSize={(size: any)=>{
-              setFooterHeight(size.height || 0);
-          }} />
         </>
       }
     </DeviceContextConsumer>

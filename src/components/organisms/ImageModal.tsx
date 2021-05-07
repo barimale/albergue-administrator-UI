@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import useTheme from "@material-ui/core/styles/useTheme";
 import { useMediaQuery } from 'react-responsive';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import { ImageDetails } from '../pages/GalleryPageContent';
 import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -48,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 type ImageModalProps = {
     isDisplayed: boolean;
     onHide: () => void;
-    item: ImageDetails;
+    item: any;
 }
 
 export default function ImageModal(props: ImageModalProps) {

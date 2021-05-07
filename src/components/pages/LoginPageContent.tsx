@@ -8,7 +8,6 @@ import Fade from '@material-ui/core/Fade';
 import React, { useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { thirdMain } from '../../customTheme';
-import { Divider } from '../molecules/desktop/MenuButtons';
 import { Form, Formik, FormikProps } from 'formik';
 import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone';
 import * as Yup from 'yup';
@@ -105,9 +104,9 @@ const LoginModal = () =>{
                         <LanguageSetter />
                     </AppBar>
                     <Title/>
-                    <Divider style={{
+                    {/* <Divider style={{
                         opacity: '0.6'
-                    }}/>
+                    }}/> */}
                     {/* <LoginHeader/> */}
                     {/* <Divider /> */}
                     <LoginForm />
@@ -170,7 +169,7 @@ const LoginForm = () => {
             validationSchema={LoginSchema}
             onSubmit={async (value: LoginDetails)=>{
             await onSubmit(value);
-            }}>
+        }}>
             {props => (
                 <Form
                     style={{

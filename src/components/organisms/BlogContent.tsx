@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     return { name, price, sheetsIncluded };
   }
 
-export const PriceContent = () =>{
+export const BlogContent = () =>{
     const classes = useStyles();
     const theme = useTheme();
     const { t } = useTranslation();

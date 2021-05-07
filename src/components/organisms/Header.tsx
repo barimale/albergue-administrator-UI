@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { DeviceContextConsumer, DeviceType } from "../../contexts/DeviceContext";
 import sizeMe from 'react-sizeme';
-import MenuWithItems from '../molecules/mobile/MenuWithItems';
 import useTheme from "@material-ui/core/styles/useTheme";
 import { SizeMe } from 'react-sizeme';
 import { useHistory } from 'react-router-dom';
@@ -15,9 +14,6 @@ import { Title } from '../molecules/common/Title';
 import { Logo } from '../molecules/common/Logo';
 import { TitleWrapper } from '../molecules/common/TitleWrapper';
 import { LogoWrapper } from '../molecules/common/LogoWrapper';
-import { OpenHoursDetails } from '../molecules/common/OpenHoursDetails';
-import { CheckOutDetails } from '../molecules/common/CheckOutDetails';
-import { CheckInDetails } from '../molecules/common/CheckInDetails';
 import { Ornament } from '../molecules/common/Ornament';
 
 export const useStyles = makeStyles((theme) => ({
@@ -82,11 +78,6 @@ function TopMenu(props: any) {
                   height:'50px',
                   marginTop: '-50px',
               }}/>
-              {context === DeviceType.isTabletOrMobile && (
-                <MenuWithItems top={size?.size?.height || 0} left={0} onSize={(size: any)=>{
-                  setPaddingRight(size.width || 0);
-                }}/>
-              )}
               {context === DeviceType.isDesktopOrLaptop && (
                 <LogoWrapper 
                   siderWidth={props.siderWidth}>
@@ -106,31 +97,6 @@ function TopMenu(props: any) {
               <LanguageSetter top={size?.size?.height || 0} width={size.size.width}/>
             </Toolbar>
             <Ornament />
-          </AppBar>
-          <AppBar position="sticky" style={{
-            backgroundColor: `${theme.palette.primary.main}`,
-            height: context.valueOf() === DeviceType.isDesktopOrLaptop ? '26px' : '30px',
-          }}>
-            {context.valueOf() === DeviceType.isDesktopOrLaptop ? (
-              <div style={{height: '100%', width: '100%', display: 'flex', flexDirection: 'row', alignContent: 'center'}}>
-                <CheckInDetails />
-                <OpenHoursDetails />
-                <CheckOutDetails/>
-              </div>
-            ):(
-              <>
-                <OpenHoursDetails />
-                <div style={{
-                  height: '100%',
-                  display: 'flex', 
-                  flexDirection: 'row', 
-                  alignContent: 'space-evenly'
-                }}>
-                  <CheckInDetails />
-                  <CheckOutDetails/>
-                </div>
-              </>
-            )}
           </AppBar>
         </div>
       }

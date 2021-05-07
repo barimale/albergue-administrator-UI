@@ -1,18 +1,17 @@
 import React from "react";
 import { FormikProps } from "formik";
 import { DeviceContextConsumer, DeviceType } from "../../../contexts/DeviceContext";
-import { ReservationDetails } from "../../pages/ReservationPageContent";
 import { TextField } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { useTranslation } from "react-i18next";
-import { defaultXs, defaultSm } from "../../organisms/ReservationForm";
 
-export const NotesField = (props: FormikProps<ReservationDetails>) => {
+export const NotesField = (props: FormikProps<any>) => {
   const { t } = useTranslation();
 
   return (
     <DeviceContextConsumer>
-      {context => <Grid item xs={defaultXs} sm={defaultXs}>
+      {context => 
+      // <Grid item xs={} sm={defaultXs}>
         <TextField
           id="message"
           name="message"
@@ -29,7 +28,8 @@ export const NotesField = (props: FormikProps<ReservationDetails>) => {
           helperText={props.touched.message && props.errors.message}
           error={Boolean(props.touched.message && props.errors.message)}
           fullWidth />
-      </Grid>}
+      // </Grid>
+      }
     </DeviceContextConsumer>
   );
 };

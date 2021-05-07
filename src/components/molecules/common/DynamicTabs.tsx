@@ -6,19 +6,10 @@ import AppBar from '@material-ui/core/AppBar';
 import { a11yProps } from './TabPanel';
 import sizeMe from 'react-sizeme';
 
-export const indexer = (type: DeviceType, index: number) => {
-    if(type === DeviceType.isDesktopOrLaptop)
-    {
-        return index;
-    }else{
-        return index;
-    }
-}
+export const parentId = "dynamic-tabs";
+export const tabPrefix = "dynamic-tabs-item";
 
-export const parentId = "Activities-tabs";
-export const tabPrefix = "Activities-tabs-item";
-
-const ActivitiesTabs = (props: any) =>{
+const DynamicTabs = (props: any) =>{
     const {value, onChange} = props;
     const { t } = useTranslation();
 
@@ -31,10 +22,10 @@ const ActivitiesTabs = (props: any) =>{
                 scrollButtons={'on'}
                 value={value}
                 onChange={onChange}
-                aria-label="activities tabs"
+                aria-label="dynamic tabs"
             >
-                <Tab label={t("Photos & movies").toUpperCase()} {...a11yProps(indexer(context,0), parentId, tabPrefix)} />
-                <Tab label={t("Schedule").toUpperCase()}{...a11yProps(indexer(context,1), parentId, tabPrefix)} />
+                <Tab label={t("Shop").toUpperCase()} {...a11yProps(0, parentId, tabPrefix)} />
+                <Tab label={t("Blog").toUpperCase()}{...a11yProps(1, parentId, tabPrefix)} />
             </Tabs>
         </AppBar>
     }
@@ -42,4 +33,4 @@ const ActivitiesTabs = (props: any) =>{
     );
 }
 
-export default sizeMe({ monitorHeight: true })(ActivitiesTabs);
+export default sizeMe({ monitorHeight: true })(DynamicTabs);

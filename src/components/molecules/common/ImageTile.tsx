@@ -4,11 +4,10 @@ import { useState } from 'react';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { ImageTileBar } from './ImageTileBar';
 import { Image } from './Image';
-import { ImageDetails } from '../../pages/GalleryPageContent';
 
 type ImageTileProps = {
     index: number;
-    tile: ImageDetails;
+    tile: any;
 };
 export const ImageTile = (props: ImageTileProps) => {
     const { tile, index } = props;

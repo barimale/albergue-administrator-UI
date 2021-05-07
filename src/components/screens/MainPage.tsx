@@ -2,18 +2,18 @@ import { lazy, Suspense } from 'react';
 import { LoadingInProgress } from '../molecules/common/LoadingInProgress';
 import { ContentLayout } from '../templates/MainLayout';
 
-const ContactPageContent = lazy(() => import("../pages/ContactPageContent"));
+const MainPageContent = lazy(() => import("../pages/MainPageContent"));
 
-export const Path = "/location";
-export const Title = "Our location";
+export const Path = "/";
+export const Title = "Main page";
 
-export function ContactPage(){
+export function MainPageScreen(){
     return (
         <Suspense fallback={
             <LoadingInProgress/>
         }>
             <ContentLayout>
-                <ContactPageContent />
+                <MainPageContent />
             </ContentLayout>
         </Suspense>
     );

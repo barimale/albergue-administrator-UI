@@ -1,10 +1,7 @@
-import React from "react";
 import { FormikProps } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
-import Grid from "@material-ui/core/Grid";
 import { useTranslation } from "react-i18next";
 import { MyTextField } from "../../atoms/MyTextField";
-import { defaultXs, defaultSm } from "../../organisms/ReservationForm";
 import { LoginDetails } from "../../pages/LoginPageContent";
 
 export const UsernameField = (props: FormikProps<LoginDetails>) => {

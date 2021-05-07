@@ -21,7 +21,7 @@ import FireplaceIcon from '@material-ui/icons/Fireplace';
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import AccessibilityIcon from '@material-ui/icons/Accessibility';
 
-export const FacilitiesContent = () =>{
+export const ShopContent = () =>{
     const { t } = useTranslation();
     const theme = useTheme();
 
