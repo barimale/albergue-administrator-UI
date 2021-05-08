@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
 import { a11yProps } from './TabPanel';
 import sizeMe from 'react-sizeme';
+import { fourthMain } from '../../../customTheme';
 
 export const parentId = "dynamic-tabs";
 export const tabPrefix = "dynamic-tabs-item";

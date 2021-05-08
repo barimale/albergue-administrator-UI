@@ -46,7 +46,8 @@ export const theme = createMuiTheme({
       root:{
         fontFamily: 'Signoria-Bold',
         backgroundColor: `${RGBToRGBA(hexToRgb(fourthMain), 1)}`,
-        color: 'black'
+        color: 'black',
+        boxShadow: 'unset'
       },
       indicator:{
         backgroundColor: `${primaryMain}`,
