@@ -13,7 +13,7 @@ export const Logo = (props: any) => {
         {...props}
         style={{
           display: 'flex',
-          width: props.siderWidth,
+          width: 'auto',
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
@@ -30,7 +30,7 @@ export const Logo = (props: any) => {
             cursor: 'pointer',
             opacity: opacityValue,
             WebkitTapHighlightColor: 'transparent',
-            height: context === DeviceType.isDesktopOrLaptop ? '80px' : `${props.siderWidth - 2}px`,
+            height: context === DeviceType.isDesktopOrLaptop ? '40px' : `${42 - 2}px`,
             objectFit: 'scale-down'
           }} />
       </div>}

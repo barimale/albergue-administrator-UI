@@ -79,15 +79,10 @@ function TopMenu(props: any) {
                   marginTop: '-50px',
               }}/>
               {context === DeviceType.isDesktopOrLaptop && (
-                <LogoWrapper 
-                  siderWidth={props.siderWidth}>
+                <LogoWrapper>
                   <Logo
-                    siderWidth={props.siderWidth}
-                    onClick={()=>{
-                      history.push(HomePath);
-                    }}
                     style={{
-                      paddingRight: paddingRight
+                      paddingRight: 30
                   }}/>
                 </LogoWrapper>
               )}

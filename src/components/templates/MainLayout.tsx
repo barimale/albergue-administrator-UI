@@ -43,19 +43,19 @@ export const MainLayout = (props : any) =>  {
     const location = useLocation();
     const history = useHistory();
 
-    // useEffect(()=>{      
-    //   history.replace(location.pathname);
-    // }, [window.screen.width, window.screen.height]);
+    useEffect(()=>{      
+      history.replace(location.pathname);
+    }, [window.screen.width, window.screen.height]);
 
-    // useEffect(()=>{
-    //   if(prevVal === undefined){
-    //     return;
-    //   }
+    useEffect(()=>{
+      if(prevVal === undefined){
+        return;
+      }
 
-    //   if(isPortrait !== prevVal){
-    //     history.replace(location.pathname);
-    //   }
-    // }, [isPortrait, prevVal]);
+      if(isPortrait !== prevVal){
+        history.replace(location.pathname);
+      }
+    }, [isPortrait, prevVal]);
 
     return (
     <DeviceContextConsumer>

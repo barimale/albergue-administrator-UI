@@ -13,7 +13,7 @@ export const LogoWrapper = (props: any) => {
           backgroundColor: 'transparent',
           alignItems: 'center',
           alignContent: 'center',
-          width: props.siderWidth,
+          width: 'auto',
           height: '100%'
         }}>
         {props.children}

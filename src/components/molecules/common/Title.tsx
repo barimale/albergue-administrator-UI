@@ -33,32 +33,7 @@ export const Title = (props: any) => {
             letterSpacing: `0.2em`,
             fontFamily: 'Signoria-Bold'
           }}>
-          {"ALBERGUE"}
-        </Typography>
-        <Typography
-          className={classes.title}
-          align={'center'}
-          style={{
-            color: `${theme.palette.secondary.main}`,
-            WebkitTapHighlightColor: 'transparent',
-            fontSize: context === DeviceType.isDesktopOrLaptop ? '22px' : '14px',
-            textAlign: 'center',
-            fontFamily: 'Signoria-Bold'
-          }}>
-          {"DE PEREGRINOS"}
-        </Typography>
-        <Typography
-          className={classes.title}
-          align={'center'}
-          style={{
-            color: `${theme.palette.secondary.main}`,
-            WebkitTapHighlightColor: 'transparent',
-            fontSize: context === DeviceType.isDesktopOrLaptop ? '22px' : '12px',
-            textAlign: 'center',
-            letterSpacing: `0.5em`,
-            fontFamily: 'Signoria-Bold'
-          }}>
-          {"PORTO"}
+          {"Administrator console"}
         </Typography>
       </div>}
     </DeviceContextConsumer>

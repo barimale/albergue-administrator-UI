@@ -12,7 +12,7 @@ function LocalizedApp() {
   useEffect(()=>{
     //TODO: get based on customhook localstorage
 
-    setIsLoggedIn(false);
+    setIsLoggedIn(true);
   }, []);
   
   return (
