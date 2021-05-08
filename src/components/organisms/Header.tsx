@@ -56,6 +56,7 @@ function TopMenu(props: any) {
             paddingTop: context === DeviceType.isDesktopOrLaptop ? '5px' : '0px',
             paddingBottom: '5px',
             boxShadow: 'unset',
+            borderBottom: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
             borderTop: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
           }}>
             <Ornament />
@@ -63,8 +64,8 @@ function TopMenu(props: any) {
               backgroundColor:'transparent',
               paddingTop: context === DeviceType.isDesktopOrLaptop ? '0px' : '5px',
               paddingBottom: context === DeviceType.isDesktopOrLaptop ? '0px' : '5px',
-              paddingLeft: context === DeviceType.isDesktopOrLaptop ? '0px' : '0px', 
-              paddingRight: context === DeviceType.isDesktopOrLaptop ? '32px' : '0px'}}>
+              paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px', 
+              paddingRight: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px'}}>
               <div 
                 style={{
                   position:'fixed', 

@@ -21,7 +21,8 @@ export default function Paper(props: PaperProps){
             flexDirection: 'column',
             padding:'0px',
             width: '100%',
-            height: '100%'
+            height: '100%',
+            margin: '0px'
         }}>
             {title}
             <div 
