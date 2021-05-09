@@ -14,6 +14,8 @@ import TableRow from '@material-ui/core/TableRow';
 import { useState } from "react";
 import SearchAppBar from "../molecules/common/SearchAppBar";
 import { fourthMain } from '../../customTheme';
+import ClearIcon from '@material-ui/icons/Clear';
+import DoneIcon from '@material-ui/icons/Done';
 
 export const ShopContent = () =>{
     const { t } = useTranslation();
@@ -36,7 +38,7 @@ export const ShopContent = () =>{
 }
 
 interface Column {
-    id: 'name' | 'price' | 'description' | 'shortDescription' | 'categoryName';
+    id: 'name' | 'price' | 'description' | 'shortDescription' | 'categoryName'| 'active';
     label: string;
     minWidth?: number;
     align?: 'right';
@@ -68,6 +70,12 @@ interface Column {
       minWidth: 170,
       align: 'right',
     },
+    {
+      id: 'active',
+      label: 'Is avalaible',
+      minWidth: 170,
+      align: 'right'
+    },
   ];
   
   interface Data {
@@ -76,14 +84,15 @@ interface Column {
     description: string;
     shortDescription: string;
     categoryName: string;
+    active: boolean;
   }
   
-  function createData(name: string, price: number, description: string, shortDescription: string, categoryName: string): Data {
-    return { name, price, description, shortDescription, categoryName };
+  function createData(name: string, price: number, description: string, shortDescription: string, categoryName: string, active: boolean): Data {
+    return { name, price, description, shortDescription, categoryName, active };
   }
   
   const rows = [
-    createData('Credential', 2, "description in EN", "short description in EN", "documents"),
+    createData('Credential', 2, "description in EN", "short description in EN", "documents", false),
   ];
   
   const useStyles = makeStyles({
@@ -139,7 +148,10 @@ interface Column {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number' ? column.format(value) : value}
+                          {column.format && typeof value === 'number' ? column.format(value) : 
+                          (typeof value === 'boolean' ? (
+                            value === true ? <DoneIcon/> : <ClearIcon/>
+                          ) : value)}
                         </TableCell>
                       );
                     })}
