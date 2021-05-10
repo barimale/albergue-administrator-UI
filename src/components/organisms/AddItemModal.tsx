@@ -139,7 +139,7 @@ const AddForm = (props: AddFormProps) => {
 
     useEffect(() => {
         return () => {
-         source.cancel("axios request cancelled");
+         source.cancel("Axios request cancelled");
         };
        }, []);
 
@@ -157,13 +157,7 @@ const AddForm = (props: AddFormProps) => {
                 close();
             })
             .catch((thrown: any)=>{
-                debugger
-
-                if (axios.isCancel(thrown)) {
-                    console.log('Request canceled', thrown.message);
-                  } else {
-                    // handle error
-                  }
+                console.log('Request canceled', thrown.message);
             });
         }finally{
             setSendingInProgress(false);
@@ -172,7 +166,6 @@ const AddForm = (props: AddFormProps) => {
 
     const onCancel = () =>{
         try{
-            debugger
             source.cancel();
         }finally{
             setSendingInProgress(false);
