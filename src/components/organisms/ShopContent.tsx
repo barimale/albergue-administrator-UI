@@ -29,7 +29,7 @@ export const ShopContent = () =>{
                   width: '100%', 
                   height: '100%',
           }}>
-              {/* <SearchAppBar/> */}
+              <SearchAppBar/>
               <StickyHeadTable/>
           </div>
         }

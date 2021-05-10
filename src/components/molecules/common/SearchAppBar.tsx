@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,6 +8,7 @@ import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import { fourthMain } from '../../../customTheme';
+import AddItemModal from "../../organisms/AddItemModal";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,32 +69,39 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function SearchAppBar() {
   const classes = useStyles();
+  const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
 
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{backgroundColor: 'gray'}}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <AddIcon />
-          </IconButton>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
+          <>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={()=>{
+                setIsAddVisible(true);
               }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+            >
+              <AddIcon />
+            </IconButton>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </div>
+            <AddItemModal isDisplayed={isAddVisible} close={()=> setIsAddVisible(false)}/>
+          </>
         </Toolbar>
       </AppBar>
     </div>

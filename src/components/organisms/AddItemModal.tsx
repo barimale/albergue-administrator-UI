@@ -15,6 +15,7 @@ import { UsernameField } from "../molecules/common/UsernameField";
 import { PasswordField } from "../molecules/common/PasswordField";
 import LanguageSetter from '../molecules/common/LanguageSetter';
 import AppBar from '@material-ui/core/AppBar';
+import { ApplicationName } from '../pages/LoginPageContent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,13 +36,19 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function LoginPageContent(){
+type AddItemModalProps = {
+    isDisplayed: boolean;
+    close: () => void;
+}
+
+export default function AddItemModal(props: AddItemModalProps){
     return (
-        <LoginModal/>
+        <AddItemModalContent {...props}/>
     );
 }
 
-const LoginModal = () =>{
+const AddItemModalContent = (props: AddItemModalProps) =>{
+    const { isDisplayed, close } = props;
     const { t } = useTranslation();
     const theme = useTheme();
     const classes = useStyles();
@@ -51,7 +58,7 @@ const LoginModal = () =>{
     {context =>
         <Modal
         className={classes.modal}
-        open={true}
+        open={isDisplayed}
         disableBackdropClick={true}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -67,7 +74,7 @@ const LoginModal = () =>{
               width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '40%' : '90%',
           }}>
             <Fade 
-                in={true} 
+                in={isDisplayed} 
                 style={{
                     width: '100%', 
                     height: '100%'
@@ -79,32 +86,8 @@ const LoginModal = () =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <AppBar position="sticky" 
-                        style={{
-                            paddingTop: context === DeviceType.isDesktopOrLaptop ? '0px' : '0px',
-                            paddingBottom: '0px',
-                            backgroundColor: `${theme.palette.primary.main}`,
-                            boxShadow: 'unset',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'revert'
-                    }}>
-                        <img
-                            style={{
-                                height: context.valueOf() === DeviceType.isDesktopOrLaptop ? '30px' : '30px',
-                                width: 'auto',
-                                alignSelf: 'center',
-                                padding: '0px',
-                                paddingLeft: '20px',
-                                backgroundColor: 'transparent'
-                            }}
-                            src={"/logo.png"}
-                            alt={"logo"} />
-                        <ApplicationName />
-                        <LanguageSetter />
-                    </AppBar>
                     <Title/>
-                    <LoginForm />
+                    <AddForm close={close}/>
                 </div>
             </Fade>
         </Box>
@@ -114,7 +97,7 @@ const LoginModal = () =>{
     );
 }
 
-const LoginSchema = Yup.object().shape({
+const AddSchema = Yup.object().shape({
     username: Yup.string()
     .required('Field is required')
     .min(2, 'Field has to be at least 2 signs long')
@@ -125,22 +108,27 @@ const LoginSchema = Yup.object().shape({
     .max(50, 'Field cannot be longer than 50 signs')
   });
 
-export type LoginDetails = {
+export type ItemDetails = {
     username: string;
     password: string;
 }
 
-const LoginForm = () => {
+type AddFormProps = {
+    close: () => void;
+}
+
+const AddForm = (props: AddFormProps) => {
+    const { close } = props;
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
 
-    const initialValues: LoginDetails = {
+    const initialValues: ItemDetails = {
         username: "",
         password: ""
       };
 
-    const onSubmit = async (value: LoginDetails) =>{
+    const onSubmit = async (value: ItemDetails) =>{
         try{
             setSendingInProgress(true);
 
@@ -161,8 +149,8 @@ const LoginForm = () => {
             validateOnMount={true}
             validateOnBlur={true}
             validateOnChange={true}
-            validationSchema={LoginSchema}
-            onSubmit={async (value: LoginDetails)=>{
+            validationSchema={AddSchema}
+            onSubmit={async (value: ItemDetails)=>{
             await onSubmit(value);
         }}>
             {props => (
@@ -177,7 +165,7 @@ const LoginForm = () => {
                         borderLeft: `20px solid ${theme.palette.primary.main}`
                 }}>
                 <>
-                    <LoginFormContent {...props}/>                  
+                    <AddFormContent {...props}/>                  
                     <div 
                     style={{
                         display: 'flex',
@@ -207,12 +195,35 @@ const LoginForm = () => {
                             )}
                             {sendingInProgress === false && (
                             <>
-                                <VpnKeyTwoToneIcon
-                                    fontSize="small"
+                                {t("Add")}
+                            </>
+                            )}
+                        </Button>
+                        <Button
+                            disabled={sendingInProgress}
+                            className={"pointerOverEffect"}
+                            variant="contained"
+                            color="secondary"
+                            style={{
+                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                borderRadius: '0px',
+                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                            }}
+                            onClick={()=>{
+                                close();
+                            }}>
+                            {sendingInProgress === true && (
+                                <CircularProgress 
+                                    color={'inherit'} 
                                     style={{
-                                        paddingRight: '10px'
+                                        height: '28px',
+                                        width: '28px'
                                 }}/>
-                                {t("Sign in")}
+                            )}
+                            {sendingInProgress === false && (
+                            <>
+                                {t("Cancel")}
                             </>
                             )}
                         </Button>
@@ -258,49 +269,14 @@ const Title = () => {
                     paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px',
                     textShadow: `1px 1px black`,
                 }}>
-                {t("Login")}
+                {t("Add item")}
             </Typography>
         </div>
     }
     </DeviceContextConsumer>);
 }
 
-export const ApplicationName = () => {
-    const { t } = useTranslation();
-    const theme = useTheme();
-
-    return (
-    <DeviceContextConsumer>
-    {context =>
-        <div style={{
-            width: '100%',
-            height: 'auto',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignContent: 'center',
-            paddingTop: '10px',
-            paddingBottom: '10px'
-        }}>
-            <Typography
-                align={'center'}
-                style={{
-                    paddingLeft: '0px',
-                    margin: '0px',
-                    color: `${theme.palette.common.white}`,
-                    WebkitTapHighlightColor: 'transparent',
-                    fontSize: context === DeviceType.isDesktopOrLaptop ? '20px' : '15px',
-                    textAlign: 'center',
-                    fontFamily: 'Signoria-Bold',
-                }}>
-                {t("Administration console")}
-            </Typography>
-        </div>
-    }
-    </DeviceContextConsumer>);
-}
-
-const LoginFormContent = (props: FormikProps<LoginDetails>) =>{
+const AddFormContent = (props: FormikProps<ItemDetails>) =>{
   
       return(
         <DeviceContextConsumer>
