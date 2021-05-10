@@ -5,17 +5,15 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { thirdMain } from '../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
-import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone';
 import * as Yup from 'yup';
-import { UsernameField } from "../molecules/common/UsernameField";
-import { PasswordField } from "../molecules/common/PasswordField";
-import LanguageSetter from '../molecules/common/LanguageSetter';
-import AppBar from '@material-ui/core/AppBar';
-import { ApplicationName } from '../pages/LoginPageContent';
+import { DescriptionField } from "../molecules/common/DescriptionField";
+import { ShortDescriptionField } from "../molecules/common/ShortDescriptionField";
+import { PriceField } from "../molecules/common/PriceField";
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -98,19 +96,25 @@ const AddItemModalContent = (props: AddItemModalProps) =>{
 }
 
 const AddSchema = Yup.object().shape({
-    username: Yup.string()
+    description: Yup.string()
     .required('Field is required')
     .min(2, 'Field has to be at least 2 signs long')
     .max(50, 'Field cannot be longer than 50 signs'),
-    password: Yup.string()
+    shortDescription: Yup.string()
     .required('Field is required')
     .min(2, 'Field has to be at least 2 signs long')
-    .max(50, 'Field cannot be longer than 50 signs')
+    .max(50, 'Field cannot be longer than 50 signs'),
+    price: Yup.number()
+    .required('Field is required')
+    // .negative("Price cannot be negative")
+    // .moreThan(10000, "Price cannot be higher than 10.000EUR")
   });
 
-export type ItemDetails = {
-    username: string;
-    password: string;
+export interface ItemDetails {
+    price: number;
+    shortDescription: string;
+    description: string;
+    categoryId: string;
 }
 
 type AddFormProps = {
@@ -124,20 +128,55 @@ const AddForm = (props: AddFormProps) => {
     const { t } = useTranslation();
 
     const initialValues: ItemDetails = {
-        username: "",
-        password: ""
+        price: 0,
+        shortDescription: "",
+        description: "",
+        categoryId: ""
       };
+
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
+    useEffect(() => {
+        return () => {
+         source.cancel("axios request cancelled");
+        };
+       }, []);
 
     const onSubmit = async (value: ItemDetails) =>{
         try{
             setSendingInProgress(true);
 
-            setTimeout(() => {
-                setSendingInProgress(false);
+            var result = await axios.post(
+                "http://localhost:5020/api/shop/Item/AddItem", 
+                value, 
+                {
+                    cancelToken: source.token
+                }
+            ).then(()=>{
+                close();
+            })
+            .catch((thrown: any)=>{
+                debugger
 
-            }, 3000);
-
+                if (axios.isCancel(thrown)) {
+                    console.log('Request canceled', thrown.message);
+                  } else {
+                    // handle error
+                  }
+            });
         }finally{
+            setSendingInProgress(false);
+        }
+    }
+
+    const onCancel = () =>{
+        try{
+            debugger
+            source.cancel();
+        }finally{
+            setSendingInProgress(false);
+            close();
         }
     }
 
@@ -200,7 +239,6 @@ const AddForm = (props: AddFormProps) => {
                             )}
                         </Button>
                         <Button
-                            disabled={sendingInProgress}
                             className={"pointerOverEffect"}
                             variant="contained"
                             color="secondary"
@@ -211,21 +249,9 @@ const AddForm = (props: AddFormProps) => {
                                 fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
                             }}
                             onClick={()=>{
-                                close();
+                                onCancel();
                             }}>
-                            {sendingInProgress === true && (
-                                <CircularProgress 
-                                    color={'inherit'} 
-                                    style={{
-                                        height: '28px',
-                                        width: '28px'
-                                }}/>
-                            )}
-                            {sendingInProgress === false && (
-                            <>
                                 {t("Cancel")}
-                            </>
-                            )}
                         </Button>
                     </div>
                 </>
@@ -288,8 +314,9 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
               alignContent: 'center',
               width: '100%',
           }}>
-              <UsernameField {...props}/>
-              <PasswordField {...props}/>
+              <DescriptionField {...props}/>
+              <ShortDescriptionField {...props} />
+              <PriceField {...props}/>
           </div>
         }
         </DeviceContextConsumer>
