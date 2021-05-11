@@ -5,7 +5,8 @@ import { TabPanel } from '../molecules/common/TabPanel';
 import Paper from '../molecules/common/Paper';
 import DynamicTabs, { parentId, tabPrefix } from '../molecules/common/DynamicTabs';
 import { ShopContent } from '../organisms/ShopContent';
-import { BlogContent } from '../organisms/BlogContent';
+import { CategoriesContent } from '../organisms/CategoriesContent';
+import { LanguagesContent } from '../organisms/LanguagesContent';
 
 export default function MainPageContent(){
     return (
@@ -35,7 +36,10 @@ const ContentWithTabs = () =>{
                         <ShopContent />
                     </TabPanel>
                     <TabPanel value={value} index={1} parentId={parentId} tabPrefix={tabPrefix}>
-                        <BlogContent />
+                        <CategoriesContent />
+                    </TabPanel>
+                    <TabPanel value={value} index={2} parentId={parentId} tabPrefix={tabPrefix}>
+                        <LanguagesContent />
                     </TabPanel>
             </div>
         }/>

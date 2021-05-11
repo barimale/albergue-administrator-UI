@@ -26,7 +26,8 @@ const DynamicTabs = (props: any) =>{
                 aria-label="dynamic tabs"
             >
                 <Tab label={t("Shop").toUpperCase()} {...a11yProps(0, parentId, tabPrefix)} />
-                <Tab label={t("Blog").toUpperCase()}{...a11yProps(1, parentId, tabPrefix)} disabled/>
+                <Tab label={t("Categories").toUpperCase()}{...a11yProps(1, parentId, tabPrefix)}/>
+                <Tab label={t("Supported languages").toUpperCase()}{...a11yProps(2, parentId, tabPrefix)}/>
             </Tabs>
         </AppBar>
     }
