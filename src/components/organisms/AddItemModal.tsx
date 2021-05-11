@@ -13,7 +13,9 @@ import * as Yup from 'yup';
 import { DescriptionField } from "../molecules/common/DescriptionField";
 import { ShortDescriptionField } from "../molecules/common/ShortDescriptionField";
 import { PriceField } from "../molecules/common/PriceField";
+import { CategorySelectorField } from "../molecules/common/CategorySelectorField";
 import axios from 'axios';
+import { Category } from './CategoriesContent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -105,12 +107,17 @@ const AddSchema = Yup.object().shape({
     .min(2, 'Field has to be at least 2 signs long')
     .max(50, 'Field cannot be longer than 50 signs'),
     price: Yup.number()
+    .required('Field is required'),
+    categoryId: Yup.string()
     .required('Field is required')
     // .negative("Price cannot be negative")
     // .moreThan(10000, "Price cannot be higher than 10.000EUR")
   });
 
 export interface ItemDetails {
+    id?: string;
+    name: string;
+    active: boolean;
     price: number;
     shortDescription: string;
     description: string;
@@ -129,6 +136,8 @@ const AddForm = (props: AddFormProps) => {
 
     const initialValues: ItemDetails = {
         price: 0,
+        name: "",
+        active: true,
         shortDescription: "",
         description: "",
         categoryId: ""
@@ -296,6 +305,38 @@ const Title = () => {
 }
 
 const AddFormContent = (props: FormikProps<ItemDetails>) =>{
+    const [rows, setRows ] = useState<Array<Category>>(new Array<Category>());
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
+    useEffect(() => {
+        const getData = async () => {
+            return await axios.get(
+                "http://localhost:5020/api/shop/Category/GetAllCategories", 
+                {
+                    cancelToken: source.token
+                }
+            ).then((result: any)=>{
+                return result.data;
+            })
+            .catch((thrown: any)=>{
+                console.log('Request canceled', thrown.message);
+                return new Array<Category>();
+            });
+        };
+
+        getData()
+            .then((result: any)=>{
+                setRows(result);
+            }).finally(()=>{
+                setIsLoading(false);
+            });
+
+        return () => {
+         source.cancel("Axios request cancelled");
+        };
+       }, []);
   
       return(
         <DeviceContextConsumer>
@@ -310,6 +351,7 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
               <DescriptionField {...props}/>
               <ShortDescriptionField {...props} />
               <PriceField {...props}/>
+              <CategorySelectorField {...props} categories={rows}/>
           </div>
         }
         </DeviceContextConsumer>

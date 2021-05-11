@@ -11,11 +11,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchAppBar from "../molecules/common/SearchAppBar";
 import { fourthMain } from '../../customTheme';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
+import axios from 'axios';
+import { ItemDetails } from './AddItemModal';
+import { LoadingInProgress } from "../molecules/common/LoadingInProgress";
 
 export const ShopContent = () =>{
     const { t } = useTranslation();
@@ -38,7 +41,7 @@ export const ShopContent = () =>{
 }
 
 interface Column {
-    id: 'name' | 'price' | 'description' | 'shortDescription' | 'categoryName'| 'active';
+    id: 'id' | 'name' | 'price' | 'description' | 'shortDescription' | 'categoryId'| 'active';
     label: string;
     minWidth?: number;
     align?: 'right';
@@ -46,7 +49,14 @@ interface Column {
   }
   
   const columns: Column[] = [
-    { id: 'name', label: 'Name', minWidth: 170 },
+    { id: 'id', 
+      label: 'Id', 
+      minWidth: 170 
+    },
+    { id: 'name', 
+      label: 'Name', 
+      minWidth: 170 
+    },
     { id: 'price',
       label: 'Price',
       minWidth: 100,
@@ -65,8 +75,8 @@ interface Column {
       align: 'right',
     },
     {
-      id: 'categoryName',
-      label: 'Category name',
+      id: 'categoryId',
+      label: 'Category Id',
       minWidth: 170,
       align: 'right',
     },
@@ -76,23 +86,6 @@ interface Column {
       minWidth: 170,
       align: 'right'
     },
-  ];
-  
-  interface Data {
-    name: string;
-    price: number;
-    description: string;
-    shortDescription: string;
-    categoryName: string;
-    active: boolean;
-  }
-  
-  function createData(name: string, price: number, description: string, shortDescription: string, categoryName: string, active: boolean): Data {
-    return { name, price, description, shortDescription, categoryName, active };
-  }
-  
-  const rows = [
-    createData('Credential', 2, "description in EN", "short description in EN", "documents", false),
   ];
   
   const useStyles = makeStyles({
@@ -109,10 +102,42 @@ interface Column {
     },
   });
   
-  export default function StickyHeadTable() {
+const StickyHeadTable = () => {
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rows, setRows ] = useState<Array<ItemDetails>>(new Array<ItemDetails>());
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
+    useEffect(() => {
+        const getData = async () => {
+            return await axios.get(
+                "http://localhost:5020/api/shop/Item/GetAllItems", 
+                {
+                    cancelToken: source.token
+                }
+            ).then((result: any)=>{
+                return result.data;
+            })
+            .catch((thrown: any)=>{
+                console.log('Request canceled', thrown.message);
+                return new Array<ItemDetails>();
+            });
+        };
+
+        getData()
+            .then((result: any)=>{
+                setRows(result);
+            }).finally(()=>{
+                setIsLoading(false);
+            });
+
+        return () => {
+         source.cancel("Axios request cancelled");
+        };
+       }, []);
   
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
@@ -141,7 +166,10 @@ interface Column {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {isLoading.valueOf() === true ? (
+                    <LoadingInProgress/>
+              ):(
+              rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                     {columns.map((column) => {
@@ -157,7 +185,7 @@ interface Column {
                     })}
                   </TableRow>
                 );
-              })}
+              }))}
             </TableBody>
           </Table>
         </TableContainer>
