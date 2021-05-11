@@ -12,7 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from "react";
-import SearchAppBar from "../molecules/common/SearchAppBar";
+import SearchAppBarLanguage from "../molecules/common/SearchAppBarLanguage";
 import axios from 'axios';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
@@ -30,7 +30,7 @@ export const LanguagesContent = () =>{
                   width: '100%', 
                   height: '100%',
           }}>
-              <SearchAppBar/>
+              <SearchAppBarLanguage/>
               <StickyHeadTable/>
           </div>
         }
@@ -57,8 +57,8 @@ interface Column {
     }
   ];
   
-  interface Language {
-    id: string;
+  export interface Language {
+    id?: string;
     alpha2Code: string;
   }
   

@@ -8,7 +8,7 @@ import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import { fourthMain } from '../../../customTheme';
-import AddItemModal from "../../organisms/AddItemModal";
+import AddLanguageModal from "../../organisms/AddLanguageModal";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function SearchAppBar(props: any) {
+export default function SearchAppBarLanguage(props: any) {
   const classes = useStyles();
   const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
 
@@ -100,7 +100,7 @@ export default function SearchAppBar(props: any) {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div>
-            <AddItemModal isDisplayed={isAddVisible} close={()=> setIsAddVisible(false)}/>
+            <AddLanguageModal isDisplayed={isAddVisible} close={()=> setIsAddVisible(false)}/>
           </>
         </Toolbar>
       </AppBar>
