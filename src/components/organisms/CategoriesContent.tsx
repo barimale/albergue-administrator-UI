@@ -57,7 +57,7 @@ interface Column {
     }
   ];
   
-  interface Category {
+  export interface Category {
     id: string;
     name: string;
   }
@@ -93,11 +93,9 @@ const StickyHeadTable = () => {
                     cancelToken: source.token
                 }
             ).then((result: any)=>{
-                debugger
                 return result.data;
             })
             .catch((thrown: any)=>{
-                debugger
                 console.log('Request canceled', thrown.message);
                 return new Array<Category>();
             });
