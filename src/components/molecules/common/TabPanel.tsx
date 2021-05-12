@@ -12,7 +12,6 @@ interface TabPanelProps {
 export  function TabPanel(props: TabPanelProps) {
     const { children, value, index, parentId, tabPrefix,   ...other } = props;
   
-    // WIP: scrollButtons={'on'} switch to Tab
     return (
       <div
         style={{height: '100%'}}

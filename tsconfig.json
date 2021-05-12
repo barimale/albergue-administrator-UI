@@ -21,6 +21,5 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-, "src/assets/icons/js/leaflet.awesome-markers.js"  ]
+    "src"]
 }

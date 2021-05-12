@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,14 +7,14 @@ import sizeMe from 'react-sizeme';
 import useTheme from "@material-ui/core/styles/useTheme";
 import { SizeMe } from 'react-sizeme';
 import { useHistory } from 'react-router-dom';
-import LanguageSetter from '../molecules/common/LanguageSetter';
-import UserMenu from "../molecules/common/UserMenu";
+import LanguageSetter from '../molecules/header/LanguageSetter';
+import UserMenu from "../molecules/header/UserMenu";
 import { thirdMain } from '../../customTheme';
-import { Title } from '../molecules/common/Title';
-import { Logo } from '../molecules/common/Logo';
-import { TitleWrapper } from '../molecules/common/TitleWrapper';
-import { LogoWrapper } from '../molecules/common/LogoWrapper';
-import { Ornament } from '../molecules/common/Ornament';
+import { Title } from '../molecules/header/Title';
+import { Logo } from '../molecules/header/Logo';
+import { TitleWrapper } from '../molecules/header/TitleWrapper';
+import { LogoWrapper } from '../molecules/header/LogoWrapper';
+import { Ornament } from '../molecules/header/Ornament';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,8 +31,6 @@ export const useStyles = makeStyles((theme) => ({
 function TopMenu(props: any) {
   const classes = useStyles();
   const theme = useTheme();
-  const history = useHistory();
-  const [ paddingRight, setPaddingRight ] = useState<number>(0);
 
   return (
     <DeviceContextConsumer>

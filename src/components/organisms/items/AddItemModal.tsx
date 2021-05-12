@@ -1,21 +1,23 @@
-import { DeviceContextConsumer, DeviceType } from '../../contexts/DeviceContext';
+import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
-import { thirdMain } from '../../customTheme';
+import { thirdMain } from '../../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
-import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone';
 import * as Yup from 'yup';
-import { UsernameField } from "../molecules/login/UsernameField";
-import { PasswordField } from "../molecules/login/PasswordField";
-import LanguageSetter from '../molecules/header/LanguageSetter';
-import AppBar from '@material-ui/core/AppBar';
-import { AuthContext } from '../../contexts/AuthContext';
+import { DescriptionField } from "../../molecules/items/DescriptionField";
+import { ShortDescriptionField } from "../../molecules/items/ShortDescriptionField";
+import { PriceField } from "../../molecules/items/PriceField";
+import { CategorySelectorField } from "../../molecules/categories/CategorySelectorField";
+import axios from 'axios';
+import { Category } from '../categories/CategoriesContent';
+import { AuthContext } from '../../../contexts/AuthContext';
+import { useContext } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,13 +38,19 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function LoginPageContent(){
+type AddItemModalProps = {
+    isDisplayed: boolean;
+    close: () => void;
+}
+
+export default function AddItemModal(props: AddItemModalProps){
     return (
-        <LoginModal/>
+        <AddItemModalContent {...props}/>
     );
 }
 
-const LoginModal = () =>{
+const AddItemModalContent = (props: AddItemModalProps) =>{
+    const { isDisplayed, close } = props;
     const { t } = useTranslation();
     const theme = useTheme();
     const classes = useStyles();
@@ -52,7 +60,7 @@ const LoginModal = () =>{
     {context =>
         <Modal
         className={classes.modal}
-        open={true}
+        open={isDisplayed}
         disableBackdropClick={true}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -68,7 +76,7 @@ const LoginModal = () =>{
               width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '40%' : '90%',
           }}>
             <Fade 
-                in={true} 
+                in={isDisplayed} 
                 style={{
                     width: '100%', 
                     height: '100%'
@@ -80,32 +88,8 @@ const LoginModal = () =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <AppBar position="sticky" 
-                        style={{
-                            paddingTop: context === DeviceType.isDesktopOrLaptop ? '0px' : '0px',
-                            paddingBottom: '0px',
-                            backgroundColor: `${theme.palette.primary.main}`,
-                            boxShadow: 'unset',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'revert'
-                    }}>
-                        <img
-                            style={{
-                                height: context.valueOf() === DeviceType.isDesktopOrLaptop ? '30px' : '30px',
-                                width: 'auto',
-                                alignSelf: 'center',
-                                padding: '0px',
-                                paddingLeft: '20px',
-                                backgroundColor: 'transparent'
-                            }}
-                            src={"/logo.png"}
-                            alt={"logo"} />
-                        <ApplicationName />
-                        <LanguageSetter />
-                    </AppBar>
                     <Title/>
-                    <LoginForm />
+                    <AddForm close={close}/>
                 </div>
             </Fade>
         </Box>
@@ -115,41 +99,92 @@ const LoginModal = () =>{
     );
 }
 
-const LoginSchema = Yup.object().shape({
-    username: Yup.string()
+const AddSchema = Yup.object().shape({
+    description: Yup.string()
     .required('Field is required')
     .min(2, 'Field has to be at least 2 signs long')
     .max(50, 'Field cannot be longer than 50 signs'),
-    password: Yup.string()
+    shortDescription: Yup.string()
     .required('Field is required')
     .min(2, 'Field has to be at least 2 signs long')
-    .max(50, 'Field cannot be longer than 50 signs')
+    .max(50, 'Field cannot be longer than 50 signs'),
+    price: Yup.number()
+    .required('Field is required'),
+    categoryId: Yup.string()
+    .required('Field is required')
+    // .negative("Price cannot be negative")
+    // .moreThan(10000, "Price cannot be higher than 10.000EUR")
   });
 
-export type LoginDetails = {
-    username: string;
-    password: string;
+export interface ItemDetails {
+    id?: string;
+    name: string;
+    active: boolean;
+    price: number;
+    shortDescription: string;
+    description: string;
+    categoryId: string;
 }
 
-const LoginForm = () => {
-    const {signIn} = useContext(AuthContext);
+type AddFormProps = {
+    close: () => void;
+}
+
+const AddForm = (props: AddFormProps) => {
+    const { close } = props;
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
 
-    const initialValues: LoginDetails = {
-        username: "",
-        password: ""
+    const initialValues: ItemDetails = {
+        price: 0,
+        name: "",
+        active: true,
+        shortDescription: "",
+        description: "",
+        categoryId: ""
       };
 
-    const onSubmit = async (value: LoginDetails) =>{
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+    const { userToken } = useContext(AuthContext);
+
+    useEffect(() => {
+        return () => {
+         source.cancel("Axios request cancelled");
+        };
+       }, []);
+
+    const onSubmit = async (value: ItemDetails) =>{
         try{
             setSendingInProgress(true);
 
-            await signIn(value);
-
+            var result = await axios.post(
+                "http://localhost:5020/api/shop/Item/AddItem", 
+                value, 
+                {
+                    cancelToken: source.token,
+                    headers: {
+                        'Authorization': `Bearer ${userToken}` 
+                      }
+                }
+            ).then(()=>{
+                close();
+            })
+            .catch((thrown: any)=>{
+                console.log('Request canceled', thrown.message);
+            });
         }finally{
             setSendingInProgress(false);
+        }
+    }
+
+    const onCancel = () =>{
+        try{
+            source.cancel();
+        }finally{
+            setSendingInProgress(false);
+            close();
         }
     }
 
@@ -161,8 +196,8 @@ const LoginForm = () => {
             validateOnMount={true}
             validateOnBlur={true}
             validateOnChange={true}
-            validationSchema={LoginSchema}
-            onSubmit={async (value: LoginDetails)=>{
+            validationSchema={AddSchema}
+            onSubmit={async (value: ItemDetails)=>{
             await onSubmit(value);
         }}>
             {props => (
@@ -177,7 +212,7 @@ const LoginForm = () => {
                         borderLeft: `20px solid ${theme.palette.primary.main}`
                 }}>
                 <>
-                    <LoginFormContent {...props}/>                  
+                    <AddFormContent {...props}/>                  
                     <div 
                     style={{
                         display: 'flex',
@@ -207,14 +242,24 @@ const LoginForm = () => {
                             )}
                             {sendingInProgress === false && (
                             <>
-                                <VpnKeyTwoToneIcon
-                                    fontSize="small"
-                                    style={{
-                                        paddingRight: '10px'
-                                }}/>
-                                {t("Sign in")}
+                                {t("Add")}
                             </>
                             )}
+                        </Button>
+                        <Button
+                            className={"pointerOverEffect"}
+                            variant="contained"
+                            color="secondary"
+                            style={{
+                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                borderRadius: '0px',
+                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                            }}
+                            onClick={()=>{
+                                onCancel();
+                            }}>
+                                {t("Cancel")}
                         </Button>
                     </div>
                 </>
@@ -258,49 +303,50 @@ const Title = () => {
                     paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px',
                     textShadow: `1px 1px black`,
                 }}>
-                {t("Login")}
+                {t("Add item")}
             </Typography>
         </div>
     }
     </DeviceContextConsumer>);
 }
 
-export const ApplicationName = () => {
-    const { t } = useTranslation();
-    const theme = useTheme();
+const AddFormContent = (props: FormikProps<ItemDetails>) =>{
+    const [rows, setRows ] = useState<Array<Category>>(new Array<Category>());
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+    const { userToken } = useContext(AuthContext);
 
-    return (
-    <DeviceContextConsumer>
-    {context =>
-        <div style={{
-            width: '100%',
-            height: 'auto',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignContent: 'center',
-            paddingTop: '10px',
-            paddingBottom: '10px'
-        }}>
-            <Typography
-                align={'center'}
-                style={{
-                    paddingLeft: '0px',
-                    margin: '0px',
-                    color: `${theme.palette.common.white}`,
-                    WebkitTapHighlightColor: 'transparent',
-                    fontSize: context === DeviceType.isDesktopOrLaptop ? '20px' : '15px',
-                    textAlign: 'center',
-                    fontFamily: 'Signoria-Bold',
-                }}>
-                {t("Administration console")}
-            </Typography>
-        </div>
-    }
-    </DeviceContextConsumer>);
-}
+    useEffect(() => {
+        const getData = async () => {
+            return await axios.get(
+                "http://localhost:5020/api/shop/Category/GetAllCategories", 
+                {
+                    cancelToken: source.token,
+                    headers: {
+                        'Authorization': `Bearer ${userToken}` 
+                    }
+                }
+            ).then((result: any)=>{
+                return result.data;
+            })
+            .catch((thrown: any)=>{
+                console.log('Request canceled', thrown.message);
+                return new Array<Category>();
+            });
+        };
 
-const LoginFormContent = (props: FormikProps<LoginDetails>) =>{
+        getData()
+            .then((result: any)=>{
+                setRows(result);
+            }).finally(()=>{
+                setIsLoading(false);
+            });
+
+        return () => {
+         source.cancel("Axios request cancelled");
+        };
+       }, []);
   
       return(
         <DeviceContextConsumer>
@@ -312,8 +358,10 @@ const LoginFormContent = (props: FormikProps<LoginDetails>) =>{
               alignContent: 'center',
               width: '100%',
           }}>
-              <UsernameField {...props}/>
-              <PasswordField {...props}/>
+              <DescriptionField {...props}/>
+              <ShortDescriptionField {...props} />
+              <PriceField {...props}/>
+              <CategorySelectorField {...props} categories={rows}/>
           </div>
         }
         </DeviceContextConsumer>

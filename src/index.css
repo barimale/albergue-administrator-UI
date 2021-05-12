@@ -54,22 +54,6 @@ margin-bottom: 0px;
 margin-bottom: 0px;
 }
 
-div.leaflet-control-layers-overlays label div {
-  display: flex;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  align-items: center;
-}
-
-div.leaflet-control-layers-overlays label div input{
-  filter: grayscale(100%);
-}
-
-div.leaflet-control-layers-overlays label div span{
-  padding-left: 5px;
-  padding-top: 1px;
-}
-
 .fade-in-image {
   animation: fadeIn 5s;
   -webkit-animation: fadeIn 5s;

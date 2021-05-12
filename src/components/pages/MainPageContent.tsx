@@ -1,12 +1,11 @@
 import { DeviceContextConsumer, DeviceType } from '../../contexts/DeviceContext';
-import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { TabPanel } from '../molecules/common/TabPanel';
 import Paper from '../molecules/common/Paper';
-import DynamicTabs, { parentId, tabPrefix } from '../molecules/common/DynamicTabs';
-import { ShopContent } from '../organisms/ShopContent';
-import { CategoriesContent } from '../organisms/CategoriesContent';
-import { LanguagesContent } from '../organisms/LanguagesContent';
+import DynamicTabs, { parentId, tabPrefix } from '../organisms/DynamicTabs';
+import { ShopContent } from '../organisms/items/ShopContent';
+import { CategoriesContent } from '../organisms/categories/CategoriesContent';
+import { LanguagesContent } from '../organisms/languages/LanguagesContent';
 
 export default function MainPageContent(){
     return (
