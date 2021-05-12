@@ -14,15 +14,6 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 const TOKEN_KEY = 'userToken';
 
 const AuthContextProvider = ({ children }: any) => {
-    const cancelToken = axios.CancelToken;
-    const source = cancelToken.source();
-
-    useEffect(() => {
-        return () => {
-         source.cancel("Axios request cancelled");
-        };
-       }, []);
-
     const [state, dispatch] = useReducer(
         (prevState: any, action: any) => {
           switch (action.type) {
@@ -74,7 +65,6 @@ const AuthContextProvider = ({ children }: any) => {
               "http://localhost:5020/api/User/Login", 
               data, 
               {
-                  cancelToken: source.token,
                   headers:{
                     'Access-Control-Allow-Origin': '*'
                   }
@@ -96,7 +86,6 @@ const AuthContextProvider = ({ children }: any) => {
                   "http://localhost:5020/api/User/Logout", 
                   {}, 
                   {
-                      cancelToken: source.token,
                       headers: {
                         'Authorization': `Bearer ${state.userToken as string}`
                       }
