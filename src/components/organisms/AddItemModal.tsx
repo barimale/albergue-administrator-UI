@@ -165,8 +165,7 @@ const AddForm = (props: AddFormProps) => {
                 {
                     cancelToken: source.token,
                     headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Authorization': `Basic ${userToken}` 
+                        'Authorization': `Bearer ${userToken}` 
                       }
                 }
             ).then(()=>{
@@ -316,13 +315,17 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
+    const { userToken } = useContext(AuthContext);
 
     useEffect(() => {
         const getData = async () => {
             return await axios.get(
                 "http://localhost:5020/api/shop/Category/GetAllCategories", 
                 {
-                    cancelToken: source.token
+                    cancelToken: source.token,
+                    headers: {
+                        'Authorization': `Bearer ${userToken}` 
+                    }
                 }
             ).then((result: any)=>{
                 return result.data;

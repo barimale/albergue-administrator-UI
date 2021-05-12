@@ -140,7 +140,7 @@ const AddForm = (props: AddFormProps) => {
                 {
                     cancelToken: source.token,
                     headers: {
-                        'Authorization': `Basic ${userToken}` 
+                        'Authorization': `Bearer ${userToken}` 
                       }
                 }
             ).then(()=>{

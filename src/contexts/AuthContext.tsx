@@ -98,7 +98,7 @@ const AuthContextProvider = ({ children }: any) => {
                   {
                       cancelToken: source.token,
                       headers: {
-                        'Authorization': `Basic ${state.userToken as string}`
+                        'Authorization': `Bearer ${state.userToken as string}`
                       }
                   }
                   ).then(async ()=>{

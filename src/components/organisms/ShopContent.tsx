@@ -121,8 +121,7 @@ const StickyHeadTable = () => {
                 {
                     cancelToken: source.token,
                     headers: {
-                      'Access-Control-Allow-Origin': '*',
-                      'Authorization': `Basic ${userToken}`
+                      'Authorization': `Bearer ${userToken}`
                     }
                 }
             ).then((result: any)=>{
