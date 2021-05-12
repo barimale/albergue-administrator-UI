@@ -84,7 +84,7 @@ const AuthContextProvider = ({ children }: any) => {
                 console.log('securelly saved');
 
                 console.log('before signin');
-                await dispatch({ type: 'SIGN_IN', token: token });
+                await dispatch({ type: 'SIGN_IN', token: token.data });
               })
               .catch((thrown: any)=>{
                   console.log('Request canceled', thrown.message);
@@ -102,8 +102,7 @@ const AuthContextProvider = ({ children }: any) => {
                       }
                   }
                   ).then(async ()=>{
-                    debugger
-                    console.log('after rmote signout');
+                    console.log('after remote signout');
                   })
                   .catch(async (thrown: any)=>{
                     debugger

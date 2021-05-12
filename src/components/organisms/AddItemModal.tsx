@@ -165,6 +165,7 @@ const AddForm = (props: AddFormProps) => {
                 {
                     cancelToken: source.token,
                     headers: {
+                        'Access-Control-Allow-Origin': '*',
                         'Authorization': `Basic ${userToken}` 
                       }
                 }
