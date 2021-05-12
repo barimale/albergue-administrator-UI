@@ -1,22 +1,21 @@
 import './App.css';
-import { AuthContextProvider } from './contexts/AuthContext';
+import { AuthContext } from './contexts/AuthContext';
 import Routes from './routes/Routes';
 import { BrowserRouter } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { LoadingInProgress } from "./components/molecules/common/LoadingInProgress";
 import SecuredApp from './SecuredApp';
 
 function LocalizedApp() {  
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean | undefined>(undefined);
+  const {isSignedIn} = useContext(AuthContext);
 
   useEffect(()=>{
-    //TODO: get based on customhook localstorage
-
-    setIsLoggedIn(true);
-  }, []);
+    setIsLoggedIn(isSignedIn);
+  }, [isSignedIn]);
   
   return (
-    <AuthContextProvider>
+    <>
       {isLoggedIn === undefined ? (
         <div className="App">
           <LoadingInProgress/>
@@ -32,7 +31,7 @@ function LocalizedApp() {
           </div>
         )
       )}
-    </AuthContextProvider>
+    </>
   );
 }
 

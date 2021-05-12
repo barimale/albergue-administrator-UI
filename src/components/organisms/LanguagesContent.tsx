@@ -17,6 +17,8 @@ import axios from 'axios';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
 import { LoadingInProgress } from '../molecules/common/LoadingInProgress';
+import { AuthContext } from '../../contexts/AuthContext';
+import { useContext } from "react";
 
 export const LanguagesContent = () =>{
     const { t } = useTranslation();
@@ -84,13 +86,17 @@ interface Column {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
+    const { userToken } = useContext(AuthContext);
 
     useEffect(() => {
         const getData = async () => {
             return await axios.get(
                 "http://localhost:5020/api/shop/Language/GetAllLanguages", 
                 {
-                    cancelToken: source.token
+                    cancelToken: source.token,
+                    headers: {
+                        'Authorization': `Basic ${userToken}` 
+                      }
                 }
             ).then((result: any)=>{
                 return result.data;

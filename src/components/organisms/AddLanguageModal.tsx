@@ -10,14 +10,11 @@ import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { thirdMain } from '../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import { DescriptionField } from "../molecules/common/DescriptionField";
-import { ShortDescriptionField } from "../molecules/common/ShortDescriptionField";
-import { PriceField } from "../molecules/common/PriceField";
-import { CategorySelectorField } from "../molecules/common/CategorySelectorField";
 import axios from 'axios';
-import { Category } from './CategoriesContent';
 import { NationalityField } from '../molecules/common/NationalityField';
 import { Language } from './LanguagesContent';
+import { AuthContext } from '../../contexts/AuthContext';
+import { useContext } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -125,6 +122,7 @@ const AddForm = (props: AddFormProps) => {
 
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
+    const { userToken } = useContext(AuthContext);
 
     useEffect(() => {
         return () => {
@@ -140,7 +138,10 @@ const AddForm = (props: AddFormProps) => {
                 "http://localhost:5020/api/shop/Language/AddLanguage", 
                 value, 
                 {
-                    cancelToken: source.token
+                    cancelToken: source.token,
+                    headers: {
+                        'Authorization': `Basic ${userToken}` 
+                      }
                 }
             ).then(()=>{
                 close();

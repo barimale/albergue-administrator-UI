@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react';
+import axios, { AxiosResponse } from 'axios';
 
 interface AuthContextType {
     signIn: (input: {username: string, password: string}) => Promise<void>;
@@ -13,6 +14,15 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 const TOKEN_KEY = 'userToken';
 
 const AuthContextProvider = ({ children }: any) => {
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
+    useEffect(() => {
+        return () => {
+         source.cancel("Axios request cancelled");
+        };
+       }, []);
+
     const [state, dispatch] = useReducer(
         (prevState: any, action: any) => {
           switch (action.type) {
@@ -60,25 +70,52 @@ const AuthContextProvider = ({ children }: any) => {
     
       const authContext = ({
           signIn: async (data: {username: string, password: string}) => {
-            //TODO: use auth0 here
-            // const secret = await networkService.SignIn();
-            const piligrimId = 'secret';
-                
-            localStorage.setItem(TOKEN_KEY, piligrimId);
-              console.log('securelly saved');
+            return await axios.post(
+              "http://localhost:5020/api/User/Login", 
+              data, 
+              {
+                  cancelToken: source.token,
+                  headers:{
+                    'Access-Control-Allow-Origin': '*'
+                  }
+              }
+              ).then(async (token: AxiosResponse<string>)=>{
+                localStorage.setItem(TOKEN_KEY, token.data);
+                console.log('securelly saved');
 
-            console.log('before signin');
-            await dispatch({ type: 'SIGN_IN', token: piligrimId });
+                console.log('before signin');
+                await dispatch({ type: 'SIGN_IN', token: token });
+              })
+              .catch((thrown: any)=>{
+                  console.log('Request canceled', thrown.message);
+              });                
           },
           signOut: async () => {
               try{
-                                
-                localStorage.removeItem(TOKEN_KEY);
+                return await axios.post(
+                  "http://localhost:5020/api/User/Logout", 
+                  {}, 
+                  {
+                      cancelToken: source.token,
+                      headers: {
+                        'Authorization': `Basic ${state.userToken as string}`
+                      }
+                  }
+                  ).then(async ()=>{
+                    debugger
+                    console.log('after rmote signout');
+                  })
+                  .catch(async (thrown: any)=>{
+                    debugger
+                      console.log('Request canceled', thrown.message);
+                  }).finally(async() => {
+                    localStorage.removeItem(TOKEN_KEY);
 
-                console.log('before signout');
+                    console.log('before signout');
 
-                await dispatch({ type: 'SIGN_OUT' });
-                console.log('after signout');
+                    await dispatch({ type: 'SIGN_OUT' });
+                    console.log('after signout');
+                  });
               }catch(e){
                 console.log(e);
               }

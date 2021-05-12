@@ -7,8 +7,8 @@ import sizeMe from 'react-sizeme';
 import useTheme from "@material-ui/core/styles/useTheme";
 import { SizeMe } from 'react-sizeme';
 import { useHistory } from 'react-router-dom';
-import { HomePath } from '../../routes/Routes';
 import LanguageSetter from '../molecules/common/LanguageSetter';
+import UserMenu from "../molecules/common/UserMenu";
 import { thirdMain } from '../../customTheme';
 import { Title } from '../molecules/common/Title';
 import { Logo } from '../molecules/common/Logo';
@@ -91,6 +91,7 @@ function TopMenu(props: any) {
                 <Title />
               </TitleWrapper>
               <LanguageSetter top={size?.size?.height || 0} width={size.size.width}/>
+              <UserMenu/>
             </Toolbar>
             <Ornament />
           </AppBar>

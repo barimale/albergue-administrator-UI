@@ -19,6 +19,8 @@ import DoneIcon from '@material-ui/icons/Done';
 import axios from 'axios';
 import { ItemDetails } from './AddItemModal';
 import { LoadingInProgress } from "../molecules/common/LoadingInProgress";
+import { AuthContext } from '../../contexts/AuthContext';
+import { useContext } from "react";
 
 export const ShopContent = () =>{
     const { t } = useTranslation();
@@ -110,13 +112,18 @@ const StickyHeadTable = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
-
+    const { userToken } = useContext(AuthContext);
+    
     useEffect(() => {
         const getData = async () => {
             return await axios.get(
                 "http://localhost:5020/api/shop/Item/GetAllItems", 
                 {
-                    cancelToken: source.token
+                    cancelToken: source.token,
+                    headers: {
+                      'Access-Control-Allow-Origin': '*',
+                      'Authorization': `Basic ${userToken}`
+                    }
                 }
             ).then((result: any)=>{
                 return result.data;

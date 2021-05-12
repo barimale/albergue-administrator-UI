@@ -5,7 +5,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { thirdMain } from '../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
@@ -15,6 +15,7 @@ import { UsernameField } from "../molecules/common/UsernameField";
 import { PasswordField } from "../molecules/common/PasswordField";
 import LanguageSetter from '../molecules/common/LanguageSetter';
 import AppBar from '@material-ui/core/AppBar';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -131,6 +132,7 @@ export type LoginDetails = {
 }
 
 const LoginForm = () => {
+    const {signIn} = useContext(AuthContext);
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
@@ -144,12 +146,10 @@ const LoginForm = () => {
         try{
             setSendingInProgress(true);
 
-            setTimeout(() => {
-                setSendingInProgress(false);
-
-            }, 3000);
+            await signIn(value);
 
         }finally{
+            setSendingInProgress(false);
         }
     }
 
