@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormikProps } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
-import { MyTextField } from "../../atoms/MyTextField";
+import { MyTextField, MyInputField } from "../../atoms/MyTextField";
 import { LoginDetails } from "../../pages/LoginPageContent";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -23,12 +23,14 @@ export const PasswordField = (props: FormikProps<LoginDetails>) => {
   return (
     <DeviceContextConsumer>
       {context => 
+      <>
         <MyTextField
           id="password"
           name="password"
           label={t("Password")}
           type={isPasswordVisible.valueOf() ? 'text' : 'password'}
           margin="dense"
+          color="primary"
           error={Boolean(props.touched.password && props.errors.password)}
           helperText={props.touched.password && props.errors.password}
           InputProps={{
@@ -44,6 +46,7 @@ export const PasswordField = (props: FormikProps<LoginDetails>) => {
             </InputAdornment>
           )}}
           fullWidth/>
+      </>
     }
     </DeviceContextConsumer>
   );

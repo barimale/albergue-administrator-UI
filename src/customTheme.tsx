@@ -33,6 +33,11 @@ export const theme = createMuiTheme({
         overflowX: 'unset'
       },
     },
+    MuiInputBase: {
+      // root: {
+      //   color: 'blue'
+      // }
+    },
     MuiMenu: {
       paper: {
         borderRadius: '0px',
