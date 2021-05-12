@@ -12,7 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from "react";
-import SearchAppBar from "../molecules/common/SearchAppBar";
+import CategorySearchAppBar from "../molecules/common/CategorySearchAppBar";
 import axios from 'axios';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
@@ -32,7 +32,7 @@ export const CategoriesContent = () =>{
                   width: '100%', 
                   height: '100%',
           }}>
-              <SearchAppBar/>
+              <CategorySearchAppBar/>
               <StickyHeadTable/>
           </div>
         }
@@ -60,7 +60,7 @@ interface Column {
   ];
   
   export interface Category {
-    id: string;
+    id?: string;
     name: string;
   }
   
