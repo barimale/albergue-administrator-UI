@@ -78,7 +78,8 @@ const UserMenu = (props: any) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
           TransitionComponent={Fade}
-          anchorReference={context.valueOf() === DeviceType.isDesktopOrLaptop ? "anchorEl": "anchorEl"}
+          anchorReference={"anchorEl"}
+          getContentAnchorEl={null}
           anchorOrigin={
             {
             vertical: 'bottom',
