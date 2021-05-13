@@ -72,6 +72,7 @@ const LanguageSetter = (props: any) => {
           onClose={handleClose}
           TransitionComponent={Fade}
           anchorReference={context.valueOf() === DeviceType.isDesktopOrLaptop ? "anchorEl": "anchorEl"}
+          getContentAnchorEl={null}
           anchorOrigin={
             {
             vertical: 'bottom',

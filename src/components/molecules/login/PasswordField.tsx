@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { FormikProps } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
-import { MyTextField, MyInputField } from "../../atoms/MyTextField";
+import { MyTextField } from "../../atoms/MyTextField";
 import { LoginDetails } from "../../pages/LoginPageContent";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { IconButton, InputAdornment, InputLabel } from "@material-ui/core";
+import { IconButton, InputAdornment } from "@material-ui/core";
 
 export const PasswordField = (props: FormikProps<LoginDetails>) => {
   const { t } = useTranslation();
