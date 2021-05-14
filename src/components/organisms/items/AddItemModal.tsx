@@ -18,6 +18,7 @@ import axios from 'axios';
 import { Category } from '../categories/CategoriesContent';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
+import { ModalTitle } from '../../molecules/common/ModalTitle';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -88,7 +89,7 @@ const AddItemModalContent = (props: AddItemModalProps) =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <Title/>
+                    <ModalTitle title={"Add item"}/>
                     <AddForm close={close}/>
                 </div>
             </Fade>
@@ -269,44 +270,6 @@ const AddForm = (props: AddFormProps) => {
     }
     </DeviceContextConsumer>
     );
-}
-
-const Title = () => {
-    const { t } = useTranslation();
-    const theme = useTheme();
-
-    return (
-    <DeviceContextConsumer>
-    {context =>
-        <div style={{
-            width: 'auto',
-            height: 'auto',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignContent: 'center',
-            paddingTop: '10px',
-            paddingBottom: '10px',
-            borderLeft: `20px solid ${theme.palette.primary.main}`
-        }}>
-            <Typography
-                align={'center'}
-                style={{
-                    margin: '0px',
-                    color: `${theme.palette.common.white}`,
-                    WebkitTapHighlightColor: 'transparent',
-                    fontSize: context === DeviceType.isDesktopOrLaptop ? '30px' : '20px',
-                    textAlign: 'left',
-                    fontFamily: 'Signoria-Bold',
-                    width: '100%',
-                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px',
-                    textShadow: `1px 1px black`,
-                }}>
-                {t("Add item")}
-            </Typography>
-        </div>
-    }
-    </DeviceContextConsumer>);
 }
 
 const AddFormContent = (props: FormikProps<ItemDetails>) =>{

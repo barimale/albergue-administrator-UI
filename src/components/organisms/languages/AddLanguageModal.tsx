@@ -5,8 +5,8 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import React, { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { Box, Button, CircularProgress } from '@material-ui/core';
 import { thirdMain } from '../../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
@@ -15,6 +15,7 @@ import { NationalityField } from '../../molecules/languages/NationalityField';
 import { Language } from './LanguagesContent';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
+import { ModalTitle } from '../../molecules/common/ModalTitle';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,7 +86,7 @@ const AddLanguageModalContent = (props: AddLanguageModalProps) =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <Title/>
+                    <ModalTitle title={"Add category"}/>
                     <AddForm close={close}/>
                 </div>
             </Fade>
@@ -246,46 +247,7 @@ const AddForm = (props: AddFormProps) => {
     );
 }
 
-const Title = () => {
-    const { t } = useTranslation();
-    const theme = useTheme();
-
-    return (
-    <DeviceContextConsumer>
-    {context =>
-        <div style={{
-            width: 'auto',
-            height: 'auto',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignContent: 'center',
-            paddingTop: '10px',
-            paddingBottom: '10px',
-            borderLeft: `20px solid ${theme.palette.primary.main}`
-        }}>
-            <Typography
-                align={'center'}
-                style={{
-                    margin: '0px',
-                    color: `${theme.palette.common.white}`,
-                    WebkitTapHighlightColor: 'transparent',
-                    fontSize: context === DeviceType.isDesktopOrLaptop ? '30px' : '20px',
-                    textAlign: 'left',
-                    fontFamily: 'Signoria-Bold',
-                    width: '100%',
-                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px',
-                    textShadow: `1px 1px black`,
-                }}>
-                {t("Add language")}
-            </Typography>
-        </div>
-    }
-    </DeviceContextConsumer>);
-}
-
 const AddFormContent = (props: FormikProps<Language>) =>{
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
 
@@ -302,26 +264,16 @@ const AddFormContent = (props: FormikProps<Language>) =>{
                 return result.data;
             })
             .catch((thrown: any)=>{
-                console.log('Request canceled', thrown.message);
                 return new Array<CountryDetails>();
             });
         };
-        // const getData = async() =>{
-        //     const response = await fetch("https://restcountries.eu/rest/v2/all");
-        //     const asJson = await response.json();
-        //     const fetched = asJson.flatMap((p: any) => {return {name: p.name, code: p.alpha2Code} as CountryDetails});
-        //     setCountries(fetched);
-        // };
     
         getData()
             .then((result: any)=>{
-                debugger
                 const fetched = result.flatMap((p: any) => {return {name: p.name, code: p.alpha2Code} as CountryDetails});
-                debugger
                 setCountries(fetched);
             }).catch((ex: any)=>{
                 console.log(ex);
-                debugger
             });
     },[]);
   
