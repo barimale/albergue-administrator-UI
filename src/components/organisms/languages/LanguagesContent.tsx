@@ -32,7 +32,6 @@ export const LanguagesContent = () =>{
                   width: '100%', 
                   height: '100%',
           }}>
-              <SearchAppBarLanguage/>
               <StickyHeadTable/>
           </div>
         }
@@ -66,10 +65,10 @@ interface Column {
   
   const useStyles = makeStyles({
     root: {
-      width: '80%',
+      width: '90%',
       height: '80%',
-      paddingLeft: '10%',
-      paddingRight: '10%',
+      paddingLeft: '5%',
+      paddingRight: '5%',
       paddingTop: '10px',
       paddingBottom: '0px'
     },
@@ -134,6 +133,11 @@ interface Column {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell colSpan={columns.length} style={{padding: '0px'}}>
+                  <SearchAppBarLanguage/>
+                </TableCell>
+              </TableRow>
+              <TableRow>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
@@ -147,7 +151,11 @@ interface Column {
             </TableHead>
             <TableBody>
                 {isLoading.valueOf() === true ? (
-                    <LoadingInProgress/>
+                  <TableRow>
+                    <TableCell colSpan={columns.length}>
+                      <LoadingInProgress/>
+                    </TableCell>
+                  </TableRow>
                 ):(
                     rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Language) => {
                         return (

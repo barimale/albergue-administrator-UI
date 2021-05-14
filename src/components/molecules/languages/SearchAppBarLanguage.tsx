@@ -87,7 +87,7 @@ export default function SearchAppBarLanguage(props: any) {
             >
               <AddIcon />
             </IconButton>
-            <div className={classes.search}>
+            {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -99,7 +99,7 @@ export default function SearchAppBarLanguage(props: any) {
                 }}
                 inputProps={{ 'aria-label': 'search' }}
               />
-            </div>
+            </div> */}
             <AddLanguageModal isDisplayed={isAddVisible} close={()=> setIsAddVisible(false)}/>
           </>
         </Toolbar>

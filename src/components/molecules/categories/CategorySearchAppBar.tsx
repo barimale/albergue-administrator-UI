@@ -85,7 +85,7 @@ export default function CategorySearchAppBar(props: any) {
             >
               <AddIcon />
             </IconButton>
-            <div className={classes.search}>
+            {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -97,7 +97,7 @@ export default function CategorySearchAppBar(props: any) {
                 }}
                 inputProps={{ 'aria-label': 'search' }}
               />
-            </div>
+            </div> */}
             <AddCategoryModal isDisplayed={isAddVisible} close={()=> setIsAddVisible(false)}/>
           </>
         </Toolbar>

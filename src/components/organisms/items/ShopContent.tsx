@@ -34,7 +34,6 @@ export const ShopContent = () =>{
                   width: '100%', 
                   height: '100%',
           }}>
-              <SearchAppBar/>
               <StickyHeadTable/>
           </div>
         }
@@ -92,10 +91,10 @@ interface Column {
   
   const useStyles = makeStyles({
     root: {
-      width: '80%',
+      width: '90%',
       height: '80%',
-      paddingLeft: '10%',
-      paddingRight: '10%',
+      paddingLeft: '5%',
+      paddingRight: '5%',
       paddingTop: '10px',
       paddingBottom: '0px'
     },
@@ -160,6 +159,11 @@ const StickyHeadTable = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell colSpan={columns.length} style={{padding: '0px'}}>
+                  <SearchAppBar/>
+                </TableCell>
+              </TableRow>
+              <TableRow>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
@@ -173,7 +177,11 @@ const StickyHeadTable = () => {
             </TableHead>
             <TableBody>
               {isLoading.valueOf() === true ? (
+                <TableRow>
+                  <TableCell colSpan={columns.length}>
                     <LoadingInProgress/>
+                  </TableCell>
+                </TableRow>
               ):(
               rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
                 return (

@@ -257,8 +257,7 @@ const Title = () => {
             alignContent: 'center',
             paddingTop: '10px',
             paddingBottom: '10px',
-            borderLeft: `20px solid ${theme.palette.primary.main}`,
-            borderTop: `1px solid ${theme.palette.primary.main}`
+            borderLeft: `20px solid ${theme.palette.primary.main}`
         }}>
             <Typography
                 align={'center'}

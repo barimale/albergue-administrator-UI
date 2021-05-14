@@ -54,7 +54,7 @@ function TopMenu(props: any) {
             paddingTop: context === DeviceType.isDesktopOrLaptop ? '5px' : '0px',
             paddingBottom: '5px',
             boxShadow: 'unset',
-            borderBottom: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
+            // borderBottom: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
             borderTop: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
           }}>
             <Ornament />

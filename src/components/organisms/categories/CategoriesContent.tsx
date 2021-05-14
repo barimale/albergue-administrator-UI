@@ -28,7 +28,6 @@ export const CategoriesContent = () =>{
                   width: '100%', 
                   height: '100%',
           }}>
-              <CategorySearchAppBar/>
               <StickyHeadTable/>
           </div>
         }
@@ -62,10 +61,10 @@ interface Column {
   
   const useStyles = makeStyles({
     root: {
-      width: '80%',
+      width: '90%',
       height: '80%',
-      paddingLeft: '10%',
-      paddingRight: '10%',
+      paddingLeft: '5%',
+      paddingRight: '5%',
       paddingTop: '10px',
       paddingBottom: '0px'
     },
@@ -130,7 +129,9 @@ const StickyHeadTable = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {'asdasdasd'}
+                <TableCell colSpan={columns.length} style={{padding: '0px'}}>
+                  <CategorySearchAppBar/>
+                </TableCell>
               </TableRow>
               <TableRow>
                 {columns.map((column) => (
@@ -146,7 +147,11 @@ const StickyHeadTable = () => {
             </TableHead>
             <TableBody>
                 {isLoading.valueOf() === true ? (
-                    <LoadingInProgress/>
+                  <TableRow>
+                    <TableCell colSpan={columns.length}>
+                      <LoadingInProgress/>
+                    </TableCell>
+                  </TableRow>
                 ):(
                     rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Category) => {
                         return (

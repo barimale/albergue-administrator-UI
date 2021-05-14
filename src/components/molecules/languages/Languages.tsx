@@ -46,7 +46,7 @@ const Language = (props: LanguageProps) => {
       style={{
         height:'100%',
         width: '100%',
-        color: `${theme.palette.secondary.main}`,
+        color: `${theme.palette.common.black}`,
         textDecoration: 'none',
         textAlign: 'center',
         paddingLeft:'10px',

@@ -26,7 +26,7 @@ export const Title = (props: any) => {
           className={classes.title}
           align={'center'}
           style={{
-            color: `${theme.palette.secondary.main}`,
+            color: `${theme.palette.common.white}`,
             WebkitTapHighlightColor: 'transparent',
             fontSize: context === DeviceType.isDesktopOrLaptop ? '26px' : '17px',
             textAlign: 'center',
