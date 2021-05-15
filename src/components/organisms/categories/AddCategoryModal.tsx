@@ -16,6 +16,8 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { CategoryNameField } from '../../molecules/categories/CategoryNameField';
 import { ModalTitle } from '../../molecules/common/ModalTitle';
+import VerticalStepper from "../../molecules/common/VerticalStepper";
+import HorizontalStepper from "../../molecules/common/HorizontalStepper";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -258,6 +260,20 @@ const AddFormContent = (props: FormikProps<Category>) =>{
               width: '100%',
           }}>
               <CategoryNameField {...props} />
+              <VerticalStepper />
+              <HorizontalStepper />
+              {/* //WIP do it as follow: 
+              <HorizontalStepper>
+                  <Step title= "">
+                      {content}
+                  </Step>
+                  <Step title= "">
+                      {content}
+                  </Step>
+                  <Step title= "">
+                      {content}
+                  </Step>
+              </HorizontalStepper> */}
           </div>
         }
         </DeviceContextConsumer>
