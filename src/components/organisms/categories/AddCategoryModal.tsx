@@ -18,6 +18,7 @@ import { CategoryNameField } from '../../molecules/categories/CategoryNameField'
 import { ModalTitle } from '../../molecules/common/ModalTitle';
 import VerticalStepper from "../../molecules/common/VerticalStepper";
 import HorizontalStepper from "../../molecules/common/HorizontalStepper";
+import AcUnitIcon from '@material-ui/icons/AcUnit';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -248,7 +249,25 @@ const AddFormContent = (props: FormikProps<Category>) =>{
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
-  
+
+    const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+
+    const stepsContent = [
+        `For each ad campaign that you create, you can control how much
+        you're willing to spend on clicks and conversions, which networks
+        and geographical locations you want your ads to show on, and more.`,
+        'An ad group contains one or more ads which target a shared set of keywords.',
+        `Try out different ad text to see what brings in the most customers,
+        and learn how to enhance your ads using features like ad extensions.
+        If you run into any problems with your ads, find out how to tell if
+        they're running and how to resolve approval issues.`,
+        'Unknown step'];
+
+    const icons = 
+        [() => <AcUnitIcon />,
+        () => <AcUnitIcon />,
+        () => <AcUnitIcon />];
+
       return(
         <DeviceContextConsumer>
           {context => 
@@ -260,20 +279,7 @@ const AddFormContent = (props: FormikProps<Category>) =>{
               width: '100%',
           }}>
               <CategoryNameField {...props} />
-              <VerticalStepper />
-              <HorizontalStepper />
-              {/* //WIP do it as follow: 
-              <HorizontalStepper>
-                  <Step title= "">
-                      {content}
-                  </Step>
-                  <Step title= "">
-                      {content}
-                  </Step>
-                  <Step title= "">
-                      {content}
-                  </Step>
-              </HorizontalStepper> */}
+              <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/>
           </div>
         }
         </DeviceContextConsumer>
