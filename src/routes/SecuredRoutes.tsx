@@ -5,6 +5,7 @@ import { appBaseRouteKey } from './Routes';
 export const appSecuredRouteKey = "/app";
 
 export default function SecuredRoutes(){
+
     return(
         <Switch>
             <Route exact path={appBaseRouteKey + appSecuredRouteKey + MainPagePath} render={() => <MainPageScreen />} />

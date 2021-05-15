@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { LoginPage, Path as LoginPath } from "../components/screens/LoginPage";
 import { AuthContext } from '../contexts/AuthContext';
+import { appSecuredRouteKey } from './SecuredRoutes';
 
 export const HomePath = "/";
 export const appBaseRouteKey = "";
@@ -12,7 +13,7 @@ export default function Routes(){
     
     useEffect(() => {
         if(isSignedIn.valueOf() === true){
-            history.push('/app/');
+            history.push(appSecuredRouteKey + '/');
         }
     }, [isSignedIn]);
 

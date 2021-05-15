@@ -43,7 +43,6 @@ export default function LoginPageContent(){
 }
 
 const LoginModal = () =>{
-    const { t } = useTranslation();
     const theme = useTheme();
     const classes = useStyles();
   
