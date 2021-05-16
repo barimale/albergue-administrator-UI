@@ -20,6 +20,7 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
           name={`translatableDetails[${index}].name`}
           label={t("Category name" + index)}
           margin="dense"
+          variant="outlined"
           // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}
           // helperText={props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index]}
           fullWidth />

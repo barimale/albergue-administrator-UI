@@ -102,7 +102,7 @@ const AddCategoryModalContent = (props: AddCategoryModalProps) =>{
 }
 
 const AddSchema = Yup.object().shape({
-    name: Yup.string()
+    translatableDetails: Yup.array()
     .required('Field is required')
   });
 
@@ -255,7 +255,7 @@ const AddFormContent = (props: FormikProps<Category>) =>{
     const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
 
     const icons = steps.flatMap(p => 
-        () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%', paddingRight: '5px'}}/>
+        () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p === "EN" ? "gb" : p.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
     );
 
     const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
@@ -274,7 +274,7 @@ const AddFormContent = (props: FormikProps<Category>) =>{
           }}>
               {/* <CategoryNameField {...props} index={1}/> */}
               {/* <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/> */}
-              <HorizontalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/>
+              <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/>
           </div>
         }
         </DeviceContextConsumer>

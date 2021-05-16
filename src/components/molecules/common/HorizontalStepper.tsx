@@ -46,7 +46,7 @@ export default function HorizontalStepper(props: StepperProps) {
 
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep} alternativeLabel nonLinear style={{padding: '0px'}}>
+      <Stepper activeStep={activeStep} alternativeLabel nonLinear>
         {steps.map((label, index) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>

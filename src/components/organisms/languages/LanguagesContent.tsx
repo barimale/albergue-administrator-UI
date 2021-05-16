@@ -164,10 +164,22 @@ interface Column {
                             const value = row[column.id];
                             return (
                                 <TableCell key={column.id} align={column.align}>
-                                {column.format && typeof value === 'number' ? column.format(value) : 
-                                (typeof value === 'boolean' ? (
-                                    value === true ? <DoneIcon/> : <ClearIcon/>
-                                ) : value)}
+                                  <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    verticalAlign: 'baseline'
+                                  }}>
+                                    {column.id === "alpha2Code" && value !== undefined &&(
+                                      <div style={{paddingRight: '10px'}}>
+                                        <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
+                                      </div>
+                                    )}
+                                    {column.format && typeof value === 'number' ? column.format(value) : 
+                                    (typeof value === 'boolean' ? (
+
+                                        value === true ? <DoneIcon/> : <ClearIcon/>
+                                    ) : value)}
+                                  </div>
                                 </TableCell>
                             );
                             })}
