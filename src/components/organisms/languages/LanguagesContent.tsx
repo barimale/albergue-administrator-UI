@@ -1,6 +1,5 @@
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 import useTheme from "@material-ui/core/styles/useTheme";
-import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -19,12 +18,9 @@ import DoneIcon from '@material-ui/icons/Done';
 import { LoadingInProgress } from '../../molecules/common/LoadingInProgress';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
-import IconButton from '@material-ui/core/IconButton';
+import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
 
 export const LanguagesContent = () =>{
-    const { t } = useTranslation();
-    const theme = useTheme();
-
     return(
         <DeviceContextConsumer>
         {context =>
@@ -209,11 +205,15 @@ interface Column {
                             );
                             })}
                             <TableCell align={'right'}>
-                              <IconButton onClick={async ()=>{
-                                await onDelete(row.id || "")
-                              }}>
-                                <ClearIcon/>
-                              </IconButton>
+                              <DeleteActionComponent 
+                                id={row.id || ""}
+                                title={"Are You sure?"}
+                                question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}
+                                yesLabel={"Yes"}
+                                noLabel={"No"}
+                                onAgreeAction={async () => {
+                                  await onDelete(row.id || "");
+                                }}/>
                             </TableCell>
                         </TableRow>
                         );
@@ -235,3 +235,4 @@ interface Column {
       </Paper>
     );
   }
+

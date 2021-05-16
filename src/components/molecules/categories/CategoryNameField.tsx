@@ -18,9 +18,10 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
         <MyTextField
           id={`translatableDetails[${index}].name`}
           name={`translatableDetails[${index}].name`}
-          label={t("Category name" + index)}
+          label={t("Category name")}
           margin="dense"
           variant="outlined"
+          //WIP
           // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}
           // helperText={props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index]}
           fullWidth />

@@ -19,6 +19,7 @@ import { LoadingInProgress } from '../../molecules/common/LoadingInProgress';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import useLanguages from '../../../hooks/useLanguages';
+import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
 
 export const CategoriesContent = () =>{
     return(
@@ -90,7 +91,7 @@ const StickyHeadTable = () => {
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
     const languages = useLanguages();   
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [ selectedLanguageIndex, setSelectedLanguageIndex ] = useState<string | undefined>(undefined);
 
     useEffect(()=>{
@@ -138,6 +139,23 @@ const StickyHeadTable = () => {
       setPage(0);
     };
 
+    const onDelete = async (id: string) =>{
+      await axios.delete(
+        `http://localhost:5020/api/shop/Category/DeleteCategory/${id}`,
+        {
+            cancelToken: source.token,
+            headers: {
+                'Authorization': `Bearer ${userToken}` 
+              }
+        }
+    ).then((result: any)=>{
+        return result.data;
+    })
+    .catch((thrown: any)=>{
+        console.log('Request canceled', thrown.message);
+    });
+    }
+
     function findName(row: Category): string {
       if(selectedLanguageIndex !== undefined){
         const result =  row.translatableDetails.find(p => p.languageId === selectedLanguageIndex)?.name;
@@ -153,7 +171,7 @@ const StickyHeadTable = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell colSpan={columns.length} style={{padding: '0px'}}>
+                <TableCell colSpan={columns.length + 1} style={{padding: '0px'}}>
                   <CategorySearchAppBar/>
                 </TableCell>
               </TableRow>
@@ -167,12 +185,18 @@ const StickyHeadTable = () => {
                     {column.label}
                   </TableCell>
                 ))}
+                <TableCell
+                    key={'action'}
+                    align={'right'}
+                    style={{ fontWeight: 'bold'}}>
+                  {t("Action")}
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
                 {isLoading.valueOf() === true ? (
                   <TableRow>
-                    <TableCell colSpan={columns.length}>
+                    <TableCell colSpan={columns.length + 1}>
                       <LoadingInProgress/>
                     </TableCell>
                   </TableRow>
@@ -197,6 +221,17 @@ const StickyHeadTable = () => {
                                 </TableCell>
                             );
                             })}
+                            <TableCell align={'right'}>
+                              <DeleteActionComponent 
+                                id={row.id || ""}
+                                title={"Are You sure?"}
+                                question={"You are going to delete the category. All related items and their translations will be deleted. This operation cannot be restored."}
+                                yesLabel={"Yes"}
+                                noLabel={"No"}
+                                onAgreeAction={async () => {
+                                  await onDelete(row.id || "");
+                                }}/>
+                            </TableCell>
                         </TableRow>
                         );
                     })
