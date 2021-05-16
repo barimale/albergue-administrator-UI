@@ -84,6 +84,7 @@ interface Column {
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
     const { t } = useTranslation();
+    const [random, setRandom] = useState(Math.random());
 
     useEffect(() => {
         const getData = async () => {
@@ -114,7 +115,7 @@ interface Column {
         return () => {
          source.cancel("Axios request cancelled");
         };
-       }, []);
+       }, [random]);
   
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
@@ -149,7 +150,7 @@ interface Column {
             <TableHead>
               <TableRow>
                 <TableCell colSpan={columns.length + 1} style={{padding: '0px'}}>
-                  <SearchAppBarLanguage/>
+                  <SearchAppBarLanguage onChange={()=> setRandom(Math.random())}/>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -213,6 +214,7 @@ interface Column {
                                 noLabel={"No"}
                                 onAgreeAction={async () => {
                                   await onDelete(row.id || "");
+                                  setRandom(Math.random());
                                 }}/>
                             </TableCell>
                         </TableRow>

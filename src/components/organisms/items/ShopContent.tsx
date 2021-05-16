@@ -1,6 +1,5 @@
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 import useTheme from "@material-ui/core/styles/useTheme";
-import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -11,9 +10,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchAppBar from "../../molecules/items/SearchAppBar";
-import { fourthMain } from '../../../customTheme';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
 import axios from 'axios';
@@ -21,6 +19,9 @@ import { ItemDetails } from './AddItemModal';
 import { LoadingInProgress } from "../../molecules/common/LoadingInProgress";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
+import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
+import { Typography } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
 
 export const ShopContent = () =>{
     const { t } = useTranslation();
@@ -112,7 +113,9 @@ const StickyHeadTable = () => {
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
-    
+    const { t } = useTranslation();
+    const [random, setRandom] = useState(Math.random());
+
     useEffect(() => {
         const getData = async () => {
             return await axios.get(
@@ -142,7 +145,7 @@ const StickyHeadTable = () => {
         return () => {
          source.cancel("Axios request cancelled");
         };
-       }, []);
+       }, [random]);
   
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
@@ -152,66 +155,117 @@ const StickyHeadTable = () => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+
+    const onDelete = async (id: string) =>{
+      await axios.delete(
+        `http://localhost:5020/api/shop/Item/DeleteItem/${id}`,
+        {
+            cancelToken: source.token,
+            headers: {
+                'Authorization': `Bearer ${userToken}` 
+              }
+        }
+    ).then((result: any)=>{
+        return result.data;
+    })
+    .catch((thrown: any)=>{
+        console.log('Request canceled', thrown.message);
+    });
+    }
   
     return (
       <Paper className={classes.root}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={columns.length} style={{padding: '0px'}}>
-                  <SearchAppBar/>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {isLoading.valueOf() === true ? (
-                <TableRow>
-                  <TableCell colSpan={columns.length}>
-                    <LoadingInProgress/>
-                  </TableCell>
-                </TableRow>
-              ):(
-              rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number' ? column.format(value) : 
-                          (typeof value === 'boolean' ? (
-                            value === true ? <DoneIcon/> : <ClearIcon/>
-                          ) : value)}
-                        </TableCell>
-                      );
-                    })}
+        <>
+        <SearchAppBar onChange={() => setRandom(Math.random())}/>
+        {rows.length === 0 && isLoading.valueOf() === false ? (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'end',
+            padding: '20px'
+          }}>
+            <InfoIcon style={{color: 'orange'}}/>
+            <Typography style={{
+              paddingLeft: '10px'
+            }}>
+              {t("There are no items defined in the system. Please use +, to add new items.")}
+            </Typography>
+          </div>
+        ):(
+          <>
+            <TableContainer className={classes.container}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                    <TableCell
+                        key={'action'}
+                        align={'right'}
+                        style={{ fontWeight: 'bold'}}>
+                      {t("Action")}
+                    </TableCell>
                   </TableRow>
-                );
-              }))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          // rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+                </TableHead>
+                <TableBody>
+                  {isLoading.valueOf() === true ? (
+                    <TableRow>
+                      <TableCell colSpan={columns.length + 1}>
+                        <LoadingInProgress/>
+                      </TableCell>
+                    </TableRow>
+                  ):(
+                  rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
+                    return (
+                      <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.format && typeof value === 'number' ? column.format(value) : 
+                              (typeof value === 'boolean' ? (
+                                value === true ? <DoneIcon/> : <ClearIcon/>
+                              ) : value)}
+                            </TableCell>
+                          );
+                        })}
+                        <TableCell align={'right'}>
+                          <DeleteActionComponent 
+                            id={row.id || ""}
+                            title={"Are You sure?"}
+                            question={"You are going to delete the item. All related translations will be deleted. This operation cannot be restored."}
+                            yesLabel={"Yes"}
+                            noLabel={"No"}
+                            onAgreeAction={async () => {
+                              await onDelete(row.id || "");
+                              setRandom(Math.random());
+                            }}/>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              // rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+        </>
+        )}
+        </>
       </Paper>
     );
   }

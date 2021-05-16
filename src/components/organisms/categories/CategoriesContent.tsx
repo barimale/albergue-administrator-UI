@@ -20,8 +20,10 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import useLanguages from '../../../hooks/useLanguages';
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
+import { Typography } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
 
-export const CategoriesContent = () =>{
+export const CategoriesContent = () => {
     return(
         <DeviceContextConsumer>
         {context =>
@@ -93,6 +95,7 @@ const StickyHeadTable = () => {
     const { languages } = useLanguages();   
     const { t, i18n } = useTranslation();
     const [ selectedLanguageIndex, setSelectedLanguageIndex ] = useState<string | undefined>(undefined);
+    const [random, setRandom] = useState(Math.random());
 
     useEffect(()=>{
       const selectedIndex = languages.find(p => p.alpha2Code === i18n.language)?.id;
@@ -128,7 +131,7 @@ const StickyHeadTable = () => {
         return () => {
          source.cancel("Axios request cancelled");
         };
-       }, []);
+       }, [random]);
   
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
@@ -167,14 +170,27 @@ const StickyHeadTable = () => {
   
     return (
       <Paper className={classes.root}>
+        <>
+        <CategorySearchAppBar onChange={() => setRandom(Math.random())}/>
+        {rows.length === 0 && isLoading.valueOf() === false ? (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'end',
+            padding: '20px'
+          }}>
+            <InfoIcon style={{color: 'orange'}}/>
+            <Typography style={{
+              paddingLeft: '10px'
+            }}>
+              {t("There are no categories defined in the system. Please use +, to add new one.")}
+            </Typography>
+          </div>
+        ):(
+          <>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow>
-                <TableCell colSpan={columns.length + 1} style={{padding: '0px'}}>
-                  <CategorySearchAppBar/>
-                </TableCell>
-              </TableRow>
               <TableRow>
                 {columns.map((column) => (
                   <TableCell
@@ -230,6 +246,7 @@ const StickyHeadTable = () => {
                                 noLabel={"No"}
                                 onAgreeAction={async () => {
                                   await onDelete(row.id || "");
+                                  setRandom(Math.random());
                                 }}/>
                             </TableCell>
                         </TableRow>
@@ -249,6 +266,9 @@ const StickyHeadTable = () => {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
+        </>
+        )}
+        </>
       </Paper>
     );
   }

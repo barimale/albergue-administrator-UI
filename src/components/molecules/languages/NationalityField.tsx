@@ -34,7 +34,7 @@ export const NationalityField = (props: CountriedFormikProps) => {
                 helperText={props.touched.alpha2Code && props.errors.alpha2Code}
                 error={Boolean(props.touched.alpha2Code && props.errors.alpha2Code)}
                 fullWidth
-                label={t("Nationality")}
+                label={t("Language")}
                 variant="outlined"
                 margin={'dense'} />} />
           ):(
@@ -43,7 +43,7 @@ export const NationalityField = (props: CountriedFormikProps) => {
               select
               fullWidth
               variant="outlined"
-              label={t("Nationality")}
+              label={t("Language")}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 props.setFieldValue("alpha2Code", event.target.value || "")
               }}

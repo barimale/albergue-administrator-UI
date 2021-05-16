@@ -67,7 +67,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function SearchAppBar(props: any) {
+type SearchAppBarProps = {
+  onChange: () => void;
+}
+
+export default function SearchAppBar(props: SearchAppBarProps) {
+  const { onChange } = props;
   const classes = useStyles();
   const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
 
@@ -100,7 +105,10 @@ export default function SearchAppBar(props: any) {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div> */}
-            <AddItemModal isDisplayed={isAddVisible} close={()=> setIsAddVisible(false)}/>
+            <AddItemModal isDisplayed={isAddVisible} close={()=> {
+              setIsAddVisible(false);
+              onChange();
+            }}/>
           </>
         </Toolbar>
       </AppBar>

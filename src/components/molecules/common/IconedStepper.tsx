@@ -34,10 +34,11 @@ export type StepperProps = {
     stepsContent: JSX.Element[];
     stepsIcon: (() => JSX.Element)[];
     textInEN: string;
+    orientation?: 'vertical' | 'horizontal';
 }
 
-export default function VerticalStepper(props: StepperProps) {
-  const { steps, stepsContent, stepsIcon, textInEN } = props;
+export default function IconedStepper(props: StepperProps) {
+  const { steps, stepsContent, stepsIcon, textInEN, orientation } = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const { t } = useTranslation();
@@ -80,7 +81,7 @@ export default function VerticalStepper(props: StepperProps) {
 
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep} orientation="vertical">
+      <Stepper activeStep={activeStep} orientation={orientation !== undefined ? orientation : 'vertical'}>
         {steps.map((label, index) => (
           <Step key={label}>
             <StepLabel 

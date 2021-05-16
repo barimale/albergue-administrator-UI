@@ -16,9 +16,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { CategoryNameField } from '../../molecules/categories/CategoryNameField';
 import { ModalTitle } from '../../molecules/common/ModalTitle';
-import VerticalStepper from "../../molecules/common/VerticalStepper";
-import HorizontalStepper from "../../molecules/common/HorizontalStepper";
-import AcUnitIcon from '@material-ui/icons/AcUnit';
+import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from "../../../hooks/useLanguages";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -283,9 +281,11 @@ const AddFormContent = (props: FormikProps<Category>) =>{
               alignContent: 'center',
               width: '100%',
           }}>
-              {/* <CategoryNameField {...props} index={1}/> */}
-              {/* <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/> */}
-              <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons} textInEN={textInEN}/>
+              <IconedStepper 
+                steps={steps} 
+                stepsContent={stepsContent} 
+                stepsIcon={icons} 
+                textInEN={textInEN} />
           </div>
         }
         </DeviceContextConsumer>

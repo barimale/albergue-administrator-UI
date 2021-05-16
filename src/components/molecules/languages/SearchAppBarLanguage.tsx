@@ -67,7 +67,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function SearchAppBarLanguage(props: any) {
+type SearchAppBarLanguageProps = {
+  onChange: () => void;
+}
+
+export default function SearchAppBarLanguage(props: SearchAppBarLanguageProps) {
+  const { onChange } = props;
   const classes = useStyles();
   const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
 
@@ -87,20 +92,10 @@ export default function SearchAppBarLanguage(props: any) {
             >
               <AddIcon />
             </IconButton>
-            {/* <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div> */}
-            <AddLanguageModal isDisplayed={isAddVisible} close={()=> setIsAddVisible(false)}/>
+            <AddLanguageModal isDisplayed={isAddVisible} close={()=> {
+              setIsAddVisible(false);
+              onChange();
+            }}/>
           </>
         </Toolbar>
       </AppBar>
