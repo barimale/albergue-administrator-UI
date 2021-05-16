@@ -115,7 +115,7 @@ const AddForm = (props: AddFormProps) => {
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
-    const languages = useLanguages();
+    const { languages } = useLanguages();
     const initial: Array<CategoryTranslatableDetails> = languages.flatMap(p => {
         return {languageId : p.id, name: "" } as CategoryTranslatableDetails
     });
@@ -251,15 +251,26 @@ const AddForm = (props: AddFormProps) => {
 }
 
 const AddFormContent = (props: FormikProps<Category>) =>{
-    const languages = useLanguages();
+    const { languages } = useLanguages();
+    const { t } = useTranslation();
     const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
+    const [textInEN, setTextInEN] = useState<string>("");
+    
+    useEffect(()=>{
+      if(props.values.translatableDetails[0]?.name !== undefined){
+        setTextInEN(props.values.translatableDetails[0]?.name);
+      }
+  
+    }, [JSON.stringify(props.values.translatableDetails[0])]);
 
     const icons = steps.flatMap(p => 
         () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p === "EN" ? "gb" : p.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
     );
 
     const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
+    <>
         <CategoryNameField {...props} index={index}/>
+    </>
     );
 
       return(
@@ -274,7 +285,7 @@ const AddFormContent = (props: FormikProps<Category>) =>{
           }}>
               {/* <CategoryNameField {...props} index={1}/> */}
               {/* <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/> */}
-              <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/>
+              <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons} textInEN={textInEN}/>
           </div>
         }
         </DeviceContextConsumer>

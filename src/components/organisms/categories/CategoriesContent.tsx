@@ -90,7 +90,7 @@ const StickyHeadTable = () => {
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
-    const languages = useLanguages();   
+    const { languages } = useLanguages();   
     const { t, i18n } = useTranslation();
     const [ selectedLanguageIndex, setSelectedLanguageIndex ] = useState<string | undefined>(undefined);
 

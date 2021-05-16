@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -7,7 +7,8 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { isNullOrUndefined } from 'node:util';
+import { useTranslation } from 'react-i18next';
+import useLanguages from '../../../hooks/useLanguages';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,12 +33,38 @@ export type StepperProps = {
     steps: Array<string>;
     stepsContent: JSX.Element[];
     stepsIcon: (() => JSX.Element)[];
+    textInEN: string;
 }
 
 export default function VerticalStepper(props: StepperProps) {
-  const { steps, stepsContent, stepsIcon } = props;
+  const { steps, stepsContent, stepsIcon, textInEN } = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+  const { t } = useTranslation();
+  const [suggestion, setSuggestion] = useState<string>("");
+  const [suggestionIsLoading, setSuggestionIsLoading] = useState<boolean>(false);
+  const { translate } = useLanguages();
+  var controller = new AbortController();
+  var signal = controller.signal;
+
+  useEffect(()=>{
+    const getData = async() =>{
+      return await translate('en', steps[activeStep].toLowerCase(), textInEN, signal);
+    }
+
+    if(activeStep > 0){
+      setSuggestionIsLoading(true);
+      getData().then((res: string) =>{
+        setSuggestion(res);
+        setSuggestionIsLoading(false);
+      })
+    }
+
+    return () => {
+      controller.abort();
+     }; 
+
+  }, [activeStep]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -62,6 +89,12 @@ export default function VerticalStepper(props: StepperProps) {
             </StepLabel>
             <StepContent>
               <div>{stepsContent[index]}</div>
+              {activeStep > 0 &&
+                <div>
+                  <Typography>{t("Suggestion")}</Typography>
+                  <Typography>{suggestionIsLoading.valueOf() === false ? suggestion : t("Translation in progress...")}</Typography>
+                </div>
+              }
               <div className={classes.actionsContainer}>
                 <div>
                   <Button
@@ -69,7 +102,7 @@ export default function VerticalStepper(props: StepperProps) {
                     onClick={handleBack}
                     className={classes.button}
                   >
-                    Back
+                    {t("Back")}
                   </Button>
                   <Button
                     variant="contained"
@@ -77,7 +110,7 @@ export default function VerticalStepper(props: StepperProps) {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    {activeStep === steps.length - 1 ? t('Finish') : t('Next')}
                   </Button>
                 </div>
               </div>
@@ -87,9 +120,9 @@ export default function VerticalStepper(props: StepperProps) {
       </Stepper>
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
+          <Typography>{t("All steps completed")}</Typography>
           <Button onClick={handleReset} className={classes.button}>
-            Reset
+            {t("Reset")}
           </Button>
         </Paper>
       )}
