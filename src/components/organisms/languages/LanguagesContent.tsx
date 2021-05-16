@@ -19,6 +19,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import { LoadingInProgress } from '../../molecules/common/LoadingInProgress';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
+import IconButton from '@material-ui/core/IconButton';
 
 export const LanguagesContent = () =>{
     const { t } = useTranslation();
@@ -86,6 +87,7 @@ interface Column {
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const getData = async () => {
@@ -126,6 +128,23 @@ interface Column {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+
+    const onDelete = async (id: string) =>{
+      await axios.delete(
+        `http://localhost:5020/api/shop/Language/DeleteLanguage/${id}`,
+        {
+            cancelToken: source.token,
+            headers: {
+                'Authorization': `Bearer ${userToken}` 
+              }
+        }
+    ).then((result: any)=>{
+        return result.data;
+    })
+    .catch((thrown: any)=>{
+        console.log('Request canceled', thrown.message);
+    });
+    }
   
     return (
       <Paper className={classes.root}>
@@ -133,7 +152,7 @@ interface Column {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell colSpan={columns.length} style={{padding: '0px'}}>
+                <TableCell colSpan={columns.length + 1} style={{padding: '0px'}}>
                   <SearchAppBarLanguage/>
                 </TableCell>
               </TableRow>
@@ -147,12 +166,18 @@ interface Column {
                     {column.label}
                   </TableCell>
                 ))}
+                <TableCell
+                    key={'action'}
+                    align={'right'}
+                    style={{ fontWeight: 'bold'}}>
+                  {t("Action")}
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
                 {isLoading.valueOf() === true ? (
                   <TableRow>
-                    <TableCell colSpan={columns.length}>
+                    <TableCell colSpan={columns.length + 1}>
                       <LoadingInProgress/>
                     </TableCell>
                   </TableRow>
@@ -183,6 +208,13 @@ interface Column {
                                 </TableCell>
                             );
                             })}
+                            <TableCell align={'right'}>
+                              <IconButton onClick={async ()=>{
+                                await onDelete(row.id || "")
+                              }}>
+                                <ClearIcon/>
+                              </IconButton>
+                            </TableCell>
                         </TableRow>
                         );
                     })
