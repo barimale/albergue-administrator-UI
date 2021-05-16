@@ -20,8 +20,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import useLanguages from '../../../hooks/useLanguages';
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
-import { Typography } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import { InformationMessage } from "../../molecules/common/InformationMessage";
 
 export const CategoriesContent = () => {
     return(
@@ -72,10 +71,10 @@ interface Column {
   const useStyles = makeStyles({
     root: {
       width: '90%',
-      height: '80%',
+      height: '100%',
       paddingLeft: '5%',
       paddingRight: '5%',
-      paddingTop: '10px',
+      paddingTop: '0px',
       paddingBottom: '0px'
     },
     container: {
@@ -170,22 +169,12 @@ const StickyHeadTable = () => {
   
     return (
       <Paper className={classes.root}>
-        <>
+        <div style={{padding: '20px'}}>
         <CategorySearchAppBar onChange={() => setRandom(Math.random())}/>
         {rows.length === 0 && isLoading.valueOf() === false ? (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'end',
-            padding: '20px'
-          }}>
-            <InfoIcon style={{color: 'orange'}}/>
-            <Typography style={{
-              paddingLeft: '10px'
-            }}>
-              {t("There are no categories defined in the system. Please use +, to add new one.")}
-            </Typography>
-          </div>
+          <InformationMessage 
+            information={"There are no categories defined in the system. Please use +, to add new category."}
+          />
         ):(
           <>
         <TableContainer className={classes.container}>
@@ -268,7 +257,7 @@ const StickyHeadTable = () => {
         />
         </>
         )}
-        </>
+        </div>
       </Paper>
     );
   }

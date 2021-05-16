@@ -50,7 +50,7 @@ export default function IconedStepper(props: StepperProps) {
 
   useEffect(()=>{
     const getData = async() =>{
-      return await translate('en', steps[activeStep].toLowerCase(), textInEN, signal);
+      return await translate('en', steps[activeStep]?.toLowerCase(), textInEN, signal);
     }
 
     if(activeStep > 0){

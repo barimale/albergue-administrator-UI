@@ -20,13 +20,9 @@ import { LoadingInProgress } from "../../molecules/common/LoadingInProgress";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
-import { Typography } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import { InformationMessage } from "../../molecules/common/InformationMessage";
 
 export const ShopContent = () =>{
-    const { t } = useTranslation();
-    const theme = useTheme();
-
     return(
         <DeviceContextConsumer>
         {context =>
@@ -93,15 +89,12 @@ interface Column {
   const useStyles = makeStyles({
     root: {
       width: '90%',
-      height: '80%',
+      height: '100%',
       paddingLeft: '5%',
       paddingRight: '5%',
-      paddingTop: '10px',
+      paddingTop: '0px',
       paddingBottom: '0px'
-    },
-    container: {
-    //   maxHeight: 440,
-    },
+    }
   });
   
 const StickyHeadTable = () => {
@@ -175,25 +168,15 @@ const StickyHeadTable = () => {
   
     return (
       <Paper className={classes.root}>
-        <>
+        <div style={{padding: '20px'}}>
         <SearchAppBar onChange={() => setRandom(Math.random())}/>
         {rows.length === 0 && isLoading.valueOf() === false ? (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'end',
-            padding: '20px'
-          }}>
-            <InfoIcon style={{color: 'orange'}}/>
-            <Typography style={{
-              paddingLeft: '10px'
-            }}>
-              {t("There are no items defined in the system. Please use +, to add new items.")}
-            </Typography>
-          </div>
+          <InformationMessage
+            information={"There are no items defined in the system. Please use +, to add new item."} 
+          />
         ):(
           <>
-            <TableContainer className={classes.container}>
+            <TableContainer>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
@@ -265,7 +248,7 @@ const StickyHeadTable = () => {
             />
         </>
         )}
-        </>
+        </div>
       </Paper>
     );
   }

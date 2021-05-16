@@ -1,5 +1,4 @@
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
-import useTheme from "@material-ui/core/styles/useTheme";
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -19,6 +18,8 @@ import { LoadingInProgress } from '../../molecules/common/LoadingInProgress';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
+import { Typography } from '@material-ui/core';
+import { InformationMessage } from "../../molecules/common/InformationMessage";
 
 export const LanguagesContent = () =>{
     return(
@@ -63,10 +64,10 @@ interface Column {
   const useStyles = makeStyles({
     root: {
       width: '90%',
-      height: '80%',
+      height: '100%',
       paddingLeft: '5%',
       paddingRight: '5%',
-      paddingTop: '10px',
+      paddingTop: '0px',
       paddingBottom: '0px'
     },
     container: {
@@ -145,96 +146,101 @@ interface Column {
   
     return (
       <Paper className={classes.root}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={columns.length + 1} style={{padding: '0px'}}>
-                  <SearchAppBarLanguage onChange={()=> setRandom(Math.random())}/>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-                <TableCell
-                    key={'action'}
-                    align={'right'}
-                    style={{ fontWeight: 'bold'}}>
-                  {t("Action")}
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-                {isLoading.valueOf() === true ? (
-                  <TableRow>
-                    <TableCell colSpan={columns.length + 1}>
-                      <LoadingInProgress/>
+        <div style={{padding: '20px'}}>
+        <SearchAppBarLanguage onChange={() => setRandom(Math.random())}/>
+        {rows.length === 0 && isLoading.valueOf() === false ? (
+          <InformationMessage
+            information={"There are no languages defined in the system. Please use +, to add new language."} 
+          />
+        ):(
+        <>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
+                    >
+                      {column.label}
                     </TableCell>
-                  </TableRow>
-                ):(
-                    rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Language) => {
-                        return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.alpha2Code}>
-                            {columns.map((column) => {
-                            const value = row[column.id];
-                            return (
-                                <TableCell key={column.id} align={column.align}>
-                                  <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    verticalAlign: 'baseline'
-                                  }}>
-                                    {column.id === "alpha2Code" && value !== undefined &&(
-                                      <div style={{paddingRight: '10px'}}>
-                                        <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
-                                      </div>
-                                    )}
-                                    {column.format && typeof value === 'number' ? column.format(value) : 
-                                    (typeof value === 'boolean' ? (
+                  ))}
+                  <TableCell
+                      key={'action'}
+                      align={'right'}
+                      style={{ fontWeight: 'bold'}}>
+                    {t("Action")}
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                  {isLoading.valueOf() === true ? (
+                    <TableRow>
+                      <TableCell colSpan={columns.length + 1}>
+                        <LoadingInProgress/>
+                      </TableCell>
+                    </TableRow>
+                  ):(
+                      rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Language) => {
+                          return (
+                          <TableRow hover role="checkbox" tabIndex={-1} key={row.alpha2Code}>
+                              {columns.map((column) => {
+                              const value = row[column.id];
+                              return (
+                                  <TableCell key={column.id} align={column.align}>
+                                    <div style={{
+                                      display: 'flex',
+                                      flexDirection: 'row',
+                                      verticalAlign: 'baseline'
+                                    }}>
+                                      {column.id === "alpha2Code" && value !== undefined &&(
+                                        <div style={{paddingRight: '10px'}}>
+                                          <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
+                                        </div>
+                                      )}
+                                      {column.format && typeof value === 'number' ? column.format(value) : 
+                                      (typeof value === 'boolean' ? (
 
-                                        value === true ? <DoneIcon/> : <ClearIcon/>
-                                    ) : value)}
-                                  </div>
-                                </TableCell>
-                            );
-                            })}
-                            <TableCell align={'right'}>
-                              <DeleteActionComponent 
-                                id={row.id || ""}
-                                title={"Are You sure?"}
-                                question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}
-                                yesLabel={"Yes"}
-                                noLabel={"No"}
-                                onAgreeAction={async () => {
-                                  await onDelete(row.id || "");
-                                  setRandom(Math.random());
-                                }}/>
-                            </TableCell>
-                        </TableRow>
-                        );
-                    })
-                )}
-              {}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          // rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    );
-  }
-
+                                          value === true ? <DoneIcon/> : <ClearIcon/>
+                                      ) : value)}
+                                    </div>
+                                  </TableCell>
+                              );
+                              })}
+                              <TableCell align={'right'}>
+                                <DeleteActionComponent 
+                                  id={row.id || ""}
+                                  title={"Are You sure?"}
+                                  question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}
+                                  yesLabel={"Yes"}
+                                  noLabel={"No"}
+                                  onAgreeAction={async () => {
+                                    await onDelete(row.id || "");
+                                    setRandom(Math.random());
+                                  }}/>
+                              </TableCell>
+                          </TableRow>
+                          );
+                      })
+                  )}
+                {}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            // rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </>
+        )}
+      </div>
+    </Paper>
+  );
+}
