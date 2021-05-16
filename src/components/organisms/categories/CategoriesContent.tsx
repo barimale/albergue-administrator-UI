@@ -56,7 +56,13 @@ interface Column {
   
   export interface Category {
     id?: string;
+    translatableDetails: Array<CategoryTranslatableDetails>;
+  }
+
+  export interface CategoryTranslatableDetails {
+    id?: string;
     name: string;
+    languageId: string;
   }
   
   const useStyles = makeStyles({
@@ -155,9 +161,10 @@ const StickyHeadTable = () => {
                 ):(
                     rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Category) => {
                         return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                        <TableRow hover role="checkbox" tabIndex={-1} key={row.translatableDetails[0].name}>
                             {columns.map((column) => {
-                            const value = row[column.id];
+
+                            const value = row.translatableDetails[0][column.id];
                             return (
                                 <TableCell key={column.id} align={column.align}>
                                 {column.format && typeof value === 'number' ? column.format(value) : 

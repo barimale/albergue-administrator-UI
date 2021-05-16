@@ -6,12 +6,12 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import React, { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { thirdMain } from '../../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { Category } from './CategoriesContent';
+import { Category, CategoryTranslatableDetails } from './CategoriesContent';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { CategoryNameField } from '../../molecules/categories/CategoryNameField';
@@ -19,6 +19,7 @@ import { ModalTitle } from '../../molecules/common/ModalTitle';
 import VerticalStepper from "../../molecules/common/VerticalStepper";
 import HorizontalStepper from "../../molecules/common/HorizontalStepper";
 import AcUnitIcon from '@material-ui/icons/AcUnit';
+import useLanguages from "../../../hooks/useLanguages";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -114,9 +115,13 @@ const AddForm = (props: AddFormProps) => {
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
+    const languages = useLanguages();
+    const initial: Array<CategoryTranslatableDetails> = languages.flatMap(p => {
+        return {languageId : p.id, name: "" } as CategoryTranslatableDetails
+    });
 
     const initialValues: Category = {
-        name: "",
+        translatableDetails: initial
       };
 
     const cancelToken = axios.CancelToken;
@@ -246,27 +251,16 @@ const AddForm = (props: AddFormProps) => {
 }
 
 const AddFormContent = (props: FormikProps<Category>) =>{
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const cancelToken = axios.CancelToken;
-    const source = cancelToken.source();
+    const languages = useLanguages();
+    const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
 
-    const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+    const icons = steps.flatMap(p => 
+        () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%', paddingRight: '5px'}}/>
+    );
 
-    const stepsContent = [
-        `For each ad campaign that you create, you can control how much
-        you're willing to spend on clicks and conversions, which networks
-        and geographical locations you want your ads to show on, and more.`,
-        'An ad group contains one or more ads which target a shared set of keywords.',
-        `Try out different ad text to see what brings in the most customers,
-        and learn how to enhance your ads using features like ad extensions.
-        If you run into any problems with your ads, find out how to tell if
-        they're running and how to resolve approval issues.`,
-        'Unknown step'];
-
-    const icons = 
-        [() => <AcUnitIcon />,
-        () => <AcUnitIcon />,
-        () => <AcUnitIcon />];
+    const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
+        <CategoryNameField {...props} index={index}/>
+    );
 
       return(
         <DeviceContextConsumer>
@@ -278,8 +272,9 @@ const AddFormContent = (props: FormikProps<Category>) =>{
               alignContent: 'center',
               width: '100%',
           }}>
-              <CategoryNameField {...props} />
-              <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/>
+              {/* <CategoryNameField {...props} index={1}/> */}
+              {/* <VerticalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/> */}
+              <HorizontalStepper steps={steps} stepsContent={stepsContent} stepsIcon={icons}/>
           </div>
         }
         </DeviceContextConsumer>

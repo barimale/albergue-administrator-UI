@@ -29,7 +29,7 @@ export const CategorySelectorField = (props: CategoryFormikProps) => {
               id="categoryId"
               options={categories}
               getOptionSelected={(option: Category, value: Category) => option.id === value.id}
-              getOptionLabel={(option: Category) => option.name}
+              getOptionLabel={(option: Category) => option.translatableDetails[0].name}
               onChange={(e, value) => props.setFieldValue("categoryId", value?.id || "")}
               onOpen={props.handleBlur}
               renderInput={(params) => <TextField
@@ -61,8 +61,8 @@ export const CategorySelectorField = (props: CategoryFormikProps) => {
                 {"-"}
               </option>
               {categories.map((category: Category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
+                <option key={category.id} value={category.translatableDetails[0].name}>
+                  {category.translatableDetails[0].name}
                 </option>
               ))}
             </TextField>

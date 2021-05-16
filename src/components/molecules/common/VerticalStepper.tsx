@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-type VerticalStepperProps = {
+export type StepperProps = {
     steps: Array<string>;
-    stepsContent: Array<string>;
+    stepsContent: JSX.Element[];
     stepsIcon: (() => JSX.Element)[];
 }
 
-export default function VerticalStepper(props: VerticalStepperProps) {
+export default function VerticalStepper(props: StepperProps) {
   const { steps, stepsContent, stepsIcon } = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -61,7 +61,7 @@ export default function VerticalStepper(props: VerticalStepperProps) {
                 {label}
             </StepLabel>
             <StepContent>
-              <Typography>{stepsContent[index]}</Typography>
+              <div>{stepsContent[index]}</div>
               <div className={classes.actionsContainer}>
                 <div>
                   <Button
