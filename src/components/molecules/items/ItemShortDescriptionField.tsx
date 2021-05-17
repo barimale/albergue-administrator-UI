@@ -9,14 +9,15 @@ import useLanguages, { TranslateResponse } from "../../../hooks/useLanguages";
 import GTranslateIcon from '@material-ui/icons/GTranslate';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { LoadingInProgress } from "../common/LoadingInProgress";
+import { ItemDetails } from "../../organisms/items/AddItemModal";
 
-interface CategoryNameFieldProps extends FormikProps<Category>{
+interface ItemShortDescriptionFieldProps extends FormikProps<ItemDetails>{
   index: number;
   textInEN?: string;
   lng: string;
 }
 
-export const CategoryNameField = (props: CategoryNameFieldProps) => {
+export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps) => {
   const { index, textInEN, lng } = props;
   const { t } = useTranslation();
   const [suggestion, setSuggestion] = useState<TranslateResponse>({isError: false, translation: ""});
@@ -56,7 +57,7 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
         <MyTextField
           id={`translatableDetails[${index}].name`}
           name={`translatableDetails[${index}].name`}
-          label={t("Category name")}
+          label={t("Item name")}
           margin="dense"
           variant="outlined"
           InputProps={{

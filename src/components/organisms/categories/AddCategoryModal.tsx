@@ -267,7 +267,6 @@ interface AddFormContentProps extends FormikProps<Category>{
 const AddFormContent = (props: AddFormContentProps) =>{
     const { onActiveTabChanged, onFinished } = props;
     const { languages } = useLanguages();
-    const { t } = useTranslation();
     const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
     const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
     

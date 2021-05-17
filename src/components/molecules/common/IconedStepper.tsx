@@ -76,7 +76,15 @@ export default function IconedStepper(props: StepperProps) {
         </IconButton>
       </>)}
       <div>
-        <Stepper activeStep={activeStep} orientation={orientation !== undefined ? orientation : 'vertical'} alternativeLabel>
+        <Stepper
+          style={{
+            // width: '300px',
+            // overflowX: 'auto'
+          }}
+          activeStep={activeStep} 
+          orientation={orientation !== undefined ? orientation : 'vertical'} 
+          alternativeLabel
+        >
           {steps.map((label, index) => (
             <Step key={label}>
               <StepLabel 

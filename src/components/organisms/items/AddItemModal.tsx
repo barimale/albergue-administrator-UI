@@ -10,8 +10,9 @@ import { Box, Button, CircularProgress } from '@material-ui/core';
 import { thirdMain } from '../../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import { DescriptionField } from "../../molecules/items/DescriptionField";
-import { ShortDescriptionField } from "../../molecules/items/ShortDescriptionField";
+import { ItemNameField } from "../../molecules/items/ItemNameField";
+import { ItemDescriptionField } from "../../molecules/items/ItemDescriptionField";
+import { ItemShortDescriptionField } from "../../molecules/items/ItemShortDescriptionField";
 import { PriceField } from "../../molecules/items/PriceField";
 import { CategorySelectorField } from "../../molecules/categories/CategorySelectorField";
 import axios from 'axios';
@@ -21,6 +22,7 @@ import { ModalTitle } from '../../molecules/common/ModalTitle';
 import { InformationTooltip } from "../../molecules/common/InformationTooltip";
 import useCategories from '../../../hooks/useCategories';
 import IconedStepper from "../../molecules/common/IconedStepper";
+import useLanguages from '../../../hooks/useLanguages';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -103,14 +105,14 @@ const AddItemModalContent = (props: AddItemModalProps) =>{
 }
 
 const AddSchema = Yup.object().shape({
-    description: Yup.string()
-    .required('Field is required')
-    .min(2, 'Field has to be at least 2 signs long')
-    .max(50, 'Field cannot be longer than 50 signs'),
-    shortDescription: Yup.string()
-    .required('Field is required')
-    .min(2, 'Field has to be at least 2 signs long')
-    .max(50, 'Field cannot be longer than 50 signs'),
+    // description: Yup.string()
+    // .required('Field is required')
+    // .min(2, 'Field has to be at least 2 signs long')
+    // .max(50, 'Field cannot be longer than 50 signs'),
+    // shortDescription: Yup.string()
+    // .required('Field is required')
+    // .min(2, 'Field has to be at least 2 signs long')
+    // .max(50, 'Field cannot be longer than 50 signs'),
     price: Yup.number()
     .required('Field is required'),
     categoryId: Yup.string()
@@ -121,13 +123,20 @@ const AddSchema = Yup.object().shape({
 
 export interface ItemDetails {
     id?: string;
-    name: string;
     active: boolean;
     price: number;
+    categoryId: string;
+    translatableDetails: Array<ItemTranslatableDetails>;
+}
+
+export interface ItemTranslatableDetails {
+    id?: string;
+    name: string;
     shortDescription: string;
     description: string;
-    categoryId: string;
+    languageId: string;
 }
+  
 
 type AddFormProps = {
     close: () => void;
@@ -138,13 +147,15 @@ const AddForm = (props: AddFormProps) => {
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
+    const { languages } = useLanguages();
+    const initialDetails: Array<ItemTranslatableDetails> = languages.flatMap(p => {
+        return {languageId : p.id, name: "", shortDescription: "", description: "" } as ItemTranslatableDetails
+    });
 
     const initialValues: ItemDetails = {
         price: 0,
-        name: "",
         active: true,
-        shortDescription: "",
-        description: "",
+        translatableDetails: initialDetails,
         categoryId: ""
       };
 
@@ -277,18 +288,171 @@ const AddForm = (props: AddFormProps) => {
     );
 }
 
+interface TranslatableItemNameProps extends FormikProps<ItemDetails>{
+    onActiveTabChanged: ()=> void;
+    onFinished: ()=> void;
+}
+
+const TranslatableItemName = (props: TranslatableItemNameProps) =>{
+    const { onActiveTabChanged, onFinished } = props;
+    const { languages } = useLanguages();
+    const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
+    const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
+    
+    useEffect(()=>{
+      if(props.values.translatableDetails[0]?.name !== undefined){
+        setTextInEN(props.values.translatableDetails[0]?.name);
+      }
+  
+    }, [JSON.stringify(props.values.translatableDetails[0])]);
+
+    const icons = steps.flatMap(p => 
+        () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p === "EN" ? "gb" : p.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
+    );
+
+    const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
+    <>
+        <ItemNameField {...props} index={index} textInEN={textInEN} lng={p}/>
+    </>
+    );
+
+    return(
+    <DeviceContextConsumer>
+        {context => 
+        <div 
+        style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignContent: 'center',
+            width: '100%',
+        }}>
+            <IconedStepper 
+            onActiveTabChanged={onActiveTabChanged}
+            onFinished={onFinished}
+            steps={steps} 
+            stepsContent={stepsContent} 
+            stepsIcon={icons} 
+            orientation={"horizontal"} />
+        </div>
+    }
+    </DeviceContextConsumer>
+    );
+  }
+
+  interface TranslatableItemShortDescriptionProps extends FormikProps<ItemDetails>{
+    onActiveTabChanged: ()=> void;
+    onFinished: ()=> void;
+}
+
+const TranslatableItemShortDescription = (props: TranslatableItemShortDescriptionProps) =>{
+    const { onActiveTabChanged, onFinished } = props;
+    const { languages } = useLanguages();
+    const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
+    const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
+    
+    useEffect(()=>{
+      if(props.values.translatableDetails[0]?.name !== undefined){
+        setTextInEN(props.values.translatableDetails[0]?.name);
+      }
+  
+    }, [JSON.stringify(props.values.translatableDetails[0])]);
+
+    const icons = steps.flatMap(p => 
+        () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p === "EN" ? "gb" : p.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
+    );
+
+    const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
+    <>
+        <ItemShortDescriptionField {...props} index={index} textInEN={textInEN} lng={p}/>
+    </>
+    );
+
+    return(
+    <DeviceContextConsumer>
+        {context => 
+        <div 
+        style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignContent: 'center',
+            width: '100%',
+        }}>
+            <IconedStepper 
+            onActiveTabChanged={onActiveTabChanged}
+            onFinished={onFinished}
+            steps={steps} 
+            stepsContent={stepsContent} 
+            stepsIcon={icons} 
+            orientation={"horizontal"} />
+        </div>
+    }
+    </DeviceContextConsumer>
+    );
+  }
+
+  interface TranslatableItemDescriptionProps extends FormikProps<ItemDetails>{
+    onActiveTabChanged: ()=> void;
+    onFinished: ()=> void;
+}
+
+const TranslatableItemDescription = (props: TranslatableItemDescriptionProps) =>{
+    const { onActiveTabChanged, onFinished } = props;
+    const { languages } = useLanguages();
+    const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
+    const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
+    
+    useEffect(()=>{
+      if(props.values.translatableDetails[0]?.name !== undefined){
+        setTextInEN(props.values.translatableDetails[0]?.name);
+      }
+  
+    }, [JSON.stringify(props.values.translatableDetails[0])]);
+
+    const icons = steps.flatMap(p => 
+        () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p === "EN" ? "gb" : p.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
+    );
+
+    const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
+    <>
+        <ItemDescriptionField {...props} index={index} textInEN={textInEN} lng={p}/>
+    </>
+    );
+
+    return(
+    <DeviceContextConsumer>
+        {context => 
+        <div 
+        style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignContent: 'center',
+            width: '100%',
+        }}>
+            <IconedStepper 
+            onActiveTabChanged={onActiveTabChanged}
+            onFinished={onFinished}
+            steps={steps} 
+            stepsContent={stepsContent} 
+            stepsIcon={icons} 
+            orientation={"horizontal"} />
+        </div>
+    }
+    </DeviceContextConsumer>
+    );
+  }
+  
+
 const AddFormContent = (props: FormikProps<ItemDetails>) =>{
     const categories = useCategories();
     const steps = ['General', 'Name', 'Short description', 'Description', 'Images'];
     const stepsContent: Array<JSX.Element> = [
     <>
-         <PriceField {...props}/>
+        <PriceField {...props}/>
         <CategorySelectorField {...props} categories={categories}/>
     </>,
-        <ShortDescriptionField {...props} />,
-        <ShortDescriptionField {...props} />,
-        <DescriptionField {...props}/>,
-        <></>
+        <TranslatableItemName {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
+        <TranslatableItemShortDescription {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
+        <TranslatableItemDescription {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>
     ];
 
       return(
@@ -302,7 +466,7 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
               width: '100%',
           }}>
               <IconedStepper 
-                onActiveTabChanged={()=>{}}
+                onActiveTabChanged={()=>{}} 
                 onFinished={() =>{}}
                 steps={steps} 
                 stepsContent={stepsContent} 

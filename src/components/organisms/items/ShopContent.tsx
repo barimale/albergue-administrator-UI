@@ -20,6 +20,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
+import useLanguages from '../../../hooks/useLanguages';
 
 export const ShopContent = () =>{
     return(
@@ -105,8 +106,15 @@ const StickyHeadTable = () => {
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
-    const { t } = useTranslation();
+    const { languages } = useLanguages();   
+    const { t, i18n } = useTranslation();
+    const [ selectedLanguageIndex, setSelectedLanguageIndex ] = useState<string | undefined>(undefined);
     const [random, setRandom] = useState(Math.random());
+
+    useEffect(()=>{
+      const selectedIndex = languages.find(p => p.alpha2Code === i18n.language)?.id;
+      setSelectedLanguageIndex(selectedIndex);
+    }, [i18n.language, languages]);
 
     useEffect(() => {
         const getData = async () => {
@@ -164,6 +172,15 @@ const StickyHeadTable = () => {
         console.log('Request canceled', thrown.message);
     });
     }
+
+    function findName(row: ItemDetails): string {
+      if(selectedLanguageIndex !== undefined){
+        const result =  row.translatableDetails.find(p => p.languageId === selectedLanguageIndex)?.name;
+        return result || "Missing name";
+      }else{
+        return row.translatableDetails[0].name;
+      }
+    };
   
     return (
       <Paper className={classes.root}>
@@ -202,9 +219,9 @@ const StickyHeadTable = () => {
                 <TableBody>
                   {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
                     return (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                      <TableRow hover role="checkbox" tabIndex={-1} key={findName(row)}>
                         {columns.map((column) => {
-                          const value = row[column.id];
+                          const value = (column.id === 'id' || column.id === 'price' || column.id === 'categoryId' || column.id === 'active') ? row[column.id] : row.translatableDetails[0][column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {column.format && typeof value === 'number' ? column.format(value) : 
