@@ -61,14 +61,13 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
           variant="outlined"
           InputProps={{
             endAdornment: (
-              lng.toLowerCase() !== 'en' && (
               <InputAdornment position="end">
                 {suggestionIsLoading.valueOf() === true ? (
                   <LoadingInProgress/>
                 ):(
                   suggestion.isError.valueOf() === false ? (
                     <IconButton
-                    aria-label="toggle password visibility"
+                    disabled={lng.toLowerCase() === 'en'}
                     onClick={()=>{
                       props.setFieldValue(`translatableDetails[${index}].name`, suggestion.translation || "")
                     }}
@@ -78,7 +77,7 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
                   </IconButton>
                   ):(
                     <IconButton
-                    aria-label="toggle password visibility"
+                    disabled={lng.toLowerCase() === 'en'}
                     href={suggestion.translation}
                     target={"_blank"}
                     onMouseDown={(event: any) => event.preventDefault()}
@@ -87,7 +86,7 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
                   </IconButton>
                   )
                 )}
-            </InputAdornment>))
+            </InputAdornment>)
           }}
           //WIP
           // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}

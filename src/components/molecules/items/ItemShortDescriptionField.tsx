@@ -62,13 +62,13 @@ export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps)
           variant="outlined"
           InputProps={{
             endAdornment: (
-              lng.toLowerCase() !== 'en' && (
               <InputAdornment position="end">
                 {suggestionIsLoading.valueOf() === true ? (
                   <LoadingInProgress/>
                 ):(
                   suggestion.isError.valueOf() === false ? (
                     <IconButton
+                    disabled={lng.toLowerCase() === 'en'}
                     onClick={()=>{
                       props.setFieldValue(`translatableDetails[${index}].shortDescription`, suggestion.translation || "")
                     }}
@@ -78,6 +78,7 @@ export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps)
                   </IconButton>
                   ):(
                     <IconButton
+                    disabled={lng.toLowerCase() === 'en'}
                     href={suggestion.translation}
                     target={"_blank"}
                     onMouseDown={(event: any) => event.preventDefault()}
@@ -86,7 +87,7 @@ export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps)
                   </IconButton>
                   )
                 )}
-            </InputAdornment>))
+            </InputAdornment>)
           }}
           //WIP
           // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}

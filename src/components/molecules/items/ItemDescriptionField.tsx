@@ -62,14 +62,13 @@ export const ItemDescriptionField = (props: ItemDescriptionFieldProps) => {
           variant="outlined"
           InputProps={{
             endAdornment: (
-              lng.toLowerCase() !== 'en' && (
               <InputAdornment position="end">
                 {suggestionIsLoading.valueOf() === true ? (
                   <LoadingInProgress/>
                 ):(
                   suggestion.isError.valueOf() === false ? (
                     <IconButton
-                    aria-label="toggle password visibility"
+                    disabled={lng.toLowerCase() === 'en'}
                     onClick={()=>{
                       props.setFieldValue(`translatableDetails[${index}].description`, suggestion.translation || "")
                     }}
@@ -79,7 +78,7 @@ export const ItemDescriptionField = (props: ItemDescriptionFieldProps) => {
                   </IconButton>
                   ):(
                     <IconButton
-                    aria-label="toggle password visibility"
+                    disabled={lng.toLowerCase() === 'en'}
                     href={suggestion.translation}
                     target={"_blank"}
                     onMouseDown={(event: any) => event.preventDefault()}
@@ -88,8 +87,8 @@ export const ItemDescriptionField = (props: ItemDescriptionFieldProps) => {
                   </IconButton>
                   )
                 )}
-            </InputAdornment>))
-          }}
+            </InputAdornment>
+          )}}
           //WIP
           // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}
           // helperText={props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index]}
