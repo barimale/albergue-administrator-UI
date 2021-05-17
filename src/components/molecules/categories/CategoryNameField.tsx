@@ -6,6 +6,7 @@ import { Category } from "../../organisms/categories/CategoriesContent";
 import React, { useEffect, useState } from "react";
 import { Typography } from "@material-ui/core";
 import useLanguages, { TranslateResponse } from "../../../hooks/useLanguages";
+import GTranslateIcon from '@material-ui/icons/GTranslate';
 
 interface CategoryNameFieldProps extends FormikProps<Category>{
   index: number;

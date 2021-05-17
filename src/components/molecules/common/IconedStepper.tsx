@@ -4,11 +4,9 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { useTranslation } from 'react-i18next';
-import useLanguages, { TranslateResponse } from '../../../hooks/useLanguages';
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,7 +40,6 @@ export default function IconedStepper(props: StepperProps) {
   const { steps, stepsContent, stepsIcon, orientation, onActiveTabChanged, onFinished } = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const { t } = useTranslation();
   
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -62,74 +59,75 @@ export default function IconedStepper(props: StepperProps) {
   },[activeStep]);
 
   return (
-    <div className={classes.root}>
-      <Stepper activeStep={activeStep} orientation={orientation !== undefined ? orientation : 'vertical'} alternativeLabel>
-        {steps.map((label, index) => (
-          <Step key={label}>
-            <StepLabel 
-                StepIconComponent={stepsIcon !== undefined ? stepsIcon[index] : undefined}>
-                {label}
-            </StepLabel>
-            <StepContent>
-              {(orientation === undefined || (orientation !== undefined && orientation === 'vertical')) && (
-                <>
-                  <div>{stepsContent[activeStep]}</div>
-                  <div className={classes.actionsContainer}>
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between'
-                    }}>
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.button}
-                      >
-                        {t("Back")}
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleNext}
-                        className={classes.button}
-                      >
-                        {activeStep === steps.length - 1 ? t('Finish') : t('Next')}
-                      </Button>
+    <div className={classes.root} style={{
+      display: 'flex',
+      flexDirection: (orientation === undefined || (orientation !== undefined && orientation === 'vertical')) ? 'column': 'row',
+      justifyContent: (orientation === undefined || (orientation !== undefined && orientation === 'vertical')) ? 'unset': 'space-evenly',
+
+    }}>
+      {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
+      <>
+        <IconButton
+          disabled={activeStep === 0}
+          onClick={handleBack}
+          style={{borderRadius: '0px'}}
+        >
+          <KeyboardArrowLeftIcon />
+        </IconButton>
+      </>)}
+      <div>
+        <Stepper activeStep={activeStep} orientation={orientation !== undefined ? orientation : 'vertical'} alternativeLabel>
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel 
+                  StepIconComponent={stepsIcon !== undefined ? stepsIcon[index] : undefined}>
+                  {label}
+              </StepLabel>
+              <StepContent>
+                {(orientation === undefined || (orientation !== undefined && orientation === 'vertical')) && (
+                  <>
+                    <div>{stepsContent[activeStep]}</div>
+                    <div className={classes.actionsContainer}>
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                      }}>
+                        <IconButton
+                          disabled={activeStep === 0}
+                          onClick={handleBack}
+                          style={{borderRadius: '0px'}}
+                        >
+                          <KeyboardArrowLeftIcon />
+                        </IconButton>
+                        <IconButton
+                          disabled={activeStep === (steps.length - 1)}
+                          onClick={handleNext}
+                          style={{borderRadius: '0px'}}
+                        >
+                          <KeyboardArrowRightIcon />
+                        </IconButton>
+                      </div>
                     </div>
-                  </div>
-                </>
-              )}
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
+                  </>
+                )}
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+        {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
+          <div>{stepsContent[activeStep]}</div>
+        )}
+      </div>
       {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
         <>
-        <div>{stepsContent[activeStep]}</div>
-        <div className={classes.actionsContainer}>
-          <div 
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-          }}>
-            <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              className={classes.button}
-            >
-              {t("Back")}
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNext}
-              className={classes.button}
-            >
-              {activeStep === steps.length - 1 ? t('Finish') : t('Next')}
-            </Button>
-          </div>
-        </div>
+        <IconButton
+          disabled={activeStep === (steps.length - 1)}
+          onClick={handleNext}
+          style={{borderRadius: '0px'}}
+        >
+          <KeyboardArrowRightIcon />
+        </IconButton>
       </>)}
     </div>
   );

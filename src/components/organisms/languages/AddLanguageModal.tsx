@@ -196,8 +196,24 @@ const AddForm = (props: AddFormProps) => {
                     <div 
                     style={{
                         display: 'flex',
-                        flexDirection: 'row'
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end'
                     }}>
+                        <Button
+                            className={"pointerOverEffect"}
+                            variant="contained"
+                            color="secondary"
+                            style={{
+                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                borderRadius: '0px',
+                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                            }}
+                            onClick={()=>{
+                                onCancel();
+                            }}>
+                                {t("Cancel")}
+                        </Button>
                         <Button
                             disabled={sendingInProgress}
                             className={"pointerOverEffect"}
@@ -225,21 +241,6 @@ const AddForm = (props: AddFormProps) => {
                                 {t("Add")}
                             </>
                             )}
-                        </Button>
-                        <Button
-                            className={"pointerOverEffect"}
-                            variant="contained"
-                            color="secondary"
-                            style={{
-                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                borderRadius: '0px',
-                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                            }}
-                            onClick={()=>{
-                                onCancel();
-                            }}>
-                                {t("Cancel")}
                         </Button>
                     </div>
                 </>
