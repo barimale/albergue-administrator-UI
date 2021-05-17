@@ -1,5 +1,4 @@
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
-import useTheme from "@material-ui/core/styles/useTheme";
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
