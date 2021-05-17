@@ -5,7 +5,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress } from '@material-ui/core';
 import { thirdMain } from '../../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
@@ -16,6 +16,7 @@ import { Language } from './LanguagesContent';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { ModalTitle } from '../../molecules/common/ModalTitle';
+import { InformationTooltip } from "../../molecules/common/InformationTooltip";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -188,6 +189,9 @@ const AddForm = (props: AddFormProps) => {
                         borderLeft: `20px solid ${theme.palette.primary.main}`
                 }}>
                 <>
+                    <InformationTooltip
+                        information={"In order to add a new language, choose one of the country listed belowed."}
+                    />
                     <AddFormContent {...props}/>                  
                     <div 
                     style={{

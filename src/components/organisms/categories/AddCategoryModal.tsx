@@ -18,6 +18,7 @@ import { CategoryNameField } from '../../molecules/categories/CategoryNameField'
 import { ModalTitle } from '../../molecules/common/ModalTitle';
 import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from "../../../hooks/useLanguages";
+import { InformationTooltip } from "../../molecules/common/InformationTooltip";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -189,6 +190,9 @@ const AddForm = (props: AddFormProps) => {
                         borderLeft: `20px solid ${theme.palette.primary.main}`
                 }}>
                 <>
+                    <InformationTooltip
+                        information={"In order to create a new category, provide translations for its name for all choosen languages."}
+                    />
                     <AddFormContent {...props}/>                  
                     <div 
                     style={{

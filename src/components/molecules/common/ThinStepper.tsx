@@ -7,7 +7,8 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 400,
+    width: '100%',
+    // maxWidth: 400,
     flexGrow: 1,
   },
 });

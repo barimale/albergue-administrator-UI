@@ -19,6 +19,8 @@ import { Category } from '../categories/CategoriesContent';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { ModalTitle } from '../../molecules/common/ModalTitle';
+import { InformationTooltip } from "../../molecules/common/InformationTooltip";
+import ThinStepper from "../../molecules/common/ThinStepper";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -213,6 +215,9 @@ const AddForm = (props: AddFormProps) => {
                         borderLeft: `20px solid ${theme.palette.primary.main}`
                 }}>
                 <>
+                    <InformationTooltip
+                        information={"In order to add a new item, follow the wizard step by step by providing general data, translations and images."}
+                    />
                     <AddFormContent {...props}/>                  
                     <div 
                     style={{
