@@ -191,7 +191,7 @@ const AddForm = (props: AddFormProps) => {
                 }}>
                 <>
                     <InformationTooltip
-                        information={"In order to create a new category, provide translations for its name for all choosen languages."}
+                        information={"In order to create a new category, provide translations for all defined languages."}
                     />
                     <AddFormContent {...props}/>                  
                     <div 
