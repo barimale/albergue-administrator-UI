@@ -170,10 +170,13 @@ const StickyHeadTable = () => {
       <Paper className={classes.root}>
         <div style={{padding: '20px'}}>
         <SearchAppBar onChange={() => setRandom(Math.random())}/>
-        {rows.length === 0 && isLoading.valueOf() === false ? (
-          <InformationMessage
-            information={"There are no items defined in the system. Please use +, to add new item."} 
-          />
+        {isLoading.valueOf() === true ? (
+          <LoadingInProgress/>
+        ):(
+          rows.length === 0 && isLoading.valueOf() === false ? (
+            <InformationMessage
+              information={"There are no items defined in the system. Please use +, to add new item."} 
+            />
         ):(
           <>
             <TableContainer>
@@ -198,14 +201,7 @@ const StickyHeadTable = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {isLoading.valueOf() === true ? (
-                    <TableRow>
-                      <TableCell colSpan={columns.length + 1}>
-                        <LoadingInProgress/>
-                      </TableCell>
-                    </TableRow>
-                  ):(
-                  rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                         {columns.map((column) => {
@@ -233,7 +229,7 @@ const StickyHeadTable = () => {
                         </TableCell>
                       </TableRow>
                     );
-                  }))}
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -246,9 +242,9 @@ const StickyHeadTable = () => {
               onChangePage={handleChangePage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-        </>
-        )}
-        </div>
-      </Paper>
-    );
-  }
+          </>
+        ))}
+      </div>
+    </Paper>
+  );
+}

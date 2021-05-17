@@ -170,44 +170,40 @@ const StickyHeadTable = () => {
     return (
       <Paper className={classes.root}>
         <div style={{padding: '20px'}}>
-        <CategorySearchAppBar onChange={() => setRandom(Math.random())}/>
-        {rows.length === 0 && isLoading.valueOf() === false ? (
-          <InformationMessage 
-            information={"There are no categories defined in the system. Please use +, to add new category."}
-          />
-        ):(
-          <>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-                <TableCell
-                    key={'action'}
-                    align={'right'}
-                    style={{ fontWeight: 'bold'}}>
-                  {t("Action")}
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-                {isLoading.valueOf() === true ? (
-                  <TableRow>
-                    <TableCell colSpan={columns.length + 1}>
-                      <LoadingInProgress/>
-                    </TableCell>
-                  </TableRow>
-                ):(
-                    rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Category) => {
-                        return (
+          <CategorySearchAppBar onChange={() => setRandom(Math.random())}/>
+          { isLoading.valueOf() === true ? (
+              <LoadingInProgress/>
+            ):(
+            rows.length === 0 ? (
+              <InformationMessage 
+                information={"There are no categories defined in the system. Please use +, to add new category."}
+              />
+          ):(
+            <>
+              <TableContainer className={classes.container}>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
+                        >
+                          {column.label}
+                        </TableCell>
+                      ))}
+                      <TableCell
+                          key={'action'}
+                          align={'right'}
+                          style={{ fontWeight: 'bold'}}>
+                        {t("Action")}
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Category) => {
+                      return (
                         <TableRow 
                           hover 
                           role="checkbox" 
@@ -239,24 +235,22 @@ const StickyHeadTable = () => {
                                 }}/>
                             </TableCell>
                         </TableRow>
-                        );
-                    })
-                )}
-              {}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          // rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-        </>
-        )}
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                // rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            </>
+          ))}
         </div>
       </Paper>
     );

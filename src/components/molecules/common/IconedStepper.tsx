@@ -56,9 +56,13 @@ export default function IconedStepper(props: StepperProps) {
     if(activeStep > 0){
       setSuggestionIsLoading(true);
       getData().then((res: string) =>{
+        debugger
         setSuggestion(res);
+        debugger
         setSuggestionIsLoading(false);
-      })
+      }).catch(()=>{
+        debugger
+      });
     }
 
     return () => {

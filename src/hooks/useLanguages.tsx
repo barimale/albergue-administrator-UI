@@ -65,7 +65,7 @@ function useLanguages() {
           return "Translation not possible";
         }).catch((error: any) =>{
           console.log(error);
-          return error;
+          return "Translation not possible";
       });
     }
 

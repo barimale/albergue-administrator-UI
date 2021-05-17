@@ -148,7 +148,10 @@ interface Column {
       <Paper className={classes.root}>
         <div style={{padding: '20px'}}>
         <SearchAppBarLanguage onChange={() => setRandom(Math.random())}/>
-        {rows.length === 0 && isLoading.valueOf() === false ? (
+        {isLoading.valueOf() === true ? (
+          <LoadingInProgress/>
+        ):(
+          rows.length === 0 && isLoading.valueOf() === false ? (
           <InformationMessage
             information={"There are no languages defined in the system. Please use +, to add new language."} 
           />
@@ -176,70 +179,61 @@ interface Column {
                 </TableRow>
               </TableHead>
               <TableBody>
-                  {isLoading.valueOf() === true ? (
-                    <TableRow>
-                      <TableCell colSpan={columns.length + 1}>
-                        <LoadingInProgress/>
-                      </TableCell>
-                    </TableRow>
-                  ):(
-                      rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Language) => {
-                          return (
-                          <TableRow hover role="checkbox" tabIndex={-1} key={row.alpha2Code}>
-                              {columns.map((column) => {
-                              const value = row[column.id];
-                              return (
-                                  <TableCell key={column.id} align={column.align}>
-                                    <div style={{
-                                      display: 'flex',
-                                      flexDirection: 'row',
-                                      verticalAlign: 'baseline'
-                                    }}>
-                                      {column.id === "alpha2Code" && value !== undefined &&(
-                                        <div style={{paddingRight: '10px'}}>
-                                          <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
-                                        </div>
-                                      )}
-                                      {column.format && typeof value === 'number' ? column.format(value) : 
-                                      (typeof value === 'boolean' ? (
+                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Language) => {
+                    return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.alpha2Code}>
+                        {columns.map((column) => {
+                        const value = row[column.id];
+                        return (
+                            <TableCell key={column.id} align={column.align}>
+                              <div style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                verticalAlign: 'baseline'
+                              }}>
+                                {column.id === "alpha2Code" && value !== undefined &&(
+                                  <div style={{paddingRight: '10px'}}>
+                                    <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
+                                  </div>
+                                )}
+                                {column.format && typeof value === 'number' ? column.format(value) : 
+                                (typeof value === 'boolean' ? (
 
-                                          value === true ? <DoneIcon/> : <ClearIcon/>
-                                      ) : value)}
-                                    </div>
-                                  </TableCell>
-                              );
-                              })}
-                              <TableCell align={'right'}>
-                                <DeleteActionComponent 
-                                  id={row.id || ""}
-                                  title={"Are You sure?"}
-                                  question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}
-                                  yesLabel={"Yes"}
-                                  noLabel={"No"}
-                                  onAgreeAction={async () => {
-                                    await onDelete(row.id || "");
-                                    setRandom(Math.random());
-                                  }}/>
-                              </TableCell>
-                          </TableRow>
-                          );
-                      })
-                  )}
-                {}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            // rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </>
-        )}
+                                    value === true ? <DoneIcon/> : <ClearIcon/>
+                                ) : value)}
+                              </div>
+                            </TableCell>
+                        );
+                        })}
+                        <TableCell align={'right'}>
+                          <DeleteActionComponent 
+                            id={row.id || ""}
+                            title={"Are You sure?"}
+                            question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}
+                            yesLabel={"Yes"}
+                            noLabel={"No"}
+                            onAgreeAction={async () => {
+                              await onDelete(row.id || "");
+                              setRandom(Math.random());
+                            }}/>
+                        </TableCell>
+                    </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              // rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </>
+        ))}
       </div>
     </Paper>
   );
