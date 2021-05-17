@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
-import { fourthMain } from '../../../customTheme';
 import AddItemModal from "../../organisms/items/AddItemModal";
+import Tooltip from '@material-ui/core/Tooltip';
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,23 +73,25 @@ export default function SearchAppBar(props: SearchAppBarProps) {
   const { onChange } = props;
   const classes = useStyles();
   const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
-
+  const { t } = useTranslation();
+  
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: 'gray'}}>
+      <AppBar position="static" style={{backgroundColor: 'gray', boxShadow: 'unset'}}>
         <Toolbar>
           <>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={()=>{
-                setIsAddVisible(true);
-              }}
-            >
-              <AddIcon />
-            </IconButton>
+            <Tooltip title={t("Add item").toString()}>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                onClick={()=>{
+                  setIsAddVisible(true);
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
             {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
