@@ -134,7 +134,14 @@ export interface ItemDetails {
     active: boolean;
     price: number;
     categoryId: string;
+    images: Array<ItemImageDetails>;
     translatableDetails: Array<ItemTranslatableDetails>;
+}
+
+export interface ItemImageDetails {
+    id?: string;
+    name: string;
+    imageData: string;
 }
 
 export interface ItemTranslatableDetails {
@@ -162,11 +169,18 @@ const AddForm = (props: AddFormProps) => {
 
     useEffect(()=>{
         const initialDetails: Array<ItemTranslatableDetails> = languages.flatMap(p => {
-            return {languageId : p.id, name: "", shortDescription: "", description: "" } as ItemTranslatableDetails
+            return {
+                languageId : p.id,
+                name: "",
+                shortDescription: "",
+                description: "",
+                images: new Array<ItemImageDetails>()} as ItemTranslatableDetails
         });
 
-        setInitialValues({price: 0,
+        setInitialValues({
+            price: 0,
             active: true,
+            images: new Array<ItemImageDetails>(),
             translatableDetails: initialDetails,
             categoryId: ""});
     },[languages]);
@@ -180,7 +194,6 @@ const AddForm = (props: AddFormProps) => {
     const onSubmit = async (value: ItemDetails) =>{
         try{
             setSendingInProgress(true);
-            debugger
             var result = await axios.post(
                 "http://localhost:5020/api/shop/Item/AddItem", 
                 value, 
