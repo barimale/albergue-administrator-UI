@@ -311,7 +311,7 @@ const AddFormContent = (props: AddFormContentProps) =>{
             steps={steps} 
             stepsContent={stepsContent} 
             stepsIcon={icons} 
-            orientation={"vertical"} />
+            orientation={"horizontal"} />
             <p>{JSON.stringify(props.errors)}</p>
         </div>
     }
