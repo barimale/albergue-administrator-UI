@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
-import useLanguages from '../../../hooks/useLanguages';
+import useLanguages, { TranslateResponse } from '../../../hooks/useLanguages';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,7 +42,7 @@ export default function IconedStepper(props: StepperProps) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const { t } = useTranslation();
-  const [suggestion, setSuggestion] = useState<string>("");
+  const [suggestion, setSuggestion] = useState<TranslateResponse>({isError: false, translation: ""});
   const [suggestionIsLoading, setSuggestionIsLoading] = useState<boolean>(false);
   const { translate } = useLanguages();
   var controller = new AbortController();
@@ -55,13 +55,14 @@ export default function IconedStepper(props: StepperProps) {
 
     if(activeStep > 0){
       setSuggestionIsLoading(true);
-      getData().then((res: string) =>{
-        debugger
+      getData().then((res: TranslateResponse) =>{
+        if(res.isError === true){
+          res.translation = `https://translate.google.pl/?sl=en&tl=${steps[activeStep]?.toLowerCase()}&text=${textInEN}&op=translate`;
+        }
         setSuggestion(res);
-        debugger
         setSuggestionIsLoading(false);
-      }).catch(()=>{
-        debugger
+      }).catch((error: any)=>{
+          console.log(error);
       });
     }
 
@@ -97,7 +98,15 @@ export default function IconedStepper(props: StepperProps) {
               {activeStep > 0 &&
                 <div>
                   <Typography>{t("Suggestion")}</Typography>
-                  <Typography>{suggestionIsLoading.valueOf() === false ? suggestion : t("Translation in progress...")}</Typography>
+                  {suggestionIsLoading.valueOf() === true ? (
+                    <Typography>{t("Translation in progress...")}</Typography>
+                  ):(
+                    suggestion.isError.valueOf() === false ? (
+                      <Typography>{suggestion.translation}</Typography>
+                    ):(
+                      <Typography><a href={suggestion.translation} target={"_blank"}>{t("Translate with Google Maps")}</a></Typography>
+                    )
+                  )}
                 </div>
               }
               <div className={classes.actionsContainer}>

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
-import ConfirmationDialog, { ConfirmationDialogProps } from "./ConfirmationDialog";
+import ConfirmationDialog from "./ConfirmationDialog";
+import Tooltip from '@material-ui/core/Tooltip';
+import { useTranslation } from "react-i18next";
 
 interface ActionComponentProps {
   onAgreeAction: (id: string) => void;
@@ -14,14 +16,17 @@ interface ActionComponentProps {
 export const DeleteActionComponent = (props: ActionComponentProps) => {
   const { id, onAgreeAction } = props;
   const [isShown, setIsShown] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   return (
     <>
-      <IconButton onClick={async () => {
-        setIsShown(!isShown);
-      }}>
-        <ClearIcon />
-      </IconButton>
+      <Tooltip title={t("Delete").toString()}>
+        <IconButton onClick={async () => {
+          setIsShown(!isShown);
+        }}>
+          <ClearIcon />
+        </IconButton>
+      </Tooltip>
       <ConfirmationDialog
         {...props}
         isVisible={isShown}

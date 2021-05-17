@@ -4,6 +4,11 @@ import { AuthContext } from '../contexts/AuthContext';
 import { useContext } from "react";
 import { Language } from "../components/organisms/languages/LanguagesContent";
 
+export type TranslateResponse = {
+  translation: string;
+  isError: boolean;
+}
+
 function useLanguages() {
   const [languages, setLanguages ] = useState<Array<Language>>(new Array<Language>());
   const cancelToken = axios.CancelToken;
@@ -40,7 +45,7 @@ function useLanguages() {
       };
     }, []);
 
-    async function translate(from: string, to: string, text: string, signal: AbortSignal): Promise<string> {
+    async function translate(from: string, to: string, text: string, signal: AbortSignal): Promise<TranslateResponse> {
         return await fetch("https://libretranslate.com/translate", {
           method: "POST",
           signal: signal,
@@ -54,18 +59,18 @@ function useLanguages() {
           const data: any =  await response.json();
           if(data.translatedText !== undefined)
           {
-            return data.translatedText;
+            return {isError: false, translation: data.translatedText};
           }
 
           if(data.error !== undefined)
           {
-            return data.error;
+            return  {isError: true, translation: data.error};
           }
 
-          return "Translation not possible";
+          return { isError: true, translation: "Translation not possible"};
         }).catch((error: any) =>{
           console.log(error);
-          return "Translation not possible";
+          return { isError: true, translation: "Translation not possible"};
       });
     }
 

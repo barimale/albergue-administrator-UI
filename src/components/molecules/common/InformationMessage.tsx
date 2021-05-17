@@ -19,9 +19,9 @@ export const InformationMessage = (props: InformationMessageProps) =>{
             padding: '20px',
             marginTop: '20px',
             // borderRadius: '20px',
-            border: '1px solid orange'
+            border: '1px solid green'
           }}>
-            <InfoIcon style={{color: 'orange'}}/>
+            <InfoIcon style={{color: 'green'}}/>
             <Typography style={{
               paddingLeft: '10px'
             }}>

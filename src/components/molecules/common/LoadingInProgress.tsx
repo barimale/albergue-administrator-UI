@@ -5,10 +5,15 @@ import { ContentLayout } from "../../templates/MainLayout";
 
 export const LoadingInProgress = () =>{
     return(
-        <ContentLayout>
-            <CenteredDiv>
-                    <CircularProgress color="primary" />
-            </CenteredDiv>
-        </ContentLayout>
+        <div style={{
+            height: '100%',
+            width: '100%'
+        }}>
+            <ContentLayout>
+                <CenteredDiv>
+                        <CircularProgress color="primary" />
+                </CenteredDiv>
+            </ContentLayout>
+        </div>
     );
 }

@@ -7,6 +7,8 @@ import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import AddCategoryModal from "../../organisms/categories/AddCategoryModal";
+import Tooltip from '@material-ui/core/Tooltip';
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,23 +75,25 @@ export default function CategorySearchAppBar(props: CategorySearchAppBarProps) {
   const { onChange } = props;
   const classes = useStyles();
   const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: 'gray'}}>
+      <AppBar position="static" style={{backgroundColor: 'gray', boxShadow: 'unset'}}>
         <Toolbar>
           <>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={()=>{
-                setIsAddVisible(true);
-              }}
-            >
-              <AddIcon />
-            </IconButton>
+            <Tooltip title={t("Add category").toString()}>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                onClick={()=>{
+                  setIsAddVisible(true);
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
             {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />

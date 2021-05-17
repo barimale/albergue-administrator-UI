@@ -21,22 +21,22 @@ function App() {
   
   return (
     // <CustomMuiThemeProvider>
-    <>
-      {isLoading.valueOf() === true ?(
-        <div className="App">
-          <LoadingInProgress/>
-        </div>
-      ):(
-        <I18nextProvider i18n={i18n}>
-          <DeviceContextProvider>
-            <AuthContextProvider>
-              <LocalizedApp />
-            </AuthContextProvider>
-          </DeviceContextProvider>
-        </I18nextProvider>
-      )}
+      <>
+        {isLoading.valueOf() === true ?(
+          <div className="App">
+            <LoadingInProgress/>
+          </div>
+        ):(
+          <I18nextProvider i18n={i18n}>
+            <DeviceContextProvider>
+              <AuthContextProvider>
+                <LocalizedApp />
+              </AuthContextProvider>
+            </DeviceContextProvider>
+          </I18nextProvider>
+        )}
       </>
-    //  </CustomMuiThemeProvider>
+    //{/* </CustomMuiThemeProvider> */}
   );
 }
 

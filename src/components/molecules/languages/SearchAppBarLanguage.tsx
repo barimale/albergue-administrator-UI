@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
-import { fourthMain } from '../../../customTheme';
 import AddLanguageModal from "../../organisms/languages/AddLanguageModal";
+import { useTranslation } from "react-i18next";
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,24 +72,26 @@ type SearchAppBarLanguageProps = {
 export default function SearchAppBarLanguage(props: SearchAppBarLanguageProps) {
   const { onChange } = props;
   const classes = useStyles();
+  const { t } = useTranslation();
   const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: 'gray'}}>
+      <AppBar position="static" style={{backgroundColor: 'gray', boxShadow: 'unset'}}>
         <Toolbar>
           <>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={()=>{
-                setIsAddVisible(true);
-              }}
-            >
-              <AddIcon />
-            </IconButton>
+            <Tooltip title={t("Add language").toString()}>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                onClick={()=>{
+                  setIsAddVisible(true);
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
             <AddLanguageModal isDisplayed={isAddVisible} close={()=> {
               setIsAddVisible(false);
               onChange();
