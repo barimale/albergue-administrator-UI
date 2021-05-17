@@ -105,20 +105,28 @@ const AddItemModalContent = (props: AddItemModalProps) =>{
 }
 
 const AddSchema = Yup.object().shape({
-    // description: Yup.string()
-    // .required('Field is required')
-    // .min(2, 'Field has to be at least 2 signs long')
-    // .max(50, 'Field cannot be longer than 50 signs'),
-    // shortDescription: Yup.string()
-    // .required('Field is required')
-    // .min(2, 'Field has to be at least 2 signs long')
-    // .max(50, 'Field cannot be longer than 50 signs'),
+    active: Yup.boolean()
+    .required('Field is required'),
     price: Yup.number()
     .required('Field is required'),
     categoryId: Yup.string()
-    .required('Field is required')
-    // .negative("Price cannot be negative")
-    // .moreThan(10000, "Price cannot be higher than 10.000EUR")
+    .required('Field is required'),
+    translatableDetails: Yup.array().of(
+        Yup.object().shape({
+            name: Yup.string()
+            .required('Field is required'),
+            shortDescription: Yup.string()
+            .required('Field is required')
+            .min(2, 'Field has to be at least 2 signs long')
+            .max(50, 'Field cannot be longer than 50 signs'),
+            description: Yup.string()
+            .required('Field is required')
+            .min(2, 'Field has to be at least 2 signs long')
+            .max(50, 'Field cannot be longer than 50 signs'),
+            languageId: Yup.string()
+            .required('LanguageId is required'),
+        })
+    )
   });
 
 export interface ItemDetails {
@@ -136,7 +144,6 @@ export interface ItemTranslatableDetails {
     description: string;
     languageId: string;
 }
-  
 
 type AddFormProps = {
     close: () => void;
@@ -148,20 +155,21 @@ const AddForm = (props: AddFormProps) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const { languages } = useLanguages();
-    const initialDetails: Array<ItemTranslatableDetails> = languages.flatMap(p => {
-        return {languageId : p.id, name: "", shortDescription: "", description: "" } as ItemTranslatableDetails
-    });
-
-    const initialValues: ItemDetails = {
-        price: 0,
-        active: true,
-        translatableDetails: initialDetails,
-        categoryId: ""
-      };
-
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
+    const [initialValues, setInitialValues] = useState<ItemDetails>({} as ItemDetails);
+
+    useEffect(()=>{
+        const initialDetails: Array<ItemTranslatableDetails> = languages.flatMap(p => {
+            return {languageId : p.id, name: "", shortDescription: "", description: "" } as ItemTranslatableDetails
+        });
+
+        setInitialValues({price: 0,
+            active: true,
+            translatableDetails: initialDetails,
+            categoryId: ""});
+    },[languages]);
 
     useEffect(() => {
         return () => {
@@ -172,7 +180,7 @@ const AddForm = (props: AddFormProps) => {
     const onSubmit = async (value: ItemDetails) =>{
         try{
             setSendingInProgress(true);
-
+            debugger
             var result = await axios.post(
                 "http://localhost:5020/api/shop/Item/AddItem", 
                 value, 
@@ -207,9 +215,10 @@ const AddForm = (props: AddFormProps) => {
     {context =>
         <Formik
             initialValues={initialValues}
-            validateOnMount={true}
+            validateOnMount={false}
             validateOnBlur={true}
             validateOnChange={true}
+            enableReinitialize={true}
             validationSchema={AddSchema}
             onSubmit={async (value: ItemDetails)=>{
             await onSubmit(value);
@@ -441,7 +450,6 @@ const TranslatableItemDescription = (props: TranslatableItemDescriptionProps) =>
     );
   }
   
-
 const AddFormContent = (props: FormikProps<ItemDetails>) =>{
     const categories = useCategories();
     const steps = ['General', 'Name', 'Short description', 'Description', 'Images'];
@@ -465,12 +473,13 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
               alignContent: 'center',
               width: '100%',
           }}>
-              <IconedStepper 
+            <IconedStepper 
                 onActiveTabChanged={()=>{}} 
                 onFinished={() =>{}}
                 steps={steps} 
                 stepsContent={stepsContent} 
-                orientation={"horizontal"} />             
+                orientation={"horizontal"} />
+            <p>{JSON.stringify(props.errors)}</p>
           </div>
         }
         </DeviceContextConsumer>

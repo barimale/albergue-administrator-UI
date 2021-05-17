@@ -40,6 +40,13 @@ export default function IconedStepper(props: StepperProps) {
   const { steps, stepsContent, stepsIcon, orientation, onActiveTabChanged, onFinished } = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+
+  function getStepContent(index: number){
+    if(stepsContent === undefined || stepsContent[index] === undefined){
+      return undefined;
+    }
+    return React.cloneElement(stepsContent[index]);
+  }
   
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -62,8 +69,7 @@ export default function IconedStepper(props: StepperProps) {
     <div className={classes.root} style={{
       display: 'flex',
       flexDirection: (orientation === undefined || (orientation !== undefined && orientation === 'vertical')) ? 'column': 'row',
-      justifyContent: (orientation === undefined || (orientation !== undefined && orientation === 'vertical')) ? 'unset': 'space-evenly',
-
+      justifyContent: (orientation === undefined || (orientation !== undefined && orientation === 'vertical')) ? 'unset': 'space-evenly'
     }}>
       {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
       <>
@@ -77,10 +83,6 @@ export default function IconedStepper(props: StepperProps) {
       </>)}
       <div>
         <Stepper
-          style={{
-            // width: '300px',
-            // overflowX: 'auto'
-          }}
           activeStep={activeStep} 
           orientation={orientation !== undefined ? orientation : 'vertical'} 
           alternativeLabel
@@ -91,10 +93,9 @@ export default function IconedStepper(props: StepperProps) {
                   StepIconComponent={stepsIcon !== undefined ? stepsIcon[index] : undefined}>
                   {label}
               </StepLabel>
-              <StepContent>
-                {(orientation === undefined || (orientation !== undefined && orientation === 'vertical')) && (
-                  <>
-                    <div>{stepsContent[activeStep]}</div>
+              {(orientation === undefined || (orientation !== undefined && orientation === 'vertical')) && (
+                <StepContent>
+                  <div>{getStepContent(activeStep)}</div>
                     <div className={classes.actionsContainer}>
                       <div style={{
                         display: 'flex',
@@ -117,14 +118,13 @@ export default function IconedStepper(props: StepperProps) {
                         </IconButton>
                       </div>
                     </div>
-                  </>
-                )}
-              </StepContent>
+                </StepContent>
+              )}
             </Step>
           ))}
         </Stepper>
         {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
-          <div>{stepsContent[activeStep]}</div>
+          <div>{getStepContent(activeStep)}</div>
         )}
       </div>
       {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (

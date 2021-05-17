@@ -55,9 +55,9 @@ export const ItemDescriptionField = (props: ItemDescriptionFieldProps) => {
       {context =>
       <>
         <MyTextField
-          id={`translatableDetails[${index}].name`}
-          name={`translatableDetails[${index}].name`}
-          label={t("Item name")}
+          id={`translatableDetails[${index}].description`}
+          name={`translatableDetails[${index}].description`}
+          label={t("Item description")}
           margin="dense"
           variant="outlined"
           InputProps={{
@@ -71,7 +71,7 @@ export const ItemDescriptionField = (props: ItemDescriptionFieldProps) => {
                     <IconButton
                     aria-label="toggle password visibility"
                     onClick={()=>{
-                      props.setFieldValue(`translatableDetails[${index}].name`, suggestion.translation || "")
+                      props.setFieldValue(`translatableDetails[${index}].description`, suggestion.translation || "")
                     }}
                     onMouseDown={(event: any) => event.preventDefault()}
                   >

@@ -101,8 +101,15 @@ const AddCategoryModalContent = (props: AddCategoryModalProps) =>{
 }
 
 const AddSchema = Yup.object().shape({
-    translatableDetails: Yup.array()
-    .required('Field is required')
+    translatableDetails: Yup.array().of(
+        Yup.object().shape({
+            name: Yup.string()
+            .required('Field is required')
+            .min(2, 'Field has to be at least 2 signs long')
+            .max(50, 'Field cannot be longer than 50 signs'),
+            languageId: Yup.string()
+            .required('LanguageId is required')
+        }))
   });
 
 type AddFormProps = {
@@ -116,17 +123,17 @@ const AddForm = (props: AddFormProps) => {
     const theme = useTheme();
     const { t } = useTranslation();
     const { languages } = useLanguages();
-    const initial: Array<CategoryTranslatableDetails> = languages.flatMap(p => {
-        return {languageId : p.id, name: "" } as CategoryTranslatableDetails
-    });
-
-    const initialValues: Category = {
-        translatableDetails: initial
-      };
-
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
+    const [initialValues, setInitialValues] = useState<Category>({} as Category);
+
+    useEffect(()=>{
+        const initial: Array<CategoryTranslatableDetails> = languages.flatMap(p => {
+            return {languageId : p.id, name: "" } as CategoryTranslatableDetails
+        });
+        setInitialValues({translatableDetails: initial});
+    },[languages]);
 
     useEffect(() => {
         return () => {
@@ -172,10 +179,11 @@ const AddForm = (props: AddFormProps) => {
     {context =>
         <Formik
             initialValues={initialValues}
-            validateOnMount={true}
+            validateOnMount={false}
             validateOnBlur={true}
             validateOnChange={true}
             validationSchema={AddSchema}
+            enableReinitialize={true}
             onSubmit={async (value: Category)=>{
             await onSubmit(value);
         }}>
@@ -271,11 +279,11 @@ const AddFormContent = (props: AddFormContentProps) =>{
     const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
     
     useEffect(()=>{
-      if(props.values.translatableDetails[0]?.name !== undefined){
+      if(props.values.translatableDetails !== undefined && props.values.translatableDetails[0]?.name !== undefined){
         setTextInEN(props.values.translatableDetails[0]?.name);
       }
   
-    }, [JSON.stringify(props.values.translatableDetails[0])]);
+    }, [JSON.stringify(props.values.translatableDetails)]);
 
     const icons = steps.flatMap(p => 
         () => <img id='myImage' src={`http://www.geonames.org/flags/x/${p === "EN" ? "gb" : p.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
@@ -303,7 +311,8 @@ const AddFormContent = (props: AddFormContentProps) =>{
             steps={steps} 
             stepsContent={stepsContent} 
             stepsIcon={icons} 
-            orientation={"horizontal"} />
+            orientation={"vertical"} />
+            <p>{JSON.stringify(props.errors)}</p>
         </div>
     }
     </DeviceContextConsumer>
