@@ -32,46 +32,18 @@ const useStyles = makeStyles((theme: Theme) =>
 export type StepperProps = {
     steps: Array<string>;
     stepsContent: JSX.Element[];
-    stepsIcon: (() => JSX.Element)[];
-    textInEN: string;
+    stepsIcon?: (() => JSX.Element)[];
     orientation?: 'vertical' | 'horizontal';
+    onActiveTabChanged: ()=> void;
+    onFinished: ()=> void;
 }
 
 export default function IconedStepper(props: StepperProps) {
-  const { steps, stepsContent, stepsIcon, textInEN, orientation } = props;
+  const { steps, stepsContent, stepsIcon, orientation, onActiveTabChanged, onFinished } = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const { t } = useTranslation();
-  const [suggestion, setSuggestion] = useState<TranslateResponse>({isError: false, translation: ""});
-  const [suggestionIsLoading, setSuggestionIsLoading] = useState<boolean>(false);
-  const { translate } = useLanguages();
-  var controller = new AbortController();
-  var signal = controller.signal;
-
-  useEffect(()=>{
-    const getData = async() =>{
-      return await translate('en', steps[activeStep]?.toLowerCase(), textInEN, signal);
-    }
-
-    if(activeStep > 0){
-      setSuggestionIsLoading(true);
-      getData().then((res: TranslateResponse) =>{
-        if(res.isError === true){
-          res.translation = `https://translate.google.pl/?sl=en&tl=${steps[activeStep]?.toLowerCase()}&text=${textInEN}&op=translate`;
-        }
-        setSuggestion(res);
-        setSuggestionIsLoading(false);
-      }).catch((error: any)=>{
-          console.log(error);
-      });
-    }
-
-    return () => {
-      controller.abort();
-     }; 
-
-  }, [activeStep]);
-
+  
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -80,66 +52,85 @@ export default function IconedStepper(props: StepperProps) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  useEffect(()=>{
+    if(activeStep === steps.length - 1)
+    {
+      onFinished();
+    }else{
+      onActiveTabChanged();
+    }
+  },[activeStep]);
 
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep} orientation={orientation !== undefined ? orientation : 'vertical'}>
+      <Stepper activeStep={activeStep} orientation={orientation !== undefined ? orientation : 'vertical'} alternativeLabel>
         {steps.map((label, index) => (
           <Step key={label}>
             <StepLabel 
-                StepIconComponent={stepsIcon[index]}>
+                StepIconComponent={stepsIcon !== undefined ? stepsIcon[index] : undefined}>
                 {label}
             </StepLabel>
             <StepContent>
-              <div>{stepsContent[index]}</div>
-              {activeStep > 0 &&
-                <div>
-                  <Typography>{t("Suggestion")}</Typography>
-                  {suggestionIsLoading.valueOf() === true ? (
-                    <Typography>{t("Translation in progress...")}</Typography>
-                  ):(
-                    suggestion.isError.valueOf() === false ? (
-                      <Typography>{suggestion.translation}</Typography>
-                    ):(
-                      <Typography><a href={suggestion.translation} target={"_blank"}>{t("Translate with Google Maps")}</a></Typography>
-                    )
-                  )}
-                </div>
-              }
-              <div className={classes.actionsContainer}>
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    {t("Back")}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? t('Finish') : t('Next')}
-                  </Button>
-                </div>
-              </div>
+              {(orientation === undefined || (orientation !== undefined && orientation === 'vertical')) && (
+                <>
+                  <div>{stepsContent[activeStep]}</div>
+                  <div className={classes.actionsContainer}>
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}>
+                      <Button
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        className={classes.button}
+                      >
+                        {t("Back")}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNext}
+                        className={classes.button}
+                      >
+                        {activeStep === steps.length - 1 ? t('Finish') : t('Next')}
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              )}
             </StepContent>
           </Step>
         ))}
       </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>{t("All steps completed")}</Typography>
-          <Button onClick={handleReset} className={classes.button}>
-            {t("Reset")}
-          </Button>
-        </Paper>
-      )}
+      {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
+        <>
+        <div>{stepsContent[activeStep]}</div>
+        <div className={classes.actionsContainer}>
+          <div 
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
+          }}>
+            <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.button}
+            >
+              {t("Back")}
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+              className={classes.button}
+            >
+              {activeStep === steps.length - 1 ? t('Finish') : t('Next')}
+            </Button>
+          </div>
+        </div>
+      </>)}
     </div>
   );
 }

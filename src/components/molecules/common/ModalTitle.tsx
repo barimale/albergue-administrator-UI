@@ -1,11 +1,13 @@
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 import { useTheme } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
-import React from 'react';
 import { Typography } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
+import IconButton from '@material-ui/core/IconButton';
 
 type ModalTitleProps = {
     title: string;
+    close: () => void;
 }
 
 export const ModalTitle = (props: ModalTitleProps) => {
@@ -40,6 +42,11 @@ export const ModalTitle = (props: ModalTitleProps) => {
                     }}>
                     {t(props.title)}
                 </Typography>
+                <IconButton onClick={async () => {
+                    props.close();
+                }}>
+                    <ClearIcon style={{color: 'white'}}/>
+                </IconButton>
             </div>}
         </DeviceContextConsumer>);
 };

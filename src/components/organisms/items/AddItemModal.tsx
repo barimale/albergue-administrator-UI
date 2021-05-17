@@ -6,7 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import React, { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress } from '@material-ui/core';
 import { thirdMain } from '../../../customTheme';
 import { Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
@@ -15,12 +15,12 @@ import { ShortDescriptionField } from "../../molecules/items/ShortDescriptionFie
 import { PriceField } from "../../molecules/items/PriceField";
 import { CategorySelectorField } from "../../molecules/categories/CategorySelectorField";
 import axios from 'axios';
-import { Category } from '../categories/CategoriesContent';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { ModalTitle } from '../../molecules/common/ModalTitle';
 import { InformationTooltip } from "../../molecules/common/InformationTooltip";
-import ThinStepper from "../../molecules/common/ThinStepper";
+import useCategories from '../../../hooks/useCategories';
+import IconedStepper from "../../molecules/common/IconedStepper";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -91,7 +91,7 @@ const AddItemModalContent = (props: AddItemModalProps) =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <ModalTitle title={"Add item"}/>
+                    <ModalTitle title={"Add item"} close={close}/>
                     <AddForm close={close}/>
                 </div>
             </Fade>
@@ -278,43 +278,19 @@ const AddForm = (props: AddFormProps) => {
 }
 
 const AddFormContent = (props: FormikProps<ItemDetails>) =>{
-    const [rows, setRows ] = useState<Array<Category>>(new Array<Category>());
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const cancelToken = axios.CancelToken;
-    const source = cancelToken.source();
-    const { userToken } = useContext(AuthContext);
+    const categories = useCategories();
+    const steps = ['General', 'Name', 'Short description', 'Description', 'Images'];
+    const stepsContent: Array<JSX.Element> = [
+    <>
+         <PriceField {...props}/>
+        <CategorySelectorField {...props} categories={categories}/>
+    </>,
+        <ShortDescriptionField {...props} />,
+        <ShortDescriptionField {...props} />,
+        <DescriptionField {...props}/>,
+        <></>
+    ];
 
-    useEffect(() => {
-        const getData = async () => {
-            return await axios.get(
-                "http://localhost:5020/api/shop/Category/GetAllCategories", 
-                {
-                    cancelToken: source.token,
-                    headers: {
-                        'Authorization': `Bearer ${userToken}` 
-                    }
-                }
-            ).then((result: any)=>{
-                return result.data;
-            })
-            .catch((thrown: any)=>{
-                console.log('Request canceled', thrown.message);
-                return new Array<Category>();
-            });
-        };
-
-        getData()
-            .then((result: any)=>{
-                setRows(result);
-            }).finally(()=>{
-                setIsLoading(false);
-            });
-
-        return () => {
-         source.cancel("Axios request cancelled");
-        };
-       }, []);
-  
       return(
         <DeviceContextConsumer>
           {context => 
@@ -325,10 +301,12 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
               alignContent: 'center',
               width: '100%',
           }}>
-              <DescriptionField {...props}/>
-              <ShortDescriptionField {...props} />
-              <PriceField {...props}/>
-              <CategorySelectorField {...props} categories={rows}/>
+              <IconedStepper 
+                onActiveTabChanged={()=>{}}
+                onFinished={() =>{}}
+                steps={steps} 
+                stepsContent={stepsContent} 
+                orientation={"horizontal"} />             
           </div>
         }
         </DeviceContextConsumer>

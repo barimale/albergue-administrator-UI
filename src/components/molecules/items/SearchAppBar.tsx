@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import AddItemModal from "../../organisms/items/AddItemModal";
 import Tooltip from '@material-ui/core/Tooltip';
 import { useTranslation } from "react-i18next";
+import useCategories from "../../../hooks/useCategories";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,24 +74,33 @@ export default function SearchAppBar(props: SearchAppBarProps) {
   const { onChange } = props;
   const classes = useStyles();
   const [isAddVisible, setIsAddVisible] = useState<boolean>(false);
+  const [isAddPossible, setIsAddPossible] = useState<boolean>(false);
   const { t } = useTranslation();
+  const categories = useCategories();
+
+  useEffect(()=>{
+      setIsAddPossible(categories.length > 0);
+  }, [categories])
   
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{backgroundColor: 'gray', boxShadow: 'unset'}}>
         <Toolbar>
           <>
-            <Tooltip title={t("Add item").toString()}>
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                onClick={()=>{
-                  setIsAddVisible(true);
-                }}
-              >
-                <AddIcon />
-              </IconButton>
+            <Tooltip title={isAddPossible.valueOf() === true ? t("Add item").toString(): t("Navigate to CATEGORIES and defined at least one category there to make this button enabled.").toString()}>
+              <span>
+                <IconButton
+                  edge="start"
+                  disabled={isAddPossible.valueOf()===false}
+                  className={classes.menuButton}
+                  color="inherit"
+                  onClick={()=>{
+                    setIsAddVisible(true);
+                  }}
+                >
+                  <AddIcon />
+                </IconButton>
+              </span>
             </Tooltip>
             {/* <div className={classes.search}>
               <div className={classes.searchIcon}>

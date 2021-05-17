@@ -87,7 +87,7 @@ const AddLanguageModalContent = (props: AddLanguageModalProps) =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <ModalTitle title={"Add language"}/>
+                    <ModalTitle title={"Add language"} close={close}/>
                     <AddForm close={close}/>
                 </div>
             </Fade>

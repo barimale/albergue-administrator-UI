@@ -89,7 +89,7 @@ const AddCategoryModalContent = (props: AddCategoryModalProps) =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <ModalTitle title={"Add category"}/>
+                    <ModalTitle title={"Add category"} close={close}/>
                     <AddForm close={close}/>
                 </div>
             </Fade>
@@ -112,6 +112,7 @@ type AddFormProps = {
 const AddForm = (props: AddFormProps) => {
     const { close } = props;
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
+    const [isWizardComplete, setIsWizardComplete ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
     const { languages } = useLanguages();
@@ -193,56 +194,61 @@ const AddForm = (props: AddFormProps) => {
                     <InformationTooltip
                         information={"In order to create a new category, provide translations for all defined languages."}
                     />
-                    <AddFormContent {...props}/>                  
-                    <div 
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row'
-                    }}>
-                        <Button
-                            disabled={sendingInProgress}
-                            className={"pointerOverEffect"}
-                            variant="contained"
-                            color="primary"
-                            style={{
-                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                borderRadius: '0px',
-                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                            }}
-                            onClick={async ()=>{
-                                await props.submitForm();
-                            }}>
-                            {sendingInProgress === true && (
-                                <CircularProgress 
-                                    color={'inherit'} 
-                                    style={{
-                                        height: '28px',
-                                        width: '28px'
-                                }}/>
-                            )}
-                            {sendingInProgress === false && (
-                            <>
-                                {t("Add")}
-                            </>
-                            )}
-                        </Button>
-                        <Button
-                            className={"pointerOverEffect"}
-                            variant="contained"
-                            color="secondary"
-                            style={{
-                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                borderRadius: '0px',
-                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                            }}
-                            onClick={()=>{
-                                onCancel();
-                            }}>
-                                {t("Cancel")}
-                        </Button>
-                    </div>
+                    <AddFormContent {...props} 
+                        onFinished={() => setIsWizardComplete(true)}
+                        onActiveTabChanged={() => setIsWizardComplete(false)}
+                    />   
+                    {isWizardComplete.valueOf() === true && (
+                        <div 
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row'
+                        }}>
+                            <Button
+                                disabled={sendingInProgress}
+                                className={"pointerOverEffect"}
+                                variant="contained"
+                                color="primary"
+                                style={{
+                                    width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                    borderRadius: '0px',
+                                    marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                                }}
+                                onClick={async ()=>{
+                                    await props.submitForm();
+                                }}>
+                                {sendingInProgress === true && (
+                                    <CircularProgress 
+                                        color={'inherit'} 
+                                        style={{
+                                            height: '28px',
+                                            width: '28px'
+                                    }}/>
+                                )}
+                                {sendingInProgress === false && (
+                                <>
+                                    {t("Add")}
+                                </>
+                                )}
+                            </Button>
+                            <Button
+                                className={"pointerOverEffect"}
+                                variant="contained"
+                                color="secondary"
+                                style={{
+                                    width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                    borderRadius: '0px',
+                                    marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                                }}
+                                onClick={()=>{
+                                    onCancel();
+                                }}>
+                                    {t("Cancel")}
+                            </Button>
+                        </div>
+                    )} 
                 </>
             </Form>
             )}
@@ -252,11 +258,17 @@ const AddForm = (props: AddFormProps) => {
     );
 }
 
-const AddFormContent = (props: FormikProps<Category>) =>{
+interface AddFormContentProps extends FormikProps<Category>{
+    onActiveTabChanged: ()=> void;
+    onFinished: ()=> void;
+}
+
+const AddFormContent = (props: AddFormContentProps) =>{
+    const { onActiveTabChanged, onFinished } = props;
     const { languages } = useLanguages();
     const { t } = useTranslation();
     const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
-    const [textInEN, setTextInEN] = useState<string>("");
+    const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
     
     useEffect(()=>{
       if(props.values.translatableDetails[0]?.name !== undefined){
@@ -271,28 +283,30 @@ const AddFormContent = (props: FormikProps<Category>) =>{
 
     const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
     <>
-        <CategoryNameField {...props} index={index}/>
+        <CategoryNameField {...props} index={index} textInEN={textInEN} lng={p}/>
     </>
     );
 
-      return(
-        <DeviceContextConsumer>
-          {context => 
-          <div 
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignContent: 'center',
-              width: '100%',
-          }}>
-              <IconedStepper 
-                steps={steps} 
-                stepsContent={stepsContent} 
-                stepsIcon={icons} 
-                textInEN={textInEN} />
-          </div>
-        }
-        </DeviceContextConsumer>
-      );
+    return(
+    <DeviceContextConsumer>
+        {context => 
+        <div 
+        style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignContent: 'center',
+            width: '100%',
+        }}>
+            <IconedStepper 
+            onActiveTabChanged={onActiveTabChanged}
+            onFinished={onFinished}
+            steps={steps} 
+            stepsContent={stepsContent} 
+            stepsIcon={icons} 
+            orientation={"horizontal"} />
+        </div>
+    }
+    </DeviceContextConsumer>
+    );
   }
   

@@ -37,7 +37,6 @@ function useLanguages() {
       getData()
           .then((result: any)=>{
               setLanguages(result);
-          }).finally(()=>{
           });
 
       return () => {
