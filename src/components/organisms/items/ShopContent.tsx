@@ -15,11 +15,10 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
 import axios from 'axios';
 import { ItemDetails } from './AddItemModal';
-import { LoadingInProgress } from "../../molecules/common/LoadingInProgress";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
-import { EditActionComponent } from '../../molecules/common/EditActionComponent';
+import { EditActionComponent } from '../../molecules/categories/EditActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
 import useLanguages from '../../../hooks/useLanguages';
 import { LinearProgress, Tooltip } from '@material-ui/core';
@@ -250,7 +249,8 @@ const StickyHeadTable = () => {
                                 flexDirection: 'row',
                                 justifyContent: 'flex-end'
                               }}>
-                            <EditActionComponent 
+                                {/* //WIP */}
+                            {/* <EditActionComponent 
                               item={row}
                               title={"Are You sure?"}
                               question={"You are going to edit the item."}
@@ -259,7 +259,7 @@ const StickyHeadTable = () => {
                               onAgreeAction={async () => {
                                 await onDelete(row.id || "");
                                 setRandom(Math.random());
-                            }}/>
+                            }}/> */}
                             <DeleteActionComponent 
                               id={row.id || ""}
                               title={"Are You sure?"}

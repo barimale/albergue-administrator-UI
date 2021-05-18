@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
-import ConfirmationDialog from "./ConfirmationDialog";
+import ConfirmationDialog from "../common/ConfirmationDialog";
 import Tooltip from '@material-ui/core/Tooltip';
 import { useTranslation } from "react-i18next";
 import { ItemDetails } from "../../organisms/items/AddItemModal";
+import EditCategoryModal from "../../organisms/categories/EditCategoryModal";
+import { Category } from "../../organisms/categories/CategoriesContent";
 
 interface ActionComponentProps {
-  onAgreeAction: (item: any) => void;
-  item: any;
-  title: string;
-  question: string;
-  noLabel: string;
-  yesLabel: string;
+  onAgreeAction: () => void;
+  category: Category;
 };
 export const EditActionComponent = (props: ActionComponentProps) => {
-  const { item, onAgreeAction } = props;
+  const { category, onAgreeAction } = props;
   const [isShown, setIsShown] = useState<boolean>(false);
   const { t } = useTranslation();
 
@@ -28,17 +26,13 @@ export const EditActionComponent = (props: ActionComponentProps) => {
           <EditIcon />
         </IconButton>
       </Tooltip>
-      {/* //WIP replace by the editModal */}
-      <ConfirmationDialog
-        {...props}
-        isVisible={isShown}
-        onDisagree={() => {
-          setIsShown(false);
-        }}
-        onAgree={async () => {
-          await onAgreeAction(item);
-          setIsShown(false);
-        }} />
+      <EditCategoryModal 
+        category={category}
+        isDisplayed={isShown}
+        close={()=> {
+              setIsShown(false);
+              onAgreeAction();
+      }}/>
     </>
   );
 };

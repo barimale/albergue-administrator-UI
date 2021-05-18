@@ -18,7 +18,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import useLanguages from '../../../hooks/useLanguages';
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
-import { EditActionComponent } from '../../molecules/common/EditActionComponent';
+import { EditActionComponent } from '../../molecules/categories/EditActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
 import { LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
@@ -67,6 +67,7 @@ interface Column {
     id?: string;
     name: string;
     languageId: string;
+    categoryId?: string;
   }
   
   const useStyles = makeStyles({
@@ -239,13 +240,8 @@ const StickyHeadTable = () => {
                                 justifyContent: 'flex-end'
                               }}>
                                 <EditActionComponent 
-                                  item={row}
-                                  title={"Are You sure?"}
-                                  question={"You are going to edit the item."}
-                                  yesLabel={"Yes"}
-                                  noLabel={"No"}
-                                  onAgreeAction={async () => {
-                                    await onDelete(row.id || "");
+                                  category={row}
+                                  onAgreeAction={() => {
                                     setRandom(Math.random());
                                 }}/>
                                 <DeleteActionComponent 
