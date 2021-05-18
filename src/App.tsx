@@ -20,7 +20,7 @@ function App() {
   }, []);
   
   return (
-    // <CustomMuiThemeProvider>
+    <CustomMuiThemeProvider>
       <>
         {isLoading.valueOf() === true ?(
           <div className="App">
@@ -36,7 +36,7 @@ function App() {
           </I18nextProvider>
         )}
       </>
-    //{/* </CustomMuiThemeProvider> */}
+    </CustomMuiThemeProvider>
   );
 }
 

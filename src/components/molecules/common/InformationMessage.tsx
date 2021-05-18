@@ -2,6 +2,7 @@ import { Typography } from "@material-ui/core";
 import React from "react";
 import InfoIcon from '@material-ui/icons/Info';
 import { useTranslation } from "react-i18next";
+import { greenColor } from "../../../customTheme";
 
 type InformationMessageProps = {
     information: string;
@@ -18,10 +19,9 @@ export const InformationMessage = (props: InformationMessageProps) =>{
             alignItems: 'end',
             padding: '20px',
             marginTop: '20px',
-            // borderRadius: '20px',
-            border: '1px solid green'
+            border: `1px solid ${greenColor}`
           }}>
-            <InfoIcon style={{color: 'green'}}/>
+            <InfoIcon style={{color: `${greenColor}`}}/>
             <Typography style={{
               paddingLeft: '10px'
             }}>

@@ -77,7 +77,7 @@ export default function SearchAppBarLanguage(props: SearchAppBarLanguageProps) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: 'gray', boxShadow: 'unset'}}>
+      <AppBar position="static" style={{backgroundColor: 'lightgray', boxShadow: 'unset'}}>
         <Toolbar>
           <>
             <Tooltip title={t("Add language").toString()}>
@@ -89,7 +89,7 @@ export default function SearchAppBarLanguage(props: SearchAppBarLanguageProps) {
                   setIsAddVisible(true);
                 }}
               >
-                <AddIcon />
+                <AddIcon color="primary"/>
               </IconButton>
             </Tooltip>
             <AddLanguageModal isDisplayed={isAddVisible} close={()=> {

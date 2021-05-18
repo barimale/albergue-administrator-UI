@@ -16,7 +16,8 @@ export const ModalTitle = (props: ModalTitleProps) => {
 
     return (
         <DeviceContextConsumer>
-            {context => <div style={{
+            {context => 
+            <div style={{
                 width: 'auto',
                 height: 'auto',
                 display: 'flex',
@@ -42,7 +43,9 @@ export const ModalTitle = (props: ModalTitleProps) => {
                     }}>
                     {t(props.title)}
                 </Typography>
-                <IconButton onClick={async () => {
+                <IconButton 
+                className={"pointerOverEffect"}
+                onClick={async () => {
                     props.close();
                 }}>
                     <ClearIcon style={{color: 'white'}}/>

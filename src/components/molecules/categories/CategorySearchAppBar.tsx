@@ -79,7 +79,7 @@ export default function CategorySearchAppBar(props: CategorySearchAppBarProps) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: 'gray', boxShadow: 'unset'}}>
+      <AppBar position="static" style={{backgroundColor: 'lightgray', boxShadow: 'unset'}}>
         <Toolbar>
           <>
             <Tooltip title={t("Add category").toString()}>
@@ -91,7 +91,7 @@ export default function CategorySearchAppBar(props: CategorySearchAppBarProps) {
                   setIsAddVisible(true);
                 }}
               >
-                <AddIcon />
+                <AddIcon color="primary"/>
               </IconButton>
             </Tooltip>
             {/* <div className={classes.search}>

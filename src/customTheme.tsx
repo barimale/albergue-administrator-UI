@@ -3,7 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import { RGBToRGBA } from './utilities';
 
 export const errorColor = 'orange';
-
+export const greenColor = "#16a822";
 const primaryMain = "#a81916";
 const secondaryMain = "#ffffff";
 export const thirdMain = "#252526";

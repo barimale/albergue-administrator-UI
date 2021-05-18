@@ -14,6 +14,7 @@ import { ItemNameField } from "../../molecules/items/ItemNameField";
 import { ItemDescriptionField } from "../../molecules/items/ItemDescriptionField";
 import { ItemShortDescriptionField } from "../../molecules/items/ItemShortDescriptionField";
 import { PriceField } from "../../molecules/items/PriceField";
+import { ImagesField } from "../../molecules/items/ImagesField";
 import { CategorySelectorField } from "../../molecules/categories/CategorySelectorField";
 import axios from 'axios';
 import { AuthContext } from '../../../contexts/AuthContext';
@@ -78,7 +79,7 @@ const AddItemModalContent = (props: AddItemModalProps) =>{
       >
           <Box boxShadow={10} style={{
               height: 'auto',
-              width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '40%' : '90%',
+              width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '60%' : '90%',
           }}>
             <Fade 
                 in={isDisplayed} 
@@ -473,7 +474,8 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
     </>,
         <TranslatableItemName {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
         <TranslatableItemShortDescription {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
-        <TranslatableItemDescription {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>
+        <TranslatableItemDescription {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
+        <ImagesField {...props}/>
     ];
 
       return(

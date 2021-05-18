@@ -18,8 +18,8 @@ import { LoadingInProgress } from '../../molecules/common/LoadingInProgress';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
-import { Typography } from '@material-ui/core';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
+import { LinearProgress } from '@material-ui/core';
 
 export const LanguagesContent = () =>{
     return(
@@ -149,7 +149,7 @@ interface Column {
         <div style={{padding: '20px'}}>
         <SearchAppBarLanguage onChange={() => setRandom(Math.random())}/>
         {isLoading.valueOf() === true ? (
-          <LoadingInProgress/>
+          <LinearProgress />
         ):(
           rows.length === 0 && isLoading.valueOf() === false ? (
           <InformationMessage

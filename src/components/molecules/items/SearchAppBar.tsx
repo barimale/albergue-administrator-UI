@@ -84,7 +84,7 @@ export default function SearchAppBar(props: SearchAppBarProps) {
   
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: 'gray', boxShadow: 'unset'}}>
+      <AppBar position="static" style={{backgroundColor: 'lightgray', boxShadow: 'unset'}}>
         <Toolbar>
           <>
             <Tooltip title={isAddPossible.valueOf() === true ? t("Add item").toString(): t("Navigate to CATEGORIES and defined at least one category there to make this button enabled.").toString()}>
@@ -98,7 +98,7 @@ export default function SearchAppBar(props: SearchAppBarProps) {
                     setIsAddVisible(true);
                   }}
                 >
-                  <AddIcon />
+                  <AddIcon color="primary"/>
                 </IconButton>
               </span>
             </Tooltip>

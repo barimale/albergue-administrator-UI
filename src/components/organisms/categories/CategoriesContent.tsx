@@ -19,7 +19,9 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import useLanguages from '../../../hooks/useLanguages';
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
+import { EditActionComponent } from '../../molecules/common/EditActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
+import { LinearProgress } from '@material-ui/core';
 
 export const CategoriesContent = () => {
     return(
@@ -171,7 +173,7 @@ const StickyHeadTable = () => {
         <div style={{padding: '20px'}}>
           <CategorySearchAppBar onChange={() => setRandom(Math.random())}/>
           { isLoading.valueOf() === true ? (
-              <LoadingInProgress/>
+              <LinearProgress/>
             ):(
             rows.length === 0 ? (
               <InformationMessage 
@@ -222,16 +224,32 @@ const StickyHeadTable = () => {
                             );
                             })}
                             <TableCell align={'right'}>
-                              <DeleteActionComponent 
-                                id={row.id || ""}
-                                title={"Are You sure?"}
-                                question={"You are going to delete the category. All related items and their translations will be deleted. This operation cannot be restored."}
-                                yesLabel={"Yes"}
-                                noLabel={"No"}
-                                onAgreeAction={async () => {
-                                  await onDelete(row.id || "");
-                                  setRandom(Math.random());
+                              <div style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end'
+                              }}>
+                                <EditActionComponent 
+                                  item={row}
+                                  title={"Are You sure?"}
+                                  question={"You are going to edit the item."}
+                                  yesLabel={"Yes"}
+                                  noLabel={"No"}
+                                  onAgreeAction={async () => {
+                                    await onDelete(row.id || "");
+                                    setRandom(Math.random());
                                 }}/>
+                                <DeleteActionComponent 
+                                  id={row.id || ""}
+                                  title={"Are You sure?"}
+                                  question={"You are going to delete the category. All related items and their translations will be deleted. This operation cannot be restored."}
+                                  yesLabel={"Yes"}
+                                  noLabel={"No"}
+                                  onAgreeAction={async () => {
+                                    await onDelete(row.id || "");
+                                    setRandom(Math.random());
+                                  }}/>
+                                </div>
                             </TableCell>
                         </TableRow>
                       );
