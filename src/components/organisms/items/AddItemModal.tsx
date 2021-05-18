@@ -127,6 +127,16 @@ const AddSchema = Yup.object().shape({
             languageId: Yup.string()
             .required('LanguageId is required'),
         })
+    ),
+    images: Yup.array()
+        .required('Field is required')
+        .min(1)
+        .max(20)
+        .of(
+            Yup.object().shape({
+                name: Yup.string()
+                .required('Field is required')
+        })
     )
   });
 
@@ -195,10 +205,12 @@ const AddForm = (props: AddFormProps) => {
     const onSubmit = async (value: ItemDetails) =>{
         try{
             setSendingInProgress(true);
-            var result = await axios.post(
+            
+            await axios.post(
                 "http://localhost:5020/api/shop/Item/AddItem", 
                 value, 
                 {
+                    timeout: 30000,
                     cancelToken: source.token,
                     headers: {
                         'Authorization': `Bearer ${userToken}` 

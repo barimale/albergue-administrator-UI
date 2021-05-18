@@ -24,14 +24,18 @@ export const ImagesField = (props: FormikProps<ItemDetails>) => {
     return new Promise(function (resolve, reject) {
         const reader = new FileReader();
         reader.onerror = reject;
-        reader.onload = function () { resolve(reader.result); };
+        reader.onload = function () { 
+          // var arrayBuffer = reader.result as ArrayBuffer;
+          // var array = new Uint8Array(arrayBuffer);
+          resolve(reader.result as string); 
+        };
         reader.readAsBinaryString(file); // here the file can be read in different way Text, DataUrl, ArrayBuffer
     });
   }
 
-function manageUploadedFile(binary: String, file: File) {
-    selectedFiles.push({name: file.name, imageData: binary.toString()});
-}
+  function manageUploadedFile(binary: string, file: File): ItemImageDetails {
+      return {name: file.name, imageData: binary};
+  }
 
 function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.persist();
@@ -44,30 +48,27 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         resolve('Success!');
       });
 
-      const loads = 
-        Array.from(node.files).map((file: File) => {
-          return new Promise(async (resolve, reject) => {
-          await getFileFromInput(file)
-              .then((binary: String) => {
-                  manageUploadedFile(binary, file);
-              }).catch(function (reason) {
-                  console.log(`Error during upload ${reason}`);
-                  event.target.value = ''; // to allow upload of same file if error occurs
-              });
-          resolve('Success!');
+      async function transformAsync(file: File): Promise<ItemImageDetails>{
+        return await getFileFromInput(file)
+        .then((binary: string) => {
+            return manageUploadedFile(binary, file);
+        }).catch(function (reason) {
+            console.log(`Error during upload ${reason}`);
+            event.target.value = ''; // to allow upload of same file if error occurs
+            return {} as ItemImageDetails;
         });
-      });
+      }
 
-      const save = new Promise((resolve, reject) => {
-        props.setFieldValue('images', selectedFiles);
-        resolve('Success!');
-      });
+      const loads = 
+        Array.from(node.files).map(async (file: File) => {
+          return await transformAsync(file);
+        });
       
       clean.then(async () => {
         await Promise.all(loads)
-          .then(async ()=>{
-            await Promise.all([save]).then(()=>{
-            });
+          .then(async (result: ItemImageDetails[])=>{
+            props.setFieldValue('images', result);
+            setSelectedFiles(result);
         });
       });
     }
@@ -100,7 +101,7 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         </Tooltip>
         <Typography>{t("Select Image")}</Typography>
         {selectedFiles.map((p: ItemImageDetails, index: number) =>{
-          <p>{p.name}</p>
+          return <Typography>{p.name}</Typography>
         })}
       </>
     }
