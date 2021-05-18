@@ -19,7 +19,8 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress, Tooltip } from '@material-ui/core';
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 
 export const LanguagesContent = () =>{
     return(
@@ -48,11 +49,11 @@ interface Column {
   const columns: Column[] = [
     { id: 'id',
       label: 'Id',
-      minWidth: 100
+      minWidth: 30
     },
     { id: 'alpha2Code',
       label: 'Alpha 2 Code', 
-      minWidth: 170
+      minWidth: 60
     }
   ];
   
@@ -185,6 +186,14 @@ interface Column {
                         {columns.map((column) => {
                         const value = row[column.id];
                         return (
+                          <>
+                          {column.id === 'id' ? (
+                            <TableCell key={column.id} align={column.align}>
+                              <Tooltip title={value?.toString() || ""}>
+                                <FingerprintIcon/>
+                              </Tooltip>
+                            </TableCell>
+                          ):(
                             <TableCell key={column.id} align={column.align}>
                               <div style={{
                                 display: 'flex',
@@ -202,8 +211,9 @@ interface Column {
                                     value === true ? <DoneIcon/> : <ClearIcon/>
                                 ) : value)}
                               </div>
-                            </TableCell>
-                        );
+                            </TableCell>)}
+                            </>
+                          );
                         })}
                         <TableCell align={'right'}>
                           <DeleteActionComponent 

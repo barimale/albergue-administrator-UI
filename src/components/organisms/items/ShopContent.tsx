@@ -22,7 +22,8 @@ import { DeleteActionComponent } from '../../molecules/common/DeleteActionCompon
 import { EditActionComponent } from '../../molecules/common/EditActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
 import useLanguages from '../../../hooks/useLanguages';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress, Tooltip } from '@material-ui/core';
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 
 export const ShopContent = () =>{
     return(
@@ -51,15 +52,15 @@ interface Column {
   const columns: Column[] = [
     { id: 'id', 
       label: 'Id', 
-      minWidth: 170 
+      minWidth: 30 
     },
     { id: 'name', 
       label: 'Name', 
-      minWidth: 170 
+      minWidth: 100 
     },
     { id: 'price',
       label: 'Price',
-      minWidth: 100,
+      minWidth: 50,
       format: (value: number) => value.toFixed(2)
     },
     {
@@ -225,12 +226,22 @@ const StickyHeadTable = () => {
                         {columns.map((column) => {
                           const value = (column.id === 'id' || column.id === 'price' || column.id === 'categoryId' || column.id === 'active') ? row[column.id] : row.translatableDetails[0][column.id];
                           return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === 'number' ? column.format(value) : 
-                              (typeof value === 'boolean' ? (
-                                value === true ? <DoneIcon/> : <ClearIcon/>
-                              ) : value)}
-                            </TableCell>
+                            <>
+                              {column.id === 'id' ? (
+                                <TableCell key={column.id} align={column.align}>
+                                  <Tooltip title={value?.toString() || ""}>
+                                    <FingerprintIcon/>
+                                  </Tooltip>
+                                </TableCell>
+                              ):(
+                                <TableCell key={column.id} align={column.align}>
+                                  {column.format && typeof value === 'number' ? column.format(value) : 
+                                  (typeof value === 'boolean' ? (
+                                    value === true ? <DoneIcon/> : <ClearIcon/>
+                                  ) : value)}
+                                </TableCell>
+                              )}
+                            </>
                           );
                         })}
                         <TableCell align={'right'}>
