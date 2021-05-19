@@ -281,9 +281,9 @@ const AddFormContent = (props: AddFormContentProps) =>{
     useEffect(()=>{
         const enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
 
-      if(enIndex > -1 && props.values.translatableDetails !== undefined && props.values.translatableDetails[enIndex]?.name !== undefined){
-        setTextInEN(props.values.translatableDetails[0]?.name);
-      }
+        if(enIndex > -1 && props.values.translatableDetails !== undefined && props.values.translatableDetails[enIndex]?.name !== undefined){
+            setTextInEN(props.values.translatableDetails[0]?.name);
+        }
   
     }, [JSON.stringify(props.values.translatableDetails)]);
 
@@ -314,7 +314,6 @@ const AddFormContent = (props: AddFormContentProps) =>{
             stepsContent={stepsContent} 
             stepsIcon={icons} 
             orientation={"horizontal"} />
-            <p>{JSON.stringify(props.errors)}</p>
         </div>
     }
     </DeviceContextConsumer>

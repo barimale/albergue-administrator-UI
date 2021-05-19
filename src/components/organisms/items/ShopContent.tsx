@@ -47,14 +47,15 @@ interface Column {
     id: 'id' | 'name' | 'price' | 'description' | 'shortDescription' | 'categoryId'| 'active';
     label: string;
     minWidth?: number;
-    align?: 'right' | 'center';
+    align?: 'right' | 'center' | 'left';
     format?: (value: number) => string;
     isTranslatable: boolean;
   }
   
   const columns: Column[] = [
     { id: 'id', 
-      label: 'Id', 
+      label: 'ID', 
+      align: 'center',
       minWidth: 30,
       isTranslatable: false
     },

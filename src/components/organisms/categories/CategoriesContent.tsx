@@ -44,14 +44,15 @@ interface Column {
     id: 'name' | 'id';
     label: string;
     minWidth?: number;
-    align?: 'right';
+    align?: 'right' | 'center' | 'left';
     format?: (value: number) => string;
     isTranslatable: boolean;
   }
   
   const columns: Column[] = [
     { id: 'id',
-      label: 'Id',
+      label: 'ID',
+      align: 'center',
       minWidth: 30,
       isTranslatable: false
     },

@@ -7,12 +7,19 @@ import StepContent from '@material-ui/core/StepContent';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import Button from '@material-ui/core/Button';
+import { useTranslation } from "react-i18next";
+import { thirdMain } from '../../../customTheme';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      height: 'auto'
+      height: 'max-content',
+      paddingTop: '20px',
+      paddingBottom: '10px',
+      borderRadius: '4px',
+      border: `0.5px solid ${thirdMain}`
     },
     button: {
       marginTop: theme.spacing(1),
@@ -40,6 +47,7 @@ export default function IconedStepper(props: StepperProps) {
   const { steps, stepsContent, stepsIcon, orientation, onActiveTabChanged, onFinished } = props;
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+  const { t } = useTranslation();
 
   function getStepContent(index: number){
     if(stepsContent === undefined || stepsContent[index] === undefined){
@@ -73,16 +81,23 @@ export default function IconedStepper(props: StepperProps) {
     }}>
       {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
       <>
-        <IconButton
+        <Button
           disabled={activeStep === 0}
           onClick={handleBack}
-          style={{borderRadius: '0px'}}
+          style={{
+            borderRadius: '4px', 
+            border: `1px solid ${thirdMain}`,
+            height: 'max-content'}}
         >
-          <KeyboardArrowLeftIcon />
-        </IconButton>
+          <KeyboardArrowLeftIcon style={{height: '14px', width: 'auto', paddingRight: '2px'}}/>
+          {t("Back")}
+        </Button>
       </>)}
       <div>
         <Stepper
+          style={{
+            padding: '0px'
+          }}
           activeStep={activeStep} 
           orientation={orientation !== undefined ? orientation : 'vertical'} 
           alternativeLabel
@@ -124,18 +139,25 @@ export default function IconedStepper(props: StepperProps) {
           ))}
         </Stepper>
         {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
-          <div>{getStepContent(activeStep)}</div>
+          <div style={{
+            paddingTop: '40px',
+            paddingBottom: '20px'
+          }}>{getStepContent(activeStep)}</div>
         )}
       </div>
       {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
         <>
-        <IconButton
+        <Button
           disabled={activeStep === (steps.length - 1)}
           onClick={handleNext}
-          style={{borderRadius: '0px'}}
+          style={{
+            borderRadius: '4px', 
+            border: `1px solid ${thirdMain}`,
+            height: 'max-content'}}
         >
-          <KeyboardArrowRightIcon />
-        </IconButton>
+          {t("Next")}
+          <KeyboardArrowRightIcon style={{height: '14px', width: 'auto', paddingLeft: '2px'}}/>
+        </Button>
       </>)}
     </div>
   );

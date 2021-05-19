@@ -53,7 +53,6 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
     <DeviceContextConsumer>
       {context =>
       <>
-      <p>{props.lng}</p>
         <MyTextField
           id={`translatableDetails[${index}].name`}
           name={`translatableDetails[${index}].name`}

@@ -19,8 +19,9 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
-import { LinearProgress, Tooltip } from '@material-ui/core';
+import { IconButton, LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import LaunchIcon from '@material-ui/icons/Launch';
 
 export const LanguagesContent = () =>{
     return(
@@ -42,18 +43,22 @@ interface Column {
     id: 'alpha2Code' | 'id';
     label: string;
     minWidth?: number;
-    align?: 'right';
+    align?: 'right' | 'center' | 'left';
     format?: (value: number) => string;
+    isLink?: string;
   }
   
   const columns: Column[] = [
     { id: 'id',
-      label: 'Id',
+      label: 'ID',
+      align: 'center',
       minWidth: 30
     },
     { id: 'alpha2Code',
-      label: 'Alpha 2 Code', 
-      minWidth: 60
+      label: 'ISO 3166-1 alpha-2', 
+      align: 'left',
+      minWidth: 60,
+      isLink: 'https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2'
     }
   ];
   
@@ -163,13 +168,56 @@ interface Column {
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
-                    >
-                      {column.label}
-                    </TableCell>
+                    <>
+                      {column.isLink !== undefined ? (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
+                        >
+                          <div style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              fontSize: 'inherit',
+                              color: 'inherit',
+                              width: 'max-content'
+                            }}>
+                            <p>{column.label}</p>
+                            <IconButton 
+                              className={"pointerOverEffect"}
+                              href={column.isLink} 
+                              target={"_blank"} 
+                              style={{
+                                borderRadius: '0px', 
+                                fontSize: '10px',
+                                color: 'blue',
+                                width: 'max-content'
+                            }}>
+                              <div style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                alignItems: 'center',
+                                verticalAlign: 'left',
+                                fontSize: 'inherit',
+                                color: 'inherit'
+                              }}>
+                                {t("Explanation (external link)")}
+                                <LaunchIcon style={{paddingLeft: '6px', height: '16px', width: 'auto', paddingBottom: '0px'}}/>
+                              </div>
+                            </IconButton>
+                          </div>
+                        </TableCell>
+                      ):(
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
+                        >
+                          {column.label}
+                        </TableCell>
+                      )}
+                      </>
                   ))}
                   <TableCell
                       key={'action'}

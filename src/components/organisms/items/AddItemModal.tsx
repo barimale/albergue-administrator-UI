@@ -367,7 +367,7 @@ const TranslatableItemName = (props: TranslatableItemNameProps) =>{
             steps={steps} 
             stepsContent={stepsContent} 
             stepsIcon={icons} 
-            orientation={"vertical"} />
+            orientation={"horizontal"} />
         </div>
     }
     </DeviceContextConsumer>
@@ -506,7 +506,6 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
                 steps={steps} 
                 stepsContent={stepsContent} 
                 orientation={"horizontal"} />
-            <p>{JSON.stringify(props.errors)}</p>
           </div>
         }
         </DeviceContextConsumer>

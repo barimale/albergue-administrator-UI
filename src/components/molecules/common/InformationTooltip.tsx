@@ -12,8 +12,8 @@ export const InformationTooltip = (props: InformationTooltip) =>{
     
     return(
         <div style={{
-            paddingTop: '10px',
-            paddingBottom: '10px',
+            paddingTop: '20px',
+            paddingBottom: '20px',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center'
