@@ -97,7 +97,7 @@ const EditItemModalContent = (props: EditItemModalProps) =>{
                     alignContent: 'center',
                     alignItems: 'stretch',
                 }}>
-                    <ModalTitle title={"Add item"} close={close}/>
+                    <ModalTitle title={"Edit item"} close={close}/>
                     <AddForm close={close}/>
                 </div>
             </Fade>
@@ -259,7 +259,7 @@ const AddForm = (props: AddFormProps) => {
                 }}>
                 <>
                     <InformationTooltip
-                        information={"In order to add a new item, follow the wizard step by step by providing general data, translations and images."}
+                        information={"All fields are editable."}
                     />
                     <AddFormContent {...props}/>                  
                     <div 

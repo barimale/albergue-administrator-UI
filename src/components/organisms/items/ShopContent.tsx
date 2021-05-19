@@ -108,8 +108,8 @@ interface Column {
     },
     {
       id: 'active',
-      label: 'Is avalaible',
-      minWidth: 170,
+      label: 'Availability',
+      minWidth: 100,
       align: 'center',
       isTranslatable: false
     },
