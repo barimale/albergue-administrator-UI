@@ -12,7 +12,8 @@ import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from "react";
 import SearchAppBar from "../../molecules/items/SearchAppBar";
 import ClearIcon from '@material-ui/icons/Clear';
-import DoneIcon from '@material-ui/icons/Done';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
 import { ItemDetails, ItemTranslatableDetails } from './AddItemModal';
 import { AuthContext } from '../../../contexts/AuthContext';
@@ -24,6 +25,7 @@ import useLanguages from '../../../hooks/useLanguages';
 import { LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/ReadOnlyListField';
+import { greenColor } from '../../../customTheme';
 
 export const ShopContent = () =>{
     return(
@@ -45,7 +47,7 @@ interface Column {
     id: 'id' | 'name' | 'price' | 'description' | 'shortDescription' | 'categoryId'| 'active';
     label: string;
     minWidth?: number;
-    align?: 'right';
+    align?: 'right' | 'center';
     format?: (value: number) => string;
     isTranslatable: boolean;
   }
@@ -92,7 +94,7 @@ interface Column {
       id: 'active',
       label: 'Is avalaible',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       isTranslatable: false
     },
   ];
@@ -260,7 +262,7 @@ const StickyHeadTable = () => {
                                 <TableCell key={column.id} align={column.align}>
                                   {column.format && typeof value === 'number' ? column.format(value) : 
                                   (typeof value === 'boolean' ? (
-                                    value === true ? <DoneIcon/> : <ClearIcon/>
+                                    value === true ? <CheckCircleIcon style={{color: `${greenColor}`}} /> : <HighlightOffIcon style={{color: 'orange'}}/>
                                   ) : value)}
                                 </TableCell>)}
                                 </>

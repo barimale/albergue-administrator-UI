@@ -198,11 +198,12 @@ interface Column {
                               <div style={{
                                 display: 'flex',
                                 flexDirection: 'row',
-                                verticalAlign: 'baseline'
+                                verticalAlign: 'baseline',
+                                fontSize: '19px'
                               }}>
                                 {column.id === "alpha2Code" && value !== undefined &&(
                                   <div style={{paddingRight: '10px'}}>
-                                    <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%'}}/>
+                                    <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
                                   </div>
                                 )}
                                 {column.format && typeof value === 'number' ? column.format(value) : 

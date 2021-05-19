@@ -21,6 +21,7 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
   const { i18n } = useTranslation();
   const [ filterBy, setFilterBy] = useState<string>(i18n.language);
   const [ sortedItems, setSortedItems ] = useState<ReadOnlyListItem[]>(items);
+  const id = "ReadOnlyListField" + Math.random().toString();
 
   useEffect(()=>{
     setFilterBy(i18n.language.toLowerCase());
@@ -45,16 +46,17 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
         <Grid item xs={12} sm={12}>
         {isMobile.valueOf() === true ? (
           <Select
+            id={id}
             fullWidth
             native
             variant="outlined"
             onChange={() => {
             }}
-            defaultValue={items[0].name}
+            defaultValue={sortedItems[0].name}
           >
             {sortedItems?.map((item: ReadOnlyListItem, index: number) => {
                 return (
-                <option key={index} value={item.name}>
+                <option key={index.toString() + id} value={item.name}>
                     {`${item.name} - ${item.alpha2Code}`}
                 </option>);
               }
@@ -62,15 +64,16 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
           </Select>
         ):(
             <Select
+                id={id}
                 fullWidth
                 variant="outlined"
                 onChange={() => {
                 }}
-                defaultValue={items[0].name}
+                defaultValue={sortedItems[0].name}
             >
-              {items?.map((item: ReadOnlyListItem, index: number) => {
+              {sortedItems?.map((item: ReadOnlyListItem, index: number) => {
                 return (
-                  <MenuItem key={index} value={item.name}>
+                  <MenuItem key={index.toString() + id} value={item.name}>
                     <ListItemIcon>
                       <img id='myImage' src={`http://www.geonames.org/flags/x/${item.alpha2Code === "EN" ? "gb" : item.alpha2Code.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
                     </ListItemIcon>
