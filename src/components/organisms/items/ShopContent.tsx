@@ -50,6 +50,8 @@ interface Column {
     align?: 'right' | 'center' | 'left';
     format?: (value: number) => string;
     isTranslatable: boolean;
+    fontSize?: number;
+    width?: number;
   }
   
   const columns: Column[] = [
@@ -63,12 +65,6 @@ interface Column {
       label: 'Name', 
       minWidth: 100,
       isTranslatable: true
-    },
-    { id: 'price',
-      label: 'Price',
-      minWidth: 50,
-      format: (value: number) => value.toFixed(2),
-      isTranslatable: false
     },
     {
       id: 'description',
@@ -86,10 +82,19 @@ interface Column {
     },
     {
       id: 'categoryId',
-      label: 'Category Id',
-      minWidth: 70,
-      align: 'right',
-      isTranslatable: false
+      label: 'Category',
+      width: 70,
+      align: 'center',
+      isTranslatable: false,
+      fontSize: 10
+    },
+    { id: 'price',
+      label: 'Price',
+      minWidth: 50,
+      format: (value: number) => value.toFixed(2),
+      isTranslatable: false,
+      fontSize: 20,
+      align: 'center'
     },
     {
       id: 'active',
@@ -226,7 +231,7 @@ const StickyHeadTable = () => {
                       <TableCell
                         key={column.id}
                         align={column.align}
-                        style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
+                        style={{width: column.width, minWidth: column.minWidth , fontWeight: 'bold'}}
                       >
                         {column.label}
                       </TableCell>
@@ -260,8 +265,8 @@ const StickyHeadTable = () => {
                                     <ReadOnlyListField items={flatMapToReadOnlyItems(row.translatableDetails)} />
                                   </TableCell>
                                 ):(
-                                <TableCell key={column.id} align={column.align}>
-                                  {column.format && typeof value === 'number' ? column.format(value) : 
+                                <TableCell key={column.id} align={column.align} style={{fontSize: column.fontSize}}>
+                                  {column.format && typeof value === 'number' ? <p>{`${column.format(value)}€`}</p> : 
                                   (typeof value === 'boolean' ? (
                                     value === true ? <CheckCircleIcon style={{color: `${greenColor}`}} /> : <HighlightOffIcon style={{color: 'orange'}}/>
                                   ) : value)}

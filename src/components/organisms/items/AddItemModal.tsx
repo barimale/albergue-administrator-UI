@@ -14,6 +14,7 @@ import { ItemNameField } from "../../molecules/items/ItemNameField";
 import { ItemDescriptionField } from "../../molecules/items/ItemDescriptionField";
 import { ItemShortDescriptionField } from "../../molecules/items/ItemShortDescriptionField";
 import { PriceField } from "../../molecules/items/PriceField";
+import { IsAvalabileField } from "../../molecules/items/IsAvalabileField";
 import { ImagesField } from "../../molecules/items/ImagesField";
 import { CategorySelectorField } from "../../molecules/categories/CategorySelectorField";
 import axios from 'axios';
@@ -481,6 +482,7 @@ const AddFormContent = (props: FormikProps<ItemDetails>) =>{
     const steps = ['General', 'Name', 'Short description', 'Description', 'Images'];
     const stepsContent: Array<JSX.Element> = [
     <>
+        <IsAvalabileField {...props}/>
         <PriceField {...props}/>
         <CategorySelectorField {...props} categories={categories}/>
     </>,
