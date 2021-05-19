@@ -44,6 +44,7 @@ interface Column {
     id: 'name' | 'id';
     label: string;
     minWidth?: number;
+    width: number;
     align?: 'right' | 'center' | 'left';
     format?: (value: number) => string;
     isTranslatable: boolean;
@@ -53,12 +54,12 @@ interface Column {
     { id: 'id',
       label: 'ID',
       align: 'center',
-      minWidth: 30,
+      width: 30,
       isTranslatable: false
     },
     { id: 'name',
       label: 'Name', 
-      minWidth: 170,
+      width: 400,
       isTranslatable: true
     }
   ];
@@ -204,7 +205,7 @@ const StickyHeadTable = () => {
                         <TableCell
                           key={column.id}
                           align={column.align}
-                          style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
+                          style={{ width: column.width, minWidth: column.minWidth , fontWeight: 'bold'}}
                         >
                           {column.label}
                         </TableCell>

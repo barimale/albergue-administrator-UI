@@ -67,6 +67,12 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
                 id={id}
                 fullWidth
                 variant="outlined"
+                SelectDisplayProps={{
+                  style: {
+                    display: 'flex',
+                    alignItems: 'center'
+                  }
+                }}
                 onChange={() => {
                 }}
                 defaultValue={sortedItems[0].name}
