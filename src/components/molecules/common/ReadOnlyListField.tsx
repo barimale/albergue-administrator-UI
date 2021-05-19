@@ -75,7 +75,7 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
                 return (
                   <MenuItem key={index.toString() + id} value={item.name}>
                     <ListItemIcon>
-                      <img id='myImage' src={`http://www.geonames.org/flags/x/${item.alpha2Code === "EN" ? "gb" : item.alpha2Code.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
+                      <img id={`myImage-${index}-${id}`} alt={item.alpha2Code} src={`http://www.geonames.org/flags/x/${item.alpha2Code.toLowerCase() === "en" ? "gb" : item.alpha2Code.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
                     </ListItemIcon>
                     <Typography variant="inherit" noWrap>{item.name}</Typography>
                   </MenuItem>
