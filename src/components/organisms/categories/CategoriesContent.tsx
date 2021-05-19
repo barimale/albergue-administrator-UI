@@ -22,6 +22,7 @@ import { EditActionComponent } from '../../molecules/categories/EditActionCompon
 import { InformationMessage } from "../../molecules/common/InformationMessage";
 import { LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import { ReadOnlyListField, ReadOnlyListItem } from "../../molecules/common/ReadOnlyListField";
 
 export const CategoriesContent = () => {
     return(
@@ -45,16 +46,19 @@ interface Column {
     minWidth?: number;
     align?: 'right';
     format?: (value: number) => string;
+    isTranslatable: boolean;
   }
   
   const columns: Column[] = [
     { id: 'id',
       label: 'Id',
-      minWidth: 30
+      minWidth: 30,
+      isTranslatable: false
     },
     { id: 'name',
       label: 'Name', 
-      minWidth: 170
+      minWidth: 170,
+      isTranslatable: true
     }
   ];
   
@@ -168,6 +172,15 @@ const StickyHeadTable = () => {
         return row.translatableDetails[0].name;
       }
     };
+
+    function flatMapToReadOnlyItems(input: Array<CategoryTranslatableDetails>): Array<ReadOnlyListItem> {
+      return input.flatMap(p => {
+        const languageAlpha2Code = languages.find(pp => pp.id === p.languageId)?.alpha2Code;
+        return {
+          name: p.name,
+          alpha2Code:languageAlpha2Code || ""
+        } as ReadOnlyListItem});
+    }
   
     return (
       <Paper className={classes.root}>
@@ -219,17 +232,25 @@ const StickyHeadTable = () => {
                               <>
                                 {column.id === 'id' ? (
                                   <TableCell key={column.id} align={column.align}>
-                                    <Tooltip title={value?.toString() || ""}>
+                                    <Tooltip title={row['id']?.toString() || ""}>
                                       <FingerprintIcon/>
                                     </Tooltip>
                                   </TableCell>
                                 ):(
-                                  <TableCell key={column.id} align={column.align}>
-                                  {column.format && typeof value === 'number' ? column.format(value) : 
-                                  (typeof value === 'boolean' ? (
-                                      value === true ? <DoneIcon/> : <ClearIcon/>
-                                  ) : value)}
-                                  </TableCell>
+                                  <>
+                                  {column.isTranslatable.valueOf() === true ? (
+                                    <TableCell key={column.id} align={column.align}>
+                                      <ReadOnlyListField items={flatMapToReadOnlyItems(row.translatableDetails)} />
+                                    </TableCell>
+                                  ):(
+                                    <TableCell key={column.id} align={column.align}>
+                                      {column.format && typeof value === 'number' ? column.format(value) : 
+                                      (typeof value === 'boolean' ? (
+                                          value === true ? <DoneIcon/> : <ClearIcon/>
+                                      ) : value)}
+                                    </TableCell>
+                                  )}
+                                  </>
                                 )}
                               </>);
                             })}

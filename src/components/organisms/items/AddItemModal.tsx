@@ -367,7 +367,7 @@ const TranslatableItemName = (props: TranslatableItemNameProps) =>{
             steps={steps} 
             stepsContent={stepsContent} 
             stepsIcon={icons} 
-            orientation={"horizontal"} />
+            orientation={"vertical"} />
         </div>
     }
     </DeviceContextConsumer>

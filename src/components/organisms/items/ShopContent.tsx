@@ -14,7 +14,7 @@ import SearchAppBar from "../../molecules/items/SearchAppBar";
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
 import axios from 'axios';
-import { ItemDetails } from './AddItemModal';
+import { ItemDetails, ItemTranslatableDetails } from './AddItemModal';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
@@ -23,6 +23,7 @@ import { InformationMessage } from "../../molecules/common/InformationMessage";
 import useLanguages from '../../../hooks/useLanguages';
 import { LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
+import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/ReadOnlyListField';
 
 export const ShopContent = () =>{
     return(
@@ -46,45 +47,53 @@ interface Column {
     minWidth?: number;
     align?: 'right';
     format?: (value: number) => string;
+    isTranslatable: boolean;
   }
   
   const columns: Column[] = [
     { id: 'id', 
       label: 'Id', 
-      minWidth: 30 
+      minWidth: 30,
+      isTranslatable: false
     },
     { id: 'name', 
       label: 'Name', 
-      minWidth: 100 
+      minWidth: 100,
+      isTranslatable: true
     },
     { id: 'price',
       label: 'Price',
       minWidth: 50,
-      format: (value: number) => value.toFixed(2)
+      format: (value: number) => value.toFixed(2),
+      isTranslatable: false
     },
     {
       id: 'description',
       label: 'Description',
       minWidth: 170,
       align: 'right',
+      isTranslatable: true
     },
     {
       id: 'shortDescription',
       label: 'Short description',
       minWidth: 170,
       align: 'right',
+      isTranslatable: true
     },
     {
       id: 'categoryId',
       label: 'Category Id',
       minWidth: 170,
       align: 'right',
+      isTranslatable: false
     },
     {
       id: 'active',
       label: 'Is avalaible',
       minWidth: 170,
-      align: 'right'
+      align: 'right',
+      isTranslatable: false
     },
   ];
   
@@ -183,6 +192,15 @@ const StickyHeadTable = () => {
         return row.translatableDetails[0].name;
       }
     };
+
+    function flatMapToReadOnlyItems(input: Array<ItemTranslatableDetails>): Array<ReadOnlyListItem> {
+      return input.flatMap(p => {
+        const languageAlpha2Code = languages.find(pp => pp.id === p.languageId)?.alpha2Code;
+        return {
+          name: p.name,
+          alpha2Code:languageAlpha2Code || ""
+        } as ReadOnlyListItem});
+    }
   
     return (
       <Paper className={classes.root}>
@@ -233,12 +251,19 @@ const StickyHeadTable = () => {
                                   </Tooltip>
                                 </TableCell>
                               ):(
+                                <>
+                                {column.isTranslatable.valueOf() === true ? (
+                                  <TableCell key={column.id} align={column.align}>
+                                    <ReadOnlyListField items={flatMapToReadOnlyItems(row.translatableDetails)} />
+                                  </TableCell>
+                                ):(
                                 <TableCell key={column.id} align={column.align}>
                                   {column.format && typeof value === 'number' ? column.format(value) : 
                                   (typeof value === 'boolean' ? (
                                     value === true ? <DoneIcon/> : <ClearIcon/>
                                   ) : value)}
-                                </TableCell>
+                                </TableCell>)}
+                                </>
                               )}
                             </>
                           );

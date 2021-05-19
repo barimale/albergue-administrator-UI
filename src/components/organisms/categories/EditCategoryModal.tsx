@@ -125,7 +125,6 @@ type EditFormProps = {
 const EditForm = (props: EditFormProps) => {
     const { close, category } = props;
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
-    const [isWizardComplete, setIsWizardComplete ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
     const { languages } = useLanguages();
@@ -202,8 +201,8 @@ const EditForm = (props: EditFormProps) => {
                         information={"All fields are editable."}
                     />
                     <AddFormContent {...props} 
-                        onFinished={() => setIsWizardComplete(true)}
-                        onActiveTabChanged={() => setIsWizardComplete(false)}
+                        onFinished={() => {}}
+                        onActiveTabChanged={() => {}}
                     />   
                         <div 
                         style={{
@@ -308,7 +307,7 @@ const AddFormContent = (props: AddFormContentProps) =>{
             steps={steps} 
             stepsContent={stepsContent} 
             stepsIcon={icons} 
-            orientation={"horizontal"} />
+            orientation={"vertical"} />
             <p>{JSON.stringify(props.errors)}</p>
         </div>
     }

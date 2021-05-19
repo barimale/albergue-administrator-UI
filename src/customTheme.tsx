@@ -43,7 +43,7 @@ export const theme = createMuiTheme({
         borderRadius: '0px',
         boxShadow: 'unset',
         border: `2px solid ${hexToRgb(primaryMain)}`,
-        backgroundColor: `${RGBToRGBA(hexToRgb(thirdMain), 1)}`,
+        backgroundColor: `white`,
         scrollBehavior: 'smooth',
       }
     },

@@ -279,7 +279,9 @@ const AddFormContent = (props: AddFormContentProps) =>{
     const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
     
     useEffect(()=>{
-      if(props.values.translatableDetails !== undefined && props.values.translatableDetails[0]?.name !== undefined){
+        const enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
+
+      if(enIndex > -1 && props.values.translatableDetails !== undefined && props.values.translatableDetails[enIndex]?.name !== undefined){
         setTextInEN(props.values.translatableDetails[0]?.name);
       }
   
