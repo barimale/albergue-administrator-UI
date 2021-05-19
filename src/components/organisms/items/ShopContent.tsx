@@ -84,7 +84,7 @@ interface Column {
     {
       id: 'categoryId',
       label: 'Category Id',
-      minWidth: 170,
+      minWidth: 70,
       align: 'right',
       isTranslatable: false
     },

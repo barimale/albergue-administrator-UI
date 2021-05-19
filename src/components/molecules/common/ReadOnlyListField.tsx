@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
-import { Select, TextField, Typography } from "@material-ui/core";
+import { Select, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { isMobile } from 'react-device-detect';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import { useTranslation } from "react-i18next";
 
 export interface ReadOnlyListItem {
   name: string;
@@ -17,6 +18,26 @@ type ReadOnlyListFieldProps = {
 
 export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
   const { items } = props;
+  const { i18n } = useTranslation();
+  const [ filterBy, setFilterBy] = useState<string>(i18n.language);
+  const [ sortedItems, setSortedItems ] = useState<ReadOnlyListItem[]>(items);
+
+  useEffect(()=>{
+    setFilterBy(i18n.language.toLowerCase());
+  },[i18n.language]);
+
+  useEffect(()=>{
+    const first = items.find(p => p.alpha2Code.toLowerCase() === filterBy);
+    const rest = items.filter(p => p.alpha2Code.toLowerCase() !== filterBy);
+    if(first !== undefined){
+    const sorted1 = [first, ...rest.sort((a,b) => a.alpha2Code.localeCompare(b.alpha2Code))];
+    setSortedItems(sorted1);
+    }else{
+      const sorted2 = rest.sort((a,b) => a.alpha2Code.localeCompare(b.alpha2Code));
+    setSortedItems(sorted2);
+    }
+
+  },[filterBy]);
 
   return (
     <DeviceContextConsumer>
@@ -31,7 +52,7 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
             }}
             defaultValue={items[0].name}
           >
-            {items?.map((item: ReadOnlyListItem, index: number) => {
+            {sortedItems?.map((item: ReadOnlyListItem, index: number) => {
                 return (
                 <option key={index} value={item.name}>
                     {`${item.name} - ${item.alpha2Code}`}
@@ -53,7 +74,7 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
                     <ListItemIcon>
                       <img id='myImage' src={`http://www.geonames.org/flags/x/${item.alpha2Code === "EN" ? "gb" : item.alpha2Code.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
                     </ListItemIcon>
-                    <Typography variant="inherit">{item.name}</Typography>
+                    <Typography variant="inherit" noWrap>{item.name}</Typography>
                   </MenuItem>
                 );
               })}
