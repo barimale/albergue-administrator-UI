@@ -99,8 +99,8 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
           {selectedFiles.length > 0 ? (
             <SingleLineImagesGrid images={selectedFiles}/>
           ):(
-            <div style={{ height: '200px', textAlign: 'center', alignContent: 'center'}}>
-              <Typography>{t("Preview arena")}</Typography>
+            <div style={{ height: '200px', textAlign: 'center', alignItems: 'center', display: 'flex'}}>
+              <Typography style={{width: '100%'}}>{t("Preview arena")}</Typography>
             </div>
           )}
         </>
