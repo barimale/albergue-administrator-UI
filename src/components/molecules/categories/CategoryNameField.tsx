@@ -19,35 +19,6 @@ interface CategoryNameFieldProps extends FormikProps<Category>{
 export const CategoryNameField = (props: CategoryNameFieldProps) => {
   const { index, textInEN, lng } = props;
   const { t } = useTranslation();
-  const [suggestion, setSuggestion] = useState<TranslateResponse>({isError: false, translation: ""});
-  const [suggestionIsLoading, setSuggestionIsLoading] = useState<boolean>(false);
-  const { translate } = useLanguages();
-  var controller = new AbortController();
-  var signal = controller.signal;
-
-  useEffect(()=>{
-    const getData = async() =>{
-      return await translate('en', lng.toLowerCase(), textInEN || "", signal);
-    }
-
-    if(textInEN !== undefined && lng.toLowerCase() !== 'en'){
-      setSuggestionIsLoading(true);
-      getData().then((res: TranslateResponse) =>{
-        if(res.isError === true){
-          res.translation = `https://translate.google.pl/?sl=en&tl=${lng.toLowerCase()}&text=${textInEN}&op=translate`;
-        }
-        setSuggestion(res);
-        setSuggestionIsLoading(false);
-      }).catch((error: any)=>{
-          console.log(error);
-      });
-    }
-
-    return () => {
-      controller.abort();
-     }; 
-
-  }, [textInEN]);
 
   return (
     <DeviceContextConsumer>
@@ -62,30 +33,14 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {suggestionIsLoading.valueOf() === true ? (
-                  <LoadingInProgress/>
-                ):(
-                  suggestion.isError.valueOf() === false ? (
-                    <IconButton
+                  <IconButton
                     disabled={lng.toLowerCase() === 'en'}
-                    onClick={()=>{
-                      props.setFieldValue(`translatableDetails[${index}].name`, suggestion.translation || "")
-                    }}
-                    onMouseDown={(event: any) => event.preventDefault()}
-                  >
-                    <GTranslateIcon/>
-                  </IconButton>
-                  ):(
-                    <IconButton
-                    disabled={lng.toLowerCase() === 'en'}
-                    href={suggestion.translation}
+                    href={`https://translate.google.com/?sl=en&tl=${lng.toLowerCase()}&text=${textInEN}&op=translate`}
                     target={"_blank"}
                     onMouseDown={(event: any) => event.preventDefault()}
                   >
                     <GTranslateIcon/>
                   </IconButton>
-                  )
-                )}
             </InputAdornment>)
           }}
           //WIP

@@ -15,17 +15,18 @@ import ClearIcon from '@material-ui/icons/Clear';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
-import { ItemDetails, ItemTranslatableDetails } from './AddItemModal';
+import { ItemDetails, ItemImageDetails, ItemTranslatableDetails } from './AddItemModal';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
-import { EditActionComponent } from '../../molecules/categories/EditActionComponent';
+import { EditActionComponent } from '../../molecules/items/EditActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
 import useLanguages from '../../../hooks/useLanguages';
 import { LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/ReadOnlyListField';
 import { greenColor } from '../../../customTheme';
+import { ReadOnlyImagesField } from "../../molecules/common/ReadOnlyImagesField";
 
 export const ShopContent = () =>{
     return(
@@ -44,12 +45,13 @@ export const ShopContent = () =>{
 }
 
 interface Column {
-    id: 'id' | 'name' | 'price' | 'description' | 'shortDescription' | 'categoryId'| 'active';
+    id: 'id' | 'name' | 'price' | 'description' | 'shortDescription' | 'categoryId'| 'active' | 'images';
     label: string;
     minWidth?: number;
     align?: 'right' | 'center' | 'left';
     format?: (value: number) => string;
     isTranslatable: boolean;
+    isArray?: boolean;
     fontSize?: number;
     width?: number;
   }
@@ -63,22 +65,30 @@ interface Column {
     },
     { id: 'name', 
       label: 'Name', 
-      minWidth: 100,
+      width: 70,
       isTranslatable: true
     },
     {
       id: 'description',
       label: 'Description',
-      minWidth: 170,
+      width: 70,
       align: 'right',
       isTranslatable: true
     },
     {
       id: 'shortDescription',
       label: 'Short description',
-      minWidth: 170,
+      width: 70,
       align: 'right',
       isTranslatable: true
+    },
+    {
+      id: 'images',
+      label: 'Images',
+      width: 70,
+      align: 'center',
+      isTranslatable: false,
+      isArray: true
     },
     {
       id: 'categoryId',
@@ -201,11 +211,11 @@ const StickyHeadTable = () => {
       }
     };
 
-    function flatMapToReadOnlyItems(input: Array<ItemTranslatableDetails>): Array<ReadOnlyListItem> {
+    function flatMapToReadOnlyItems(input: Array<ItemTranslatableDetails>, columnName: 'name' | 'shortDescription' | 'description'): Array<ReadOnlyListItem> {
       return input.flatMap(p => {
         const languageAlpha2Code = languages.find(pp => pp.id === p.languageId)?.alpha2Code;
         return {
-          name: p.name,
+          name: p[columnName],
           alpha2Code:languageAlpha2Code || ""
         } as ReadOnlyListItem});
     }
@@ -249,7 +259,7 @@ const StickyHeadTable = () => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={findName(row)}>
                         {columns.map((column) => {
-                          const value = (column.id === 'id' || column.id === 'price' || column.id === 'categoryId' || column.id === 'active') ? row[column.id] : row.translatableDetails[0][column.id];
+                          const value = (column.id === 'id' || column.id === 'price' || column.id === 'categoryId' || column.id === 'active' || column.id === 'images') ? row[column.id] : row.translatableDetails[0][column.id];
                           return (
                             <>
                               {column.id === 'id' ? (
@@ -262,15 +272,24 @@ const StickyHeadTable = () => {
                                 <>
                                 {column.isTranslatable.valueOf() === true ? (
                                   <TableCell key={column.id} align={column.align}>
-                                    <ReadOnlyListField items={flatMapToReadOnlyItems(row.translatableDetails)} />
+                                    <ReadOnlyListField items={flatMapToReadOnlyItems(row.translatableDetails, column.id as any)} />
                                   </TableCell>
                                 ):(
-                                <TableCell key={column.id} align={column.align} style={{fontSize: column.fontSize}}>
-                                  {column.format && typeof value === 'number' ? <p>{`${column.format(value)}€`}</p> : 
-                                  (typeof value === 'boolean' ? (
-                                    value === true ? <CheckCircleIcon style={{color: `${greenColor}`}} /> : <HighlightOffIcon style={{color: 'orange'}}/>
-                                  ) : value)}
-                                </TableCell>)}
+                                  <>
+                                    {column.isArray !== undefined && column?.isArray.valueOf() === true ? (
+                                      <TableCell key={column.id} align={column.align} style={{fontSize: column.fontSize}}>
+                                        <ReadOnlyImagesField images={value as ItemImageDetails[]} />
+                                      </TableCell>
+                                    ):(
+                                      <TableCell key={column.id} align={column.align} style={{fontSize: column.fontSize}}>
+                                      {column.format && typeof value === 'number' ? <p>{`${column.format(value)}€`}</p> : 
+                                      (typeof value === 'boolean' ? (
+                                        value === true ? <CheckCircleIcon style={{color: `${greenColor}`}} /> : <HighlightOffIcon style={{color: 'orange'}}/>
+                                      ) : value)}
+                                    </TableCell>
+                                    )}
+                                  </>
+                                )}
                                 </>
                               )}
                             </>
@@ -283,17 +302,12 @@ const StickyHeadTable = () => {
                                 justifyContent: 'flex-end'
                               }}>
                                 {/* //WIP */}
-                            {/* <EditActionComponent 
+                            <EditActionComponent 
                               item={row}
-                              title={"Are You sure?"}
-                              question={"You are going to edit the item."}
-                              yesLabel={"Yes"}
-                              noLabel={"No"}
                               onAgreeAction={async () => {
-                                await onDelete(row.id || "");
                                 setRandom(Math.random());
-                            }}/> */}
-                            <DeleteActionComponent 
+                            }}/>
+                            <DeleteActionComponent
                               id={row.id || ""}
                               title={"Are You sure?"}
                               question={"You are going to delete the item. All related translations will be deleted. This operation cannot be restored."}

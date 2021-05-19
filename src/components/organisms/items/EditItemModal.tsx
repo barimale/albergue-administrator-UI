@@ -25,6 +25,7 @@ import { InformationTooltip } from "../../molecules/common/InformationTooltip";
 import useCategories from '../../../hooks/useCategories';
 import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from '../../../hooks/useLanguages';
+import { ItemImageDetails } from './AddItemModal';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,19 +46,20 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-type AddItemModalProps = {
+type EditItemModalProps = {
     isDisplayed: boolean;
     close: () => void;
+    item: ItemDetails;
 }
 
-export default function AddItemModal(props: AddItemModalProps){
+export default function EditItemModal(props: EditItemModalProps){
     return (
-        <AddItemModalContent {...props}/>
+        <EditItemModalContent {...props}/>
     );
 }
 
-const AddItemModalContent = (props: AddItemModalProps) =>{
-    const { isDisplayed, close } = props;
+const EditItemModalContent = (props: EditItemModalProps) =>{
+    const { isDisplayed, close, item } = props;
     const { t } = useTranslation();
     const theme = useTheme();
     const classes = useStyles();
@@ -150,12 +152,6 @@ export interface ItemDetails {
     translatableDetails: Array<ItemTranslatableDetails>;
 }
 
-export interface ItemImageDetails {
-    id?: string;
-    name: string;
-    imageData: string;
-}
-
 export interface ItemTranslatableDetails {
     id?: string;
     name: string;
@@ -171,7 +167,6 @@ type AddFormProps = {
 const AddForm = (props: AddFormProps) => {
     const { close } = props;
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
-    const [isWizardComplete, setIsWizardComplete ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
     const { languages } = useLanguages();
@@ -266,49 +261,12 @@ const AddForm = (props: AddFormProps) => {
                     <InformationTooltip
                         information={"In order to add a new item, follow the wizard step by step by providing general data, translations and images."}
                     />
-                    <AddFormContent {...props}
-                    onFinished={() => setIsWizardComplete(true)}
-                    onActiveTabChanged={() => setIsWizardComplete(false)}
-                    />
-                    {isWizardComplete.valueOf() === false && (
-                        <Button
-                        className={"pointerOverEffect"}
-                        variant="contained"
-                        color="secondary"
-                        style={{
-                            width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                            borderRadius: '0px',
-                            marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                            fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                        }}
-                        onClick={()=>{
-                            onCancel();
-                        }}>
-                            {t("Cancel")}
-                    </Button>
-                    )}        
-                    {isWizardComplete.valueOf() === true && ( 
+                    <AddFormContent {...props}/>                  
                     <div 
                     style={{
                         display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
+                        flexDirection: 'row'
                     }}>
-                        <Button
-                            className={"pointerOverEffect"}
-                            variant="contained"
-                            color="secondary"
-                            style={{
-                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                borderRadius: '0px',
-                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                            }}
-                            onClick={()=>{
-                                onCancel();
-                            }}>
-                                {t("Cancel")}
-                        </Button>
                         <Button
                             disabled={sendingInProgress}
                             className={"pointerOverEffect"}
@@ -337,7 +295,22 @@ const AddForm = (props: AddFormProps) => {
                             </>
                             )}
                         </Button>
-                    </div>)}
+                        <Button
+                            className={"pointerOverEffect"}
+                            variant="contained"
+                            color="secondary"
+                            style={{
+                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                borderRadius: '0px',
+                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                            }}
+                            onClick={()=>{
+                                onCancel();
+                            }}>
+                                {t("Cancel")}
+                        </Button>
+                    </div>
                 </>
             </Form>
             )}
@@ -499,15 +472,8 @@ const TranslatableItemDescription = (props: TranslatableItemDescriptionProps) =>
     </DeviceContextConsumer>
     );
   }
-
-  interface AddFormContentProps extends FormikProps<ItemDetails>{
-    onActiveTabChanged: ()=> void;
-    onFinished: ()=> void;
-}
   
-const AddFormContent = (props: AddFormContentProps) =>{
-    const { onActiveTabChanged, onFinished } = props;
-    // //WIP continue
+const AddFormContent = (props: FormikProps<ItemDetails>) =>{
     const categories = useCategories();
     const steps = ['General', 'Name', 'Short description', 'Description', 'Images'];
     const stepsContent: Array<JSX.Element> = [
@@ -522,9 +488,9 @@ const AddFormContent = (props: AddFormContentProps) =>{
         <PriceField {...props}/>
         <CategorySelectorField {...props} categories={categories}/>
     </div>,
-        <TranslatableItemName {...props} />,
-        <TranslatableItemShortDescription {...props} />,
-        <TranslatableItemDescription {...props} />,
+        <TranslatableItemName {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
+        <TranslatableItemShortDescription {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
+        <TranslatableItemDescription {...props} onActiveTabChanged={()=>{}} onFinished={() =>{}}/>,
         <ImagesField {...props}/>
     ];
 
@@ -539,8 +505,8 @@ const AddFormContent = (props: AddFormContentProps) =>{
               width: '100%',
           }}>
             <IconedStepper 
-                onActiveTabChanged={onActiveTabChanged}
-                onFinished={onFinished}
+                onActiveTabChanged={()=>{}} 
+                onFinished={() =>{}}
                 steps={steps} 
                 stepsContent={stepsContent} 
                 orientation={"horizontal"} />

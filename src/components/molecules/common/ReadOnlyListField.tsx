@@ -43,7 +43,7 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
   return (
     <DeviceContextConsumer>
       {context => 
-        <Grid item xs={12} sm={12}>
+      <>
         {isMobile.valueOf() === true ? (
           <Select
             id={id}
@@ -75,21 +75,21 @@ export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
                 }}
                 onChange={() => {
                 }}
-                defaultValue={sortedItems[0].name}
+                defaultValue={0}
             >
               {sortedItems?.map((item: ReadOnlyListItem, index: number) => {
                 return (
-                  <MenuItem key={index.toString() + id} value={item.name}>
+                  <MenuItem key={index.toString() + id} value={index}>
                     <ListItemIcon>
                       <img id={`myImage-${index}-${id}`} alt={item.alpha2Code} src={`http://www.geonames.org/flags/x/${item.alpha2Code.toLowerCase() === "en" ? "gb" : item.alpha2Code.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
                     </ListItemIcon>
-                    <Typography variant="inherit" noWrap>{item.name}</Typography>
+                    <Typography variant="inherit" style={{textOverflow: 'ellipsis'}}>{item.name}</Typography>
                   </MenuItem>
                 );
               })}
             </Select>
         )}
-        </Grid>
+        </>
       }
     </DeviceContextConsumer>
   );

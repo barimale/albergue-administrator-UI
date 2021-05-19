@@ -3,6 +3,8 @@ import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
 import { MyNumberField } from "../../atoms/MyNumberField";
 import { ItemDetails } from "../../organisms/items/AddItemModal";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 
 export const PriceField = (props: FormikProps<ItemDetails>) => {
   const { t } = useTranslation();
@@ -13,11 +15,18 @@ export const PriceField = (props: FormikProps<ItemDetails>) => {
         <MyNumberField
           id="price"
           name="price"
-          label={t("Price(EUR)")}
+          label={t("Price")}
+          variant="outlined"
           margin="dense"
           error={Boolean(props.touched.price && props.errors.price)}
           helperText={props.touched.price && props.errors.price}
-          fullWidth />
+          fullWidth 
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <EuroSymbolIcon />
+              </InputAdornment>)
+          }}/>
     }
     </DeviceContextConsumer>
   );

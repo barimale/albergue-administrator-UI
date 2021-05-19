@@ -14,6 +14,8 @@ import {
 } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
 import { useState } from "react";
+import { SingleLineImagesGrid } from "../images/SingleLineImagesGrid";
+import { thirdMain } from "../../../customTheme";
 
 export const ImagesField = (props: FormikProps<ItemDetails>) => {
   const { t } = useTranslation();
@@ -25,11 +27,9 @@ export const ImagesField = (props: FormikProps<ItemDetails>) => {
         const reader = new FileReader();
         reader.onerror = reject;
         reader.onload = function () { 
-          // var arrayBuffer = reader.result as ArrayBuffer;
-          // var array = new Uint8Array(arrayBuffer);
           resolve(reader.result as string); 
         };
-        reader.readAsBinaryString(file); // here the file can be read in different way Text, DataUrl, ArrayBuffer
+        reader.readAsDataURL(file); // here the file can be read in different way Text, DataUrl, ArrayBuffer
     });
   }
 
@@ -77,7 +77,15 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
   return (
     <DeviceContextConsumer>
       {context => 
-      <>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        alignContent: 'center',
+        padding: '20px',
+        borderRadius: '4px',
+        border: `0.5px solid ${thirdMain}`
+      }}>
         <input
           accept="image/*"
           multiple={true}
@@ -87,23 +95,27 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
           type="file"
           onChange={handleFileChange}
         />
-        <Tooltip title="Select Image">
+        <>
+          {selectedFiles.length > 0 ? (
+            <SingleLineImagesGrid images={selectedFiles}/>
+          ):(
+            <div style={{ height: '200px', textAlign: 'center', alignContent: 'center'}}>
+              <Typography>{t("Preview arena")}</Typography>
+            </div>
+          )}
+        </>
           <label htmlFor="images">
             <IconButton
-              className={classes.faceImage}
+              className={`${classes.faceImage}, pointerOverEffect`}
               color="primary"
               aria-label="upload picture"
               component="span"
             >
               <PhotoCamera fontSize="large" />
+              <Typography style={{color: 'black', paddingLeft: '10px'}}>{t("Upload images")}</Typography>
             </IconButton>
           </label>
-        </Tooltip>
-        <Typography>{t("Select Image")}</Typography>
-        {selectedFiles.map((p: ItemImageDetails, index: number) =>{
-          return <Typography>{p.name}</Typography>
-        })}
-      </>
+      </div>
     }
     </DeviceContextConsumer>
   );
@@ -120,7 +132,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "none",
   },
   faceImage: {
-    color: theme.palette.primary.light,
+    color: theme.palette.primary.main,
   },
 }));
 

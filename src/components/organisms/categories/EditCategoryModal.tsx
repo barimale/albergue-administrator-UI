@@ -127,7 +127,6 @@ const EditForm = (props: EditFormProps) => {
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
-    const { languages } = useLanguages();
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
@@ -208,7 +207,7 @@ const EditForm = (props: EditFormProps) => {
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
-                            justifyContent: 'flex-end'
+                            justifyContent: 'space-between'
                         }}>
                             <Button
                                 className={"pointerOverEffect"}
@@ -271,12 +270,24 @@ interface AddFormContentProps extends FormikProps<Category>{
 const AddFormContent = (props: AddFormContentProps) =>{
     const { onActiveTabChanged, onFinished } = props;
     const { languages } = useLanguages();
-    const steps: Array<string> = languages.flatMap(p => p.alpha2Code);
-    const [textInEN, setTextInEN] = useState<string | undefined>(undefined);
+    const steps: Array<string> = props.values.translatableDetails.flatMap((p: CategoryTranslatableDetails) => {
+        const index = languages.findIndex(pp => pp.id === p.languageId);
+
+        if(index > -1){
+            return languages[index].alpha2Code;
+        }
+
+        return "";
+    });
+    
+    const enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
+    const [textInEN, setTextInEN] = useState<string | undefined>(props.values.translatableDetails[enIndex]?.name);
     
     useEffect(()=>{
-      if(props.values.translatableDetails !== undefined && props.values.translatableDetails[0]?.name !== undefined){
-        setTextInEN(props.values.translatableDetails[0]?.name);
+      const enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
+
+      if(enIndex > -1 && props.values.translatableDetails !== undefined && props.values.translatableDetails[enIndex]?.name !== undefined){
+        setTextInEN(props.values.translatableDetails[enIndex]?.name);
       }
   
     }, [JSON.stringify(props.values.translatableDetails)]);

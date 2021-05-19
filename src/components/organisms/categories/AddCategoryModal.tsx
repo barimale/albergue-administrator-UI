@@ -205,13 +205,30 @@ const AddForm = (props: AddFormProps) => {
                     <AddFormContent {...props} 
                         onFinished={() => setIsWizardComplete(true)}
                         onActiveTabChanged={() => setIsWizardComplete(false)}
-                    />   
+                    />
+                    {isWizardComplete.valueOf() === false && (
+                        <Button
+                        className={"pointerOverEffect"}
+                        variant="contained"
+                        color="secondary"
+                        style={{
+                            width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                            borderRadius: '0px',
+                            marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                            fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                        }}
+                        onClick={()=>{
+                            onCancel();
+                        }}>
+                            {t("Cancel")}
+                    </Button>
+                    )}
                     {isWizardComplete.valueOf() === true && (
                         <div 
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
-                            justifyContent: 'flex-end'
+                            justifyContent: 'space-between'
                         }}>
                             <Button
                                 className={"pointerOverEffect"}
@@ -280,9 +297,9 @@ const AddFormContent = (props: AddFormContentProps) =>{
     
     useEffect(()=>{
         const enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
-
+        
         if(enIndex > -1 && props.values.translatableDetails !== undefined && props.values.translatableDetails[enIndex]?.name !== undefined){
-            setTextInEN(props.values.translatableDetails[0]?.name);
+            setTextInEN(props.values.translatableDetails[enIndex]?.name);
         }
   
     }, [JSON.stringify(props.values.translatableDetails)]);

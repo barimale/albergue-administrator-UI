@@ -33,7 +33,7 @@ export const Title = (props: any) => {
             letterSpacing: `0.2em`,
             fontFamily: 'Signoria-Bold'
           }}>
-          {"Administrator console"}
+          {t("Administrator console").toUpperCase()}
         </Typography>
       </div>}
     </DeviceContextConsumer>

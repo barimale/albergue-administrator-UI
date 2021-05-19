@@ -11,7 +11,8 @@ export function MySwitchField(props: any): JSX.Element {
       <DeviceContextConsumer>
         {context => (
           <FormControlLabel
-            control={<Switch {...field} {...props} style={props.style}/>}
+            style={{width: 'max-content'}}
+            control={<Switch {...field} {...props} style={props.style} />}
             label={props.label}
           />
         )}

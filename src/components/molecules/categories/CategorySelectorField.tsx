@@ -14,7 +14,7 @@ export interface CategoryFormikProps extends FormikProps<ItemDetails> {
 }
 
 export const defaultXs = 12;
-export const defaultSm = 6;
+export const defaultSm = 12;
 
 export const CategorySelectorField = (props: CategoryFormikProps) => {
   const { categories } = props;
@@ -60,6 +60,7 @@ export const CategorySelectorField = (props: CategoryFormikProps) => {
               <option disabled key={"-"} value={"-"}>
                 {"-"}
               </option>
+              {/* //WIP */}
               {categories.map((category: Category) => (
                 <option key={category.id} value={category.translatableDetails[0].name}>
                   {category.translatableDetails[0].name}
