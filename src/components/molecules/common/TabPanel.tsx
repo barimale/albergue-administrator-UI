@@ -40,7 +40,7 @@ export function a11yProps(index: any, parentId: string, tabPrefix: string) {
  export const useTabPanelStyles = makeStyles((theme: Theme) => ({
     root: {
       flexGrow: 1,
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: 'transparent',
       height: '100%'
     },
   }));

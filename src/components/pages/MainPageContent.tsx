@@ -30,7 +30,7 @@ const ContentWithTabs = () =>{
                 />
             }
             content={
-                <div style={{height: context === DeviceType.isDesktopOrLaptop ? '100%' : '100%'}}>
+                <div style={{ height: context === DeviceType.isDesktopOrLaptop ? '100%' : '100%'}}>
                     <TabPanel value={value} index={0} parentId={parentId} tabPrefix={tabPrefix}>
                         <LanguagesContent />
                     </TabPanel>

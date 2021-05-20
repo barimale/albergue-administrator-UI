@@ -12,7 +12,7 @@ import { LoadingInProgress } from "../common/LoadingInProgress";
 
 interface CategoryNameFieldProps extends FormikProps<Category>{
   index: number;
-  textInEN?: string;
+  textInEN: string;
   lng: string;
 }
 
@@ -34,7 +34,7 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
             endAdornment: (
               <InputAdornment position="end">
                   <IconButton
-                    disabled={lng.toLowerCase() === 'en'}
+                    disabled={lng.toLowerCase() === 'en' || textInEN === undefined || textInEN === ""}
                     href={`https://translate.google.com/?sl=en&tl=${lng.toLowerCase()}&text=${textInEN}&op=translate`}
                     target={"_blank"}
                     onMouseDown={(event: any) => event.preventDefault()}

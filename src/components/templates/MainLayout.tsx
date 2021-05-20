@@ -22,7 +22,7 @@ export const MainBackground = (props: any) =>{
     <div
       {...props}
       style={{
-          backgroundColor: `${theme.palette.common.white}`,
+          backgroundColor: `${theme.palette.secondary.light}`,
           height: props?.style?.height !== undefined ? props?.style?.height : 'inherit',
           width: props?.style?.width !== undefined ? props?.style?.width : 'inherit',
       }}>
@@ -105,7 +105,7 @@ export const ContentLayout = (props: any) => {
       height: 'inherit',
       alignItems: 'center', 
       justifyContent: 'center',
-      backgroundColor: 'tansparent',
+      backgroundColor: 'transparent',
       paddingBottom: '10px',
       transition: 'all 0.4s ease',
       msTransition: 'all 0.4s ease',

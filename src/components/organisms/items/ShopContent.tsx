@@ -123,6 +123,7 @@ interface Column {
       paddingRight: '5%',
       paddingTop: '0px',
       paddingBottom: '0px',
+      backgroundColor: 'transparent'
     }
   });
   

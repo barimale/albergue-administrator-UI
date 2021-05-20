@@ -310,7 +310,7 @@ const AddFormContent = (props: AddFormContentProps) =>{
 
     const stepsContent: Array<JSX.Element> = steps.flatMap((p: string, index: number) => 
     <>
-        <CategoryNameField {...props} index={index} textInEN={textInEN} lng={p}/>
+        <CategoryNameField {...props} index={index} textInEN={textInEN || ""} lng={p}/>
     </>
     );
 

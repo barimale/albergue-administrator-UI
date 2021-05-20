@@ -83,7 +83,8 @@ interface Column {
       paddingLeft: '5%',
       paddingRight: '5%',
       paddingTop: '0px',
-      paddingBottom: '0px'
+      paddingBottom: '0px',
+      backgroundColor: 'transparent'
     },
     container: {
     //   maxHeight: 440,
