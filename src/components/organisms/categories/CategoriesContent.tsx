@@ -66,6 +66,7 @@ interface Column {
   
   export interface Category {
     id?: string;
+    keyName: string;
     translatableDetails: Array<CategoryTranslatableDetails>;
   }
 

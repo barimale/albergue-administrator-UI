@@ -127,6 +127,7 @@ const EditForm = (props: EditFormProps) => {
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
+    const { languages } = useLanguages();
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
@@ -141,7 +142,12 @@ const EditForm = (props: EditFormProps) => {
     const onSubmit = async (value: Category) =>{
         try{
             setSendingInProgress(true);
-            
+
+            let enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
+            enIndex = enIndex > 0 ? enIndex : 0;
+            const foundLng = value.translatableDetails.find(p => p.languageId === languages[enIndex].id);
+            value.keyName = foundLng !== undefined ? foundLng.name : "Missing Name";
+
             return await axios.put(
                 "http://localhost:5020/api/shop/Category/UpdateCategory", 
                 value, 

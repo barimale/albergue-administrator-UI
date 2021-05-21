@@ -132,7 +132,7 @@ const AddForm = (props: AddFormProps) => {
         const initial: Array<CategoryTranslatableDetails> = languages.flatMap(p => {
             return {languageId : p.id, name: "" } as CategoryTranslatableDetails
         });
-        setInitialValues({translatableDetails: initial});
+        setInitialValues({translatableDetails: initial, keyName:""});
     },[languages]);
 
     useEffect(() => {
@@ -144,6 +144,10 @@ const AddForm = (props: AddFormProps) => {
     const onSubmit = async (value: Category) =>{
         try{
             setSendingInProgress(true);
+            let enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
+            enIndex = enIndex > 0 ? enIndex : 0;
+            const foundLng = value.translatableDetails.find(p => p.languageId === languages[enIndex].id);
+            value.keyName = foundLng !== undefined ? foundLng.name : "Missing Name";
         
             return await axios.post(
                 "http://localhost:5020/api/shop/Category/AddCategory", 
