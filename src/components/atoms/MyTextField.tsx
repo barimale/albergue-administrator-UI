@@ -11,7 +11,7 @@ export function MyTextField(props: any): JSX.Element {
       <DeviceContextConsumer>
         {context => (
           <>
-            <TextField {...field} {...props} style={props.style}/>
+            <TextField focused {...field} {...props} style={props.style}/>
           </>
         )}
       </DeviceContextConsumer>

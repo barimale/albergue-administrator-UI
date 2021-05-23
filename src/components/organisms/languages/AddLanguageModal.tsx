@@ -120,6 +120,7 @@ const AddForm = (props: AddFormProps) => {
 
     const initialValues: Language = {
         alpha2Code: "",
+        default: false
       };
 
     const cancelToken = axios.CancelToken;

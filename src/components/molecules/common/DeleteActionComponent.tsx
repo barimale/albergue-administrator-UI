@@ -12,20 +12,25 @@ interface ActionComponentProps {
   question: string;
   noLabel: string;
   yesLabel: string;
+  disabled?: boolean;
 };
 export const DeleteActionComponent = (props: ActionComponentProps) => {
-  const { id, onAgreeAction } = props;
+  const { id, onAgreeAction, disabled } = props;
   const [isShown, setIsShown] = useState<boolean>(false);
   const { t } = useTranslation();
 
   return (
     <>
-      <Tooltip title={t("Delete").toString()}>
-        <IconButton onClick={async () => {
-          setIsShown(!isShown);
-        }}>
-          <ClearIcon />
-        </IconButton>
+      <Tooltip title={t(disabled !== undefined && disabled === true ? "Default language cannot be deleted" : "Delete").toString()}>
+        <span>
+          <IconButton 
+          disabled={disabled !== undefined ? disabled : undefined}
+          onClick={async () => {
+            setIsShown(!isShown);
+          }}>
+            <ClearIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <ConfirmationDialog
         {...props}

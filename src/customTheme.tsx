@@ -47,6 +47,12 @@ export const theme = createMuiTheme({
         scrollBehavior: 'smooth',
       }
     },
+    MuiButtonBase: {
+      disabled: {
+        pointerEvents: 'visible',
+        cursor: 'not-allowed'
+      }
+    },
     MuiTabs: {
       root:{
         fontFamily: 'Signoria-Bold',

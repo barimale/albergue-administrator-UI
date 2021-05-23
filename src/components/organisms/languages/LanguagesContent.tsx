@@ -64,6 +64,7 @@ interface Column {
   
   export interface Language {
     id?: string;
+    default: boolean;
     alpha2Code: string;
   }
   
@@ -267,6 +268,7 @@ interface Column {
                         })}
                         <TableCell align={'right'}>
                           <DeleteActionComponent 
+                            disabled={row.default === true}
                             id={row.id || ""}
                             title={"Are You sure?"}
                             question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}

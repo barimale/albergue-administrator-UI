@@ -10,6 +10,8 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import Button from '@material-ui/core/Button';
 import { useTranslation } from "react-i18next";
 import { thirdMain } from '../../../customTheme';
+import { RGBToRGBA } from '../../../utilities';
+import { hexToRgb } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -86,7 +88,8 @@ export default function IconedStepper(props: StepperProps) {
           onClick={handleBack}
           style={{
             borderRadius: '4px', 
-            border: `1px solid ${thirdMain}`,
+            cursor: activeStep === 0 ? 'not-allowed !important' : 'pointer',
+            border: `1px solid ${activeStep === 0 ? RGBToRGBA(hexToRgb(thirdMain), 0.25) : thirdMain}`,
             height: 'max-content'}}
         >
           <KeyboardArrowLeftIcon style={{height: '14px', width: 'auto', paddingRight: '2px'}}/>
