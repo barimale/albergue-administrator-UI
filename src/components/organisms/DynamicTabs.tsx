@@ -18,7 +18,7 @@ const DynamicTabs = (props: any) =>{
     return(
     <DeviceContextConsumer>
     {context =>
-        <AppBar position="static">
+        <AppBar position="static" style={{boxShadow: 'unset'}}>
             <Tabs
                 variant={'scrollable'}
                 scrollButtons={'on'}

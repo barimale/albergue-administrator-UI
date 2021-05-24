@@ -14,7 +14,6 @@ import SearchAppBarLanguage from "../../molecules/languages/SearchAppBarLanguage
 import axios from 'axios';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
-import { LoadingInProgress } from '../../molecules/common/LoadingInProgress';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
@@ -22,6 +21,7 @@ import { InformationMessage } from "../../molecules/common/InformationMessage";
 import { IconButton, LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import LaunchIcon from '@material-ui/icons/Launch';
+import { thirdMain } from '../../../customTheme';
 
 export const LanguagesContent = () =>{
     return(
@@ -31,6 +31,7 @@ export const LanguagesContent = () =>{
               style={{
                   width: '100%', 
                   height: '100%',
+                  background: `${thirdMain}`,
           }}>
               <StickyHeadTable/>
           </div>
@@ -70,16 +71,13 @@ interface Column {
   
   const useStyles = makeStyles({
     root: {
-      width: '90%',
+      width: '100%',
       height: '100%',
-      paddingLeft: '5%',
-      paddingRight: '5%',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      backgroundColor: 'transparent'
+      padding: '0px',
     },
     container: {
-    //   maxHeight: 440,
+      padding: '0px',
+      height: '100%'
     },
   });
   
@@ -154,7 +152,7 @@ interface Column {
   
     return (
       <Paper className={classes.root}>
-        <div style={{padding: '20px'}}>
+        <div style={{padding: '0px'}}>
         <SearchAppBarLanguage onChange={() => setRandom(Math.random())}/>
         {isLoading.valueOf() === true ? (
           <LinearProgress />
@@ -165,6 +163,15 @@ interface Column {
           />
         ):(
         <>
+        <TablePagination
+              // rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -285,15 +292,6 @@ interface Column {
                 </TableBody>
               </Table>
             </TableContainer>
-            <TablePagination
-              // rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
           </>
         ))}
       </div>

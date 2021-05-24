@@ -31,7 +31,9 @@ export const Title = (props: any) => {
             fontSize: context === DeviceType.isDesktopOrLaptop ? '26px' : '17px',
             textAlign: 'center',
             letterSpacing: `0.2em`,
-            fontFamily: 'Signoria-Bold'
+            fontFamily: 'Signoria-Bold',
+            display: 'flex',
+            flexDirection: 'column',
           }}>
           {t("Administrator console").toUpperCase()}
         </Typography>

@@ -79,12 +79,9 @@ interface Column {
   
   const useStyles = makeStyles({
     root: {
-      width: '90%',
+      width: '100%',
       height: '100%',
-      paddingLeft: '5%',
-      paddingRight: '5%',
-      paddingTop: '0px',
-      paddingBottom: '0px',
+      padding: '0px',
       backgroundColor: 'transparent'
     },
     container: {
@@ -188,7 +185,7 @@ const StickyHeadTable = () => {
   
     return (
       <Paper className={classes.root}>
-        <div style={{padding: '20px'}}>
+        <div style={{padding: '0px'}}>
           <CategorySearchAppBar onChange={() => setRandom(Math.random())}/>
           { isLoading.valueOf() === true ? (
               <LinearProgress/>
