@@ -24,7 +24,7 @@ export const PriceField = (props: FormikProps<ItemDetails>) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <EuroSymbolIcon />
+                <EuroSymbolIcon style={{opacity: '0.37'}}/>
               </InputAdornment>)
           }}/>
     }

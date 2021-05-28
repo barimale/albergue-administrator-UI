@@ -13,6 +13,7 @@ export const IsAvalabileField = (props: FormikProps<ItemDetails>) => {
         <MySwitchField
           id="active"
           name="active"
+          color="primary"
           label={t("Availability")}
           error={Boolean(props.touched.active && props.errors.active)}
           helperText={props.touched.active && props.errors.active}

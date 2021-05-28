@@ -102,19 +102,6 @@ export default function SearchAppBar(props: SearchAppBarProps) {
                 </IconButton>
               </span>
             </Tooltip>
-            {/* <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div> */}
             <AddItemModal isDisplayed={isAddVisible} close={()=> {
               setIsAddVisible(false);
               onChange();

@@ -9,6 +9,7 @@ const secondaryMain = "#ffffff";
 export const thirdMain = "#252526";
 export const fourthMain = "#929292";
 export const fifthMain = "#b4b4b4";
+export const blueColor = "#0a66c2";
 
 export const theme = createMuiTheme({
   palette: {

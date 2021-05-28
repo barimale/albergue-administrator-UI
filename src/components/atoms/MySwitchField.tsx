@@ -12,7 +12,7 @@ export function MySwitchField(props: any): JSX.Element {
         {context => (
           <FormControlLabel
             style={{width: 'max-content'}}
-            control={<Switch {...field} {...props} style={props.style} />}
+            control={<Switch {...field} {...props} color={props.color} style={props.style} />}
             label={props.label}
           />
         )}

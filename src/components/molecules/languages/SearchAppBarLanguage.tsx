@@ -81,16 +81,18 @@ export default function SearchAppBarLanguage(props: SearchAppBarLanguageProps) {
         <Toolbar>
           <>
             <Tooltip title={t("Add language").toString()}>
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                onClick={()=>{
-                  setIsAddVisible(true);
-                }}
-              >
-                <AddIcon color="primary"/>
-              </IconButton>
+              <span>
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="inherit"
+                  onClick={()=>{
+                    setIsAddVisible(true);
+                  }}
+                >
+                  <AddIcon color="primary"/>
+                </IconButton>
+              </span>
             </Tooltip>
             <AddLanguageModal isDisplayed={isAddVisible} close={()=> {
               setIsAddVisible(false);
