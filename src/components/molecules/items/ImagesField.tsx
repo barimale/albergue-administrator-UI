@@ -114,7 +114,7 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
                 borderRadius: '0px'
               }}
             >
-              <PhotoCamera  />
+              <PhotoCamera />
               <Typography style={{color: 'black', paddingLeft: '10px'}}>{t("Upload images")}</Typography>
             </IconButton>
           </label>
