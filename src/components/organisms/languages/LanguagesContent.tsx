@@ -21,7 +21,7 @@ import { InformationMessage } from "../../molecules/common/InformationMessage";
 import { IconButton, LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import LaunchIcon from '@material-ui/icons/Launch';
-import { thirdMain } from '../../../customTheme';
+import { thirdMain, darkBlueColor } from '../../../customTheme';
 
 export const LanguagesContent = () =>{
     return(
@@ -199,7 +199,7 @@ interface Column {
                               style={{
                                 borderRadius: '0px', 
                                 fontSize: '10px',
-                                color: 'blue',
+                                color: `${darkBlueColor}`,
                                 width: 'max-content'
                             }}>
                               <div style={{

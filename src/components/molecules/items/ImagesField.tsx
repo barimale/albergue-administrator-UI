@@ -110,8 +110,11 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
               color="primary"
               aria-label="upload picture"
               component="span"
+              style={{
+                borderRadius: '0px'
+              }}
             >
-              <PhotoCamera fontSize="large" />
+              <PhotoCamera  />
               <Typography style={{color: 'black', paddingLeft: '10px'}}>{t("Upload images")}</Typography>
             </IconButton>
           </label>

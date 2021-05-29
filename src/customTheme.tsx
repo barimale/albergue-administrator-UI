@@ -3,13 +3,14 @@ import Menu from '@material-ui/core/Menu';
 import { RGBToRGBA } from './utilities';
 
 export const errorColor = 'orange';
-export const greenColor = "#16a822";
+export const greenColor = "#009333";
+export const blueColor = "#0072B6";
+export const darkBlueColor = "#003C71";
 const primaryMain = "#a81916";
 const secondaryMain = "#ffffff";
 export const thirdMain = "#252526";
 export const fourthMain = "#929292";
 export const fifthMain = "#b4b4b4";
-export const blueColor = "#0a66c2";
 
 export const theme = createMuiTheme({
   palette: {
