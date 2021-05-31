@@ -75,7 +75,7 @@ function TopMenu(props: any) {
                   backgroundColor: 'transparent',
                   boxShadow: theme.shadows[2],
                   height:'50px',
-                  marginTop: '-50px',
+                  marginTop: '-50px'
               }}/>
               {context === DeviceType.isDesktopOrLaptop && (
                 <LogoWrapper>

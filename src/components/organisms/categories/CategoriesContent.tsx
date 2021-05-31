@@ -20,23 +20,25 @@ import useLanguages from '../../../hooks/useLanguages';
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
 import { EditActionComponent } from '../../molecules/categories/EditActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
-import { LinearProgress, Tooltip } from '@material-ui/core';
+import { LinearProgress, Tooltip, Typography } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { ReadOnlyListField, ReadOnlyListItem } from "../../molecules/common/ReadOnlyListField";
+import { SizeMe } from 'react-sizeme';
+import { useTableStyles } from "../languages/LanguagesContent";
 
 export const CategoriesContent = () => {
     return(
-        <DeviceContextConsumer>
-        {context =>
-          <div 
-              style={{
-                  width: '100%', 
-                  height: '100%',
-          }}>
-              <StickyHeadTable/>
-          </div>
-        }
-        </DeviceContextConsumer>
+      <DeviceContextConsumer>
+      {context =>
+        <div 
+            style={{
+                width: '100%', 
+                height: '100%',
+        }}>
+            <StickyHeadTable/>
+        </div>
+      }
+      </DeviceContextConsumer>
     );
 }
 
@@ -53,13 +55,13 @@ interface Column {
   const columns: Column[] = [
     { id: 'id',
       label: 'ID',
-      align: 'center',
-      width: 30,
+      align: 'left',
+      width: 60,
       isTranslatable: false
     },
     { id: 'name',
       label: 'Name', 
-      width: 400,
+      width: 120,
       isTranslatable: true
     }
   ];
@@ -77,20 +79,8 @@ interface Column {
     categoryId?: string;
   }
   
-  const useStyles = makeStyles({
-    root: {
-      width: '100%',
-      height: '100%',
-      padding: '0px',
-      backgroundColor: 'transparent'
-    },
-    container: {
-    //   maxHeight: 440,
-    },
-  });
-  
 const StickyHeadTable = () => {
-    const classes = useStyles();
+    const classes = useTableStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows ] = useState<Array<Category>>(new Array<Category>());
@@ -184,6 +174,8 @@ const StickyHeadTable = () => {
     }
   
     return (
+      <SizeMe monitorHeight>
+      {size =>
       <Paper className={classes.root}>
         <div style={{padding: '0px'}}>
           <CategorySearchAppBar onChange={() => setRandom(Math.random())}/>
@@ -196,7 +188,11 @@ const StickyHeadTable = () => {
               />
           ):(
             <>
-              <TableContainer className={classes.container}>
+              <TableContainer 
+                className={classes.container}
+                style={{
+                  maxHeight: (size !== undefined && size?.size !== undefined) ? 0.8 * (size?.size?.height || 0) : 440
+              }}>                
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
                     <TableRow>
@@ -218,7 +214,7 @@ const StickyHeadTable = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Category) => {
+                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Category, index: number) => {
                       return (
                         <TableRow 
                           hover 
@@ -233,9 +229,22 @@ const StickyHeadTable = () => {
                               <>
                                 {column.id === 'id' ? (
                                   <TableCell key={column.id} align={column.align}>
-                                    <Tooltip title={row['id']?.toString() || ""}>
-                                      <FingerprintIcon/>
-                                    </Tooltip>
+                                    <div
+                                      style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center'
+                                      }}>
+                                      <Typography 
+                                        style={{
+                                          paddingRight: '10px'
+                                      }}>
+                                        {`${index+1}.`}
+                                      </Typography>
+                                      <Tooltip title={row['id']?.toString() || ""}>
+                                          <FingerprintIcon/>
+                                        </Tooltip>
+                                    </div>
                                   </TableCell>
                                 ):(
                                   <>
@@ -297,5 +306,7 @@ const StickyHeadTable = () => {
           ))}
         </div>
       </Paper>
+    }
+    </SizeMe>
     );
   }

@@ -22,6 +22,8 @@ import { IconButton, LinearProgress, Tooltip } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import LaunchIcon from '@material-ui/icons/Launch';
 import { thirdMain, darkBlueColor } from '../../../customTheme';
+import { SizeMe } from 'react-sizeme';
+import Typography from '@material-ui/core/Typography';
 
 export const LanguagesContent = () =>{
     return(
@@ -47,18 +49,19 @@ interface Column {
     align?: 'right' | 'center' | 'left';
     format?: (value: number) => string;
     isLink?: string;
+    width: number;
   }
   
   const columns: Column[] = [
     { id: 'id',
       label: 'ID',
-      align: 'center',
-      minWidth: 30
+      align: 'left',
+      width: 60,
     },
     { id: 'alpha2Code',
       label: 'ISO 3166-1 alpha-2', 
       align: 'left',
-      minWidth: 60,
+      width: 120,
       isLink: 'https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2'
     }
   ];
@@ -69,7 +72,7 @@ interface Column {
     alpha2Code: string;
   }
   
-  const useStyles = makeStyles({
+  export const useTableStyles = makeStyles({
     root: {
       width: '100%',
       height: '100%',
@@ -77,12 +80,12 @@ interface Column {
     },
     container: {
       padding: '0px',
-      height: '100%'
+      overflowY: 'auto'
     },
   });
   
   const StickyHeadTable = () => {
-    const classes = useStyles();
+    const classes = useTableStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows ] = useState<Array<Language>>(new Array<Language>());
@@ -151,150 +154,186 @@ interface Column {
     }
   
     return (
-      <Paper className={classes.root}>
-        <div style={{padding: '0px'}}>
-        <SearchAppBarLanguage onChange={() => setRandom(Math.random())}/>
-        {isLoading.valueOf() === true ? (
-          <LinearProgress />
-        ):(
-          rows.length === 0 && isLoading.valueOf() === false ? (
-          <InformationMessage
-            information={"There are no languages defined in the system. Please use +, to add new language."} 
-          />
-        ):(
-        <>
-        <TablePagination
-              // rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
+      <SizeMe monitorHeight>
+        {size =>
+        <Paper className={classes.root}>
+          <div style={{padding: '0px', height: '100%'}}>
+          <SearchAppBarLanguage onChange={() => setRandom(Math.random())}/>
+          {isLoading.valueOf() === true ? (
+            <LinearProgress />
+          ):(
+            rows.length === 0 && isLoading.valueOf() === false ? (
+            <InformationMessage
+              information={"There are no languages defined in the system. Please use +, to add new language."} 
             />
-          <TableContainer className={classes.container}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <>
-                      {column.isLink !== undefined ? (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
-                        >
-                          <div style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              fontSize: 'inherit',
-                              color: 'inherit',
-                              width: 'max-content'
-                            }}>
-                            <p>{column.label}</p>
-                            <IconButton 
-                              className={"pointerOverEffect"}
-                              href={column.isLink} 
-                              target={"_blank"} 
-                              style={{
-                                borderRadius: '0px', 
-                                fontSize: '10px',
-                                color: `${darkBlueColor}`,
-                                width: 'max-content'
-                            }}>
-                              <div style={{
+          ):(
+          <>
+            <TableContainer 
+              className={classes.container}
+              style={{
+                maxHeight: (size !== undefined && size?.size !== undefined) ? 0.8 * (size?.size?.height || 0) : 440
+            }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <>
+                        {column.isLink !== undefined ? (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={{width: column.width, minWidth: column.minWidth , fontWeight: 'bold'}}
+                          >
+                            <div style={{
                                 display: 'flex',
                                 flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                alignItems: 'center',
-                                verticalAlign: 'left',
                                 fontSize: 'inherit',
-                                color: 'inherit'
+                                color: 'inherit',
+                                width: 'max-content',
+                                padding: '0px',
+                                lineHeight: 'unset !important'
                               }}>
-                                {t("Explanation (external link)")}
-                                <LaunchIcon style={{paddingLeft: '6px', height: '16px', width: 'auto', paddingBottom: '0px'}}/>
-                              </div>
-                            </IconButton>
-                          </div>
-                        </TableCell>
-                      ):(
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={{ minWidth: column.minWidth , fontWeight: 'bold'}}
-                        >
-                          {column.label}
-                        </TableCell>
-                      )}
-                      </>
-                  ))}
-                  <TableCell
-                      key={'action'}
-                      align={'right'}
-                      style={{ fontWeight: 'bold'}}>
-                    {t("Action")}
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Language) => {
-                    return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.alpha2Code}>
-                        {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <>
-                          {column.id === 'id' ? (
-                            <TableCell key={column.id} align={column.align}>
-                              <Tooltip title={value?.toString() || ""}>
-                                <FingerprintIcon/>
-                              </Tooltip>
-                            </TableCell>
-                          ):(
-                            <TableCell key={column.id} align={column.align}>
-                              <div style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                verticalAlign: 'baseline',
-                                fontSize: '19px'
+                              <p>{t(column.label)}</p>
+                              <IconButton 
+                                className={"pointerOverEffect"}
+                                href={column.isLink} 
+                                target={"_blank"} 
+                                style={{
+                                  borderRadius: '0px', 
+                                  fontSize: '10px',
+                                  color: `${darkBlueColor}`,
+                                  width: 'max-content'
                               }}>
-                                {column.id === "alpha2Code" && value !== undefined &&(
-                                  <div style={{paddingRight: '10px'}}>
-                                    <img id='myImage' src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
-                                  </div>
-                                )}
-                                {column.format && typeof value === 'number' ? column.format(value) : 
-                                (typeof value === 'boolean' ? (
+                                <div style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-evenly',
+                                  alignItems: 'center',
+                                  verticalAlign: 'left',
+                                  fontSize: 'inherit',
+                                  color: 'inherit'
+                                }}>
+                                  {t("Explanation (external link)")}
+                                  <LaunchIcon style={{paddingLeft: '6px', height: '16px', width: 'auto', paddingBottom: '0px'}}/>
+                                </div>
+                              </IconButton>
+                            </div>
+                          </TableCell>
+                        ):(
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={{width: column.width, minWidth: column.minWidth , fontWeight: 'bold'}}
+                          >
+                            {t(column.label)}
+                          </TableCell>
+                        )}
+                        </>
+                    ))}
+                    <TableCell
+                        key={'action'}
+                        align={'right'}
+                        style={{ fontWeight: 'bold'}}>
+                      {t("Action")}
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: Language, index: number) => {
+                      return (
+                      <TableRow hover role="checkbox" tabIndex={-1} key={row.alpha2Code}>
+                          {columns.map((column) => {
+                          const value = row[column.id];
+                          return (
+                            <>
+                            {column.id === 'id' ? (
+                              <TableCell key={column.id} align={column.align}>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center'
+                                  }}>
+                                  <Typography 
+                                    style={{
+                                      paddingRight: '10px'
+                                  }}>
+                                    {`${index+1}.`}
+                                  </Typography>
+                                  <Tooltip title={value?.toString() || ""}>
+                                    <FingerprintIcon/>
+                                  </Tooltip>
+                                </div>
+                              </TableCell>
+                            ):(
+                              <TableCell key={column.id} align={column.align}>
+                                <div style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  alignContent: 'center',
+                                  fontSize: '19px'
+                                }}>
+                                  {column.id === "alpha2Code" && value !== undefined &&(
+                                    <div 
+                                      style={{
+                                        paddingRight: '10px', 
+                                        height: '100%',
+                                        alignContent: 'center',
+                                        display: 'flex'}}>
+                                      <img 
+                                        id='myImage' 
+                                        src={`http://www.geonames.org/flags/x/${value === "EN" ? "gb" : value.toLowerCase()}.gif`}
+                                        style={{
+                                          height: '30px', 
+                                          width: '30px', 
+                                          borderRadius: '50%'
+                                        }}/>
+                                    </div>
+                                  )}
+                                  {column.format && typeof value === 'number' ? column.format(value) : 
+                                  (typeof value === 'boolean' ? (
 
-                                    value === true ? <DoneIcon/> : <ClearIcon/>
-                                ) : value)}
-                              </div>
-                            </TableCell>)}
-                            </>
-                          );
-                        })}
-                        <TableCell align={'right'}>
-                          <DeleteActionComponent 
-                            disabled={row.default === true}
-                            id={row.id || ""}
-                            title={"Are You sure?"}
-                            question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}
-                            yesLabel={"Yes"}
-                            noLabel={"No"}
-                            onAgreeAction={async () => {
-                              await onDelete(row.id || "");
-                              setRandom(Math.random());
-                            }}/>
-                        </TableCell>
-                    </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        ))}
-      </div>
-    </Paper>
+                                      value === true ? <DoneIcon/> : <ClearIcon/>
+                                  ) : value)}
+                                </div>
+                              </TableCell>)}
+                              </>
+                            );
+                          })}
+                          <TableCell align={'right'}>
+                            <DeleteActionComponent 
+                              disabled={row.default === true}
+                              id={row.id || ""}
+                              title={"Are You sure?"}
+                              question={"You are going to delete the language. All related translations will be deleted. This operation cannot be restored."}
+                              yesLabel={"Yes"}
+                              noLabel={"No"}
+                              onAgreeAction={async () => {
+                                await onDelete(row.id || "");
+                                setRandom(Math.random());
+                              }}/>
+                          </TableCell>
+                      </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                // rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            </>
+          ))}
+        </div>
+      </Paper>
+    }
+    </SizeMe>
   );
 }

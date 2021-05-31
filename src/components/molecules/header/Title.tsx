@@ -16,26 +16,40 @@ export const Title = (props: any) => {
       {context => <div
         style={{
           display: 'flex',
-          width: 'auto',
+          width: '100%',
           flexDirection: 'column',
-          justifyContent: 'center',
+          justifyContent: 'left',
           marginLeft: context === DeviceType.isDesktopOrLaptop ? '-4px' : '-3px',
           WebkitTapHighlightColor: 'transparent',
+          paddingLeft: '20px'
         }}>
         <Typography
           className={classes.title}
-          align={'center'}
+          align={'left'}
           style={{
             color: `${theme.palette.common.white}`,
             WebkitTapHighlightColor: 'transparent',
             fontSize: context === DeviceType.isDesktopOrLaptop ? '26px' : '17px',
             textAlign: 'center',
-            letterSpacing: `0.2em`,
             fontFamily: 'Signoria-Bold',
             display: 'flex',
             flexDirection: 'column',
           }}>
-          {t("Administrator console").toUpperCase()}
+          {t("Administrator").toUpperCase()}
+        </Typography>
+        <Typography
+          className={classes.title}
+          align={'left'}
+          style={{
+            color: `${theme.palette.common.white}`,
+            WebkitTapHighlightColor: 'transparent',
+            fontSize: context === DeviceType.isDesktopOrLaptop ? '26px' : '17px',
+            textAlign: 'center',
+            fontFamily: 'Signoria-Bold',
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+          {t("console").toUpperCase()}
         </Typography>
       </div>}
     </DeviceContextConsumer>

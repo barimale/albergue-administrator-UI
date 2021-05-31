@@ -77,7 +77,7 @@ export const MainLayout = (props : any) =>  {
                   display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                height: '100%',
+                height: 'inherit',
                 width: '100%'
                 }}>
                   <MainBackground style={{height: 'inherit', width:'100%'}}>

@@ -138,9 +138,3 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.primary.main,
   },
 }));
-
-// interface FormProps {
-//   saveFace: any; //(fileName:Blob) => Promise<void>, // callback taking a string and then dispatching a store actions
-// }
-
-// export const FaceForm: React.FunctionComponent<FormProps> = ({ saveFace }) => {
