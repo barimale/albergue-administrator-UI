@@ -88,8 +88,14 @@ function TopMenu(props: any) {
               <TitleWrapper>
                 <Title />
               </TitleWrapper>
-              <LanguageSetter top={size?.size?.height || 0} width={size.size.width}/>
-              <UserMenu/>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
+                <LanguageSetter top={size?.size?.height || 0} width={size.size.width}/>
+                <UserMenu/>
+              </div>
             </Toolbar>
             <Ornament />
           </AppBar>
