@@ -223,7 +223,7 @@ const StickyHeadTable = () => {
                           key={findName(row)}
                         >
                             {columns.map((column) => {
-
+                            var toRoman = require('roman-numerals').toRoman;
                             const value = row.translatableDetails[0][column.id];
                             return (
                               <>
@@ -239,7 +239,7 @@ const StickyHeadTable = () => {
                                         style={{
                                           paddingRight: '10px'
                                       }}>
-                                        {`${index+1}.`}
+                                        {`${toRoman(index+1)}.`}
                                       </Typography>
                                       <Tooltip title={row['id']?.toString() || ""}>
                                           <FingerprintIcon/>

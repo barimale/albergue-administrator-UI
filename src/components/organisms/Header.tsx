@@ -60,8 +60,8 @@ function TopMenu(props: any) {
             <Ornament />
             <Toolbar style={{
               backgroundColor:'transparent',
-              paddingTop: context === DeviceType.isDesktopOrLaptop ? '0px' : '5px',
-              paddingBottom: context === DeviceType.isDesktopOrLaptop ? '0px' : '5px',
+              paddingTop: context === DeviceType.isDesktopOrLaptop ? '10px' : '5px',
+              paddingBottom: context === DeviceType.isDesktopOrLaptop ? '10px' : '5px',
               paddingLeft: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px', 
               paddingRight: context === DeviceType.isDesktopOrLaptop ? '32px' : '12px'}}>
               <div 

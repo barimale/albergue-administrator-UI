@@ -243,7 +243,8 @@ interface Column {
                       return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.alpha2Code}>
                           {columns.map((column) => {
-                          const value = row[column.id];
+                            var toRoman = require('roman-numerals').toRoman;
+                            const value = row[column.id];
                           return (
                             <>
                             {column.id === 'id' ? (
@@ -258,7 +259,7 @@ interface Column {
                                     style={{
                                       paddingRight: '10px'
                                   }}>
-                                    {`${index+1}.`}
+                                    {`${toRoman(index+1)}.`}
                                   </Typography>
                                   <Tooltip title={value?.toString() || ""}>
                                     <FingerprintIcon/>

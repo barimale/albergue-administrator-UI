@@ -22,7 +22,7 @@ import { DeleteActionComponent } from '../../molecules/common/DeleteActionCompon
 import { EditActionComponent } from '../../molecules/items/EditActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
 import useLanguages from '../../../hooks/useLanguages';
-import { LinearProgress, Tooltip } from '@material-ui/core';
+import { LinearProgress, Tooltip, Typography } from '@material-ui/core';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/ReadOnlyListField';
 import { greenColor } from '../../../customTheme';
@@ -253,18 +253,32 @@ const StickyHeadTable = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails) => {
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: ItemDetails, index: number) => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={findName(row)}>
                         {columns.map((column) => {
+                          var toRoman = require('roman-numerals').toRoman;
                           const value = (column.id === 'id' || column.id === 'price' || column.id === 'categoryId' || column.id === 'active' || column.id === 'images') ? row[column.id] : row.translatableDetails[0][column.id];
                           return (
                             <>
                               {column.id === 'id' ? (
                                 <TableCell key={column.id} align={column.align}>
-                                  <Tooltip title={value?.toString() || ""}>
-                                    <FingerprintIcon/>
-                                  </Tooltip>
+                                  <div
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center'
+                                  }}>
+                                    <Typography 
+                                      style={{
+                                        paddingRight: '10px'
+                                    }}>
+                                      {`${toRoman(index+1)}.`}
+                                    </Typography>
+                                    <Tooltip title={value?.toString() || ""}>
+                                      <FingerprintIcon/>
+                                    </Tooltip>
+                                  </div>
                                 </TableCell>
                               ):(
                                 <>

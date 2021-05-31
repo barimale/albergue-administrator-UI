@@ -47,6 +47,7 @@
     "react-scripts": "4.0.3",
     "react-sizeme": "^3.0.1",
     "react-transition-group": "^4.4.1",
+    "roman-numerals": "^0.3.2",
     "styled-components": "^5.2.3",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1",

@@ -88,10 +88,16 @@ export const SingleLineImagesGrid = (props: SingleLineImagesGridProps) =>{
                                 // title: classes.title,
                               }}
                               actionIcon={
-                                <IconButton>
-                                  <CloseIcon onClick={(e: any)=>{
-                                    const result = remove(internalImages, internalImages.indexOf(item));
-                                    setInternalImages(result);
+                                <IconButton
+                                  className={"pointerOverEffect"}
+                                >
+                                  <CloseIcon
+                                    style={{
+                                      color: 'white'
+                                    }}
+                                    onClick={(e: any)=>{
+                                      const result = remove(internalImages, internalImages.indexOf(item));
+                                      setInternalImages(result);
                                   }}/>
                                 </IconButton>
                               }
