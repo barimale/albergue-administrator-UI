@@ -56,7 +56,7 @@ interface Column {
     { id: 'id',
       label: 'ID',
       align: 'left',
-      width: 60,
+      width: 100,
       isTranslatable: false
     },
     { id: 'name',

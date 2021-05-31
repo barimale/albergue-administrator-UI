@@ -56,7 +56,7 @@ interface Column {
     { id: 'id',
       label: 'ID',
       align: 'left',
-      width: 60,
+      width: 100,
     },
     { id: 'alpha2Code',
       label: 'ISO 3166-1 alpha-2', 
@@ -191,17 +191,20 @@ interface Column {
                                 color: 'inherit',
                                 width: 'max-content',
                                 padding: '0px',
+                                margin: '0px',
                                 lineHeight: 'unset !important'
                               }}>
-                              <p>{t(column.label)}</p>
                               <IconButton 
                                 className={"pointerOverEffect"}
                                 href={column.isLink} 
                                 target={"_blank"} 
                                 style={{
                                   borderRadius: '0px', 
-                                  fontSize: '10px',
-                                  color: `${darkBlueColor}`,
+                                  fontSize: '14px',
+                                  paddingBottom: '0px',
+                                  paddingTop: '0px',
+                                  paddingLeft: '0px',
+                                  color: `black`,
                                   width: 'max-content'
                               }}>
                                 <div style={{
@@ -213,8 +216,15 @@ interface Column {
                                   fontSize: 'inherit',
                                   color: 'inherit'
                                 }}>
-                                  {t("Explanation (external link)")}
-                                  <LaunchIcon style={{paddingLeft: '6px', height: '16px', width: 'auto', paddingBottom: '0px'}}/>
+                                  {t(column.label)}
+                                  <LaunchIcon 
+                                    style={{
+                                      paddingLeft: '6px', 
+                                      height: '16px', 
+                                      width: 'auto', 
+                                      paddingBottom: '0px',
+                                      color: `${darkBlueColor}`
+                                  }}/>
                                 </div>
                               </IconButton>
                             </div>

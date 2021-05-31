@@ -59,7 +59,7 @@ interface Column {
   const columns: Column[] = [
     { id: 'id', 
       label: 'ID', 
-      align: 'center',
+      align: 'left',
       minWidth: 30,
       isTranslatable: false
     },
