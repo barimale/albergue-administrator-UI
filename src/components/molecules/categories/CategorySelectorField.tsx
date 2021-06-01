@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import { useTranslation } from "react-i18next";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { isMobile } from 'react-device-detect';
-import { FormikProps } from "formik";
+import { FormikProps, useField } from "formik";
 import { Category } from "../../organisms/categories/CategoriesContent";
 import { ItemDetails } from "../../organisms/items/AddItemModal";
 
@@ -19,6 +19,8 @@ export const defaultSm = 12;
 export const CategorySelectorField = (props: CategoryFormikProps) => {
   const { categories } = props;
   const { t } = useTranslation();
+  const defaultCategoryName = categories
+    .find(p => p.id !== undefined && p.id === props.initialValues.categoryId);
 
   return (
     <DeviceContextConsumer>
@@ -28,12 +30,15 @@ export const CategorySelectorField = (props: CategoryFormikProps) => {
             <Autocomplete
               id="categoryId"
               options={categories}
+              defaultValue={defaultCategoryName}
               getOptionSelected={(option: Category, value: Category) => option.id === value.id}
-              getOptionLabel={(option: Category) => option.translatableDetails[0].name}
+              // WIP: generated files needs to be loaded to the console as well
+              getOptionLabel={(option: Category) => option.keyName}
               onChange={(e, value) => props.setFieldValue("categoryId", value?.id || "")}
               onOpen={props.handleBlur}
               renderInput={(params) => <TextField
                 {...params}
+                defaultValue={defaultCategoryName?.keyName}
                 helperText={props.touched.categoryId && props.errors.categoryId}
                 error={Boolean(props.touched.categoryId && props.errors.categoryId)}
                 fullWidth
@@ -62,8 +67,8 @@ export const CategorySelectorField = (props: CategoryFormikProps) => {
               </option>
               {/* //WIP */}
               {categories.map((category: Category) => (
-                <option key={category.id} value={category.translatableDetails[0].name}>
-                  {category.translatableDetails[0].name}
+                <option key={category.id} value={category.keyName}>
+                  {category.keyName}
                 </option>
               ))}
             </TextField>

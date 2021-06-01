@@ -28,6 +28,7 @@ import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/ReadOnlyListField';
 import { greenColor } from '../../../customTheme';
 import { ReadOnlyImagesField } from "../../molecules/common/ReadOnlyImagesField";
+import useCategories from '../../../hooks/useCategories';
 
 export const ShopContent = () =>{
     return(
@@ -90,7 +91,7 @@ interface Column {
       width: 200,
       align: 'center',
       isTranslatable: false,
-      fontSize: 10
+      fontSize: 20
     },
     { id: 'price',
       label: 'Price',
@@ -121,6 +122,7 @@ const StickyHeadTable = () => {
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
     const { languages } = useLanguages();   
+    const categories = useCategories();
     const { t, i18n } = useTranslation();
     const [ selectedLanguageIndex, setSelectedLanguageIndex ] = useState<string | undefined>(undefined);
     const [random, setRandom] = useState(Math.random());
@@ -280,12 +282,20 @@ const StickyHeadTable = () => {
                                         <ReadOnlyImagesField images={value as ItemImageDetails[]} />
                                       </TableCell>
                                     ):(
-                                      <TableCell key={column.id} align={column.align} style={{fontSize: column.fontSize}}>
-                                      {column.format && typeof value === 'number' ? <p>{`${column.format(value)}€`}</p> : 
-                                      (typeof value === 'boolean' ? (
-                                        value === true ? <CheckCircleIcon style={{color: `${greenColor}`}} /> : <HighlightOffIcon style={{color: 'orange'}}/>
-                                      ) : value)}
-                                    </TableCell>
+                                      <>
+                                        {column.id === 'categoryId' ? (
+                                          <TableCell key={column.id} align={column.align} style={{fontSize: column.fontSize}}>
+                                            {categories.find(p => p.id !== undefined && p.id === value)?.keyName || value}
+                                          </TableCell>
+                                        ):(
+                                          <TableCell key={column.id} align={column.align} style={{fontSize: column.fontSize}}>
+                                            {column.format && typeof value === 'number' ? <p>{`${column.format(value)}€`}</p> : 
+                                            (typeof value === 'boolean' ? (
+                                              value === true ? <CheckCircleIcon style={{color: `${greenColor}`}} /> : <HighlightOffIcon style={{color: 'orange'}}/>
+                                            ) : value)}
+                                          </TableCell>
+                                        )}
+                                    </>
                                     )}
                                   </>
                                 )}
