@@ -105,8 +105,6 @@ const EditCategoryModalContent = (props: EditCategoryModalProps) =>{
 const EditSchema = Yup.object().shape({
     translatableDetails: Yup.array().of(
         Yup.object().shape({
-            id: Yup.string()
-            .required('Id is required'),
             name: Yup.string()
             .required('Field is required')
             .min(2, 'Field has to be at least 2 signs long')

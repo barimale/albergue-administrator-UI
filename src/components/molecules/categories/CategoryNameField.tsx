@@ -43,15 +43,9 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
                   </IconButton>
             </InputAdornment>)
           }}
-          //WIP
-          // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}
-          // helperText={props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index]}
+          error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails![index]!==undefined)}
+          // helperText={(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails[index] !== undefined && props.touched?.translatableDetails[index]) && (props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails![index] !== undefined && props.errors?.translatableDetails![index])}
           fullWidth />
-          {/* {suggestion.isError === true && (
-            <Typography style={{fontSize: '14px'}}>
-              {suggestion.translation}
-            </Typography>
-          )} */}
       </>
     }
     </DeviceContextConsumer>
