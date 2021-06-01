@@ -20,6 +20,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { DeleteActionComponent } from '../../molecules/common/DeleteActionComponent';
 import { EditActionComponent } from '../../molecules/items/EditActionComponent';
+import { PreviewActionComponent } from '../../molecules/items/PreviewActionComponent';
 import { InformationMessage } from "../../molecules/common/InformationMessage";
 import useLanguages from '../../../hooks/useLanguages';
 import { LinearProgress, Tooltip, Typography } from '@material-ui/core';
@@ -60,7 +61,14 @@ interface Column {
     { id: 'id', 
       label: 'ID', 
       align: 'left',
-      minWidth: 30,
+      width: 50,
+      isTranslatable: false
+    },
+    {
+      id: 'active',
+      label: 'Availability',
+      width: 50,
+      align: 'center',
       isTranslatable: false
     },
     { id: 'name', 
@@ -69,23 +77,9 @@ interface Column {
       isTranslatable: true
     },
     {
-      id: 'description',
-      label: 'Description',
-      width: 70,
-      align: 'right',
-      isTranslatable: true
-    },
-    {
-      id: 'shortDescription',
-      label: 'Short description',
-      width: 70,
-      align: 'right',
-      isTranslatable: true
-    },
-    {
       id: 'images',
       label: 'Images',
-      width: 70,
+      width: 100,
       align: 'center',
       isTranslatable: false,
       isArray: true
@@ -93,26 +87,19 @@ interface Column {
     {
       id: 'categoryId',
       label: 'Category',
-      width: 70,
+      width: 200,
       align: 'center',
       isTranslatable: false,
       fontSize: 10
     },
     { id: 'price',
       label: 'Price',
-      minWidth: 50,
+      width: 50,
       format: (value: number) => value.toFixed(2),
       isTranslatable: false,
       fontSize: 20,
       align: 'center'
-    },
-    {
-      id: 'active',
-      label: 'Availability',
-      minWidth: 100,
-      align: 'center',
-      isTranslatable: false
-    },
+    }
   ];
   
   const useStyles = makeStyles({
@@ -215,7 +202,7 @@ const StickyHeadTable = () => {
         return {
           name: p[columnName],
           alpha2Code:languageAlpha2Code || ""
-        } as ReadOnlyListItem});
+        } as ReadOnlyListItem}).filter(pp => pp.alpha2Code!== "");
     }
   
     return (
@@ -313,7 +300,9 @@ const StickyHeadTable = () => {
                                 flexDirection: 'row',
                                 justifyContent: 'flex-end'
                               }}>
-                                {/* //WIP */}
+                            <PreviewActionComponent 
+                              item={row}
+                            />
                             <EditActionComponent 
                               item={row}
                               onAgreeAction={async () => {
