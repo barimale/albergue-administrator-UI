@@ -19,6 +19,7 @@ import { ModalTitle } from '../../molecules/common/ModalTitle';
 import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from "../../../hooks/useLanguages";
 import { InformationTooltip } from "../../molecules/common/InformationTooltip";
+import { Language } from '../languages/LanguagesContent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -268,14 +269,32 @@ const EditForm = (props: EditFormProps) => {
     );
 }
 
-interface AddFormContentProps extends FormikProps<Category>{
+interface EditFormContentProps extends FormikProps<Category>{
     onActiveTabChanged: ()=> void;
     onFinished: ()=> void;
 }
 
-const EditFormContent = (props: AddFormContentProps) =>{
+const EditFormContent = (props: EditFormContentProps) =>{
     const { onActiveTabChanged, onFinished } = props;
     const { languages } = useLanguages();
+    const notYetSetLanguages : Array<string> = languages.flatMap((p: Language)=>{
+        const newOneIndex = props.values.translatableDetails.findIndex(pp => pp.languageId === (p.id || ""));
+        if(newOneIndex < 0){
+            return p.alpha2Code;
+        }
+
+        return "";
+    }).filter(pp => pp !== "");
+
+    notYetSetLanguages.forEach(ppp => {
+        const newOne: CategoryTranslatableDetails = {
+            languageId: languages.find(p => p.alpha2Code === ppp)?.id || "",
+            categoryId: props.initialValues.translatableDetails[0].categoryId,
+            name: ""
+        };
+        props.initialValues.translatableDetails.push(newOne);
+    });
+
     const steps: Array<string> = props.values.translatableDetails.flatMap((p: CategoryTranslatableDetails) => {
         const index = languages.findIndex(pp => pp.id === p.languageId);
 
@@ -284,7 +303,7 @@ const EditFormContent = (props: AddFormContentProps) =>{
         }
 
         return "";
-    }).filter(p => p !== "");
+    }).filter(p => p !== "").concat(notYetSetLanguages);
     
     const enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
     const [textInEN, setTextInEN] = useState<string | undefined>(props.values.translatableDetails[enIndex]?.name);
