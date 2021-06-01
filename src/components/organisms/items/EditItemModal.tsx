@@ -98,7 +98,7 @@ const EditItemModalContent = (props: EditItemModalProps) =>{
                     alignItems: 'stretch',
                 }}>
                     <ModalTitle title={"Edit item"} close={close}/>
-                    <AddForm close={close}/>
+                    <EditForm close={close} item={item} />
                 </div>
             </Fade>
         </Box>
@@ -160,12 +160,13 @@ export interface ItemTranslatableDetails {
     languageId: string;
 }
 
-type AddFormProps = {
+type EditFormProps = {
     close: () => void;
+    item: ItemDetails;
 }
 
-const AddForm = (props: AddFormProps) => {
-    const { close } = props;
+const EditForm = (props: EditFormProps) => {
+    const { close, item } = props;
     const [sendingInProgress, setSendingInProgress ] = useState<boolean>(false);
     const theme = useTheme();
     const { t } = useTranslation();
@@ -173,25 +174,7 @@ const AddForm = (props: AddFormProps) => {
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
-    const [initialValues, setInitialValues] = useState<ItemDetails>({} as ItemDetails);
-
-    useEffect(()=>{
-        const initialDetails: Array<ItemTranslatableDetails> = languages.flatMap(p => {
-            return {
-                languageId : p.id,
-                name: "",
-                shortDescription: "",
-                description: "",
-                images: new Array<ItemImageDetails>()} as ItemTranslatableDetails
-        });
-
-        setInitialValues({
-            price: 0,
-            active: true,
-            images: new Array<ItemImageDetails>(),
-            translatableDetails: initialDetails,
-            categoryId: ""});
-    },[languages]);
+    const initialValues = item;
 
     useEffect(() => {
         return () => {
@@ -203,10 +186,11 @@ const AddForm = (props: AddFormProps) => {
         try{
             setSendingInProgress(true);
             
-            await axios.post(
-                "http://localhost:5020/api/shop/Item/AddItem", 
+            await axios.put(
+                "http://localhost:5020/api/shop/Item/UpdateItem", 
                 value, 
                 {
+                    // wip:set timeout globally
                     timeout: 30000,
                     cancelToken: source.token,
                     headers: {
@@ -263,54 +247,55 @@ const AddForm = (props: AddFormProps) => {
                     />
                     <AddFormContent {...props}/>                  
                     <div 
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row'
-                    }}>
-                        <Button
-                            disabled={sendingInProgress}
-                            className={"pointerOverEffect"}
-                            variant="contained"
-                            color="primary"
-                            style={{
-                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                borderRadius: '0px',
-                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                            }}
-                            onClick={async ()=>{
-                                await props.submitForm();
-                            }}>
-                            {sendingInProgress === true && (
-                                <CircularProgress 
-                                    color={'inherit'} 
-                                    style={{
-                                        height: '28px',
-                                        width: '28px'
-                                }}/>
-                            )}
-                            {sendingInProgress === false && (
-                            <>
-                                {t("Add")}
-                            </>
-                            )}
-                        </Button>
-                        <Button
-                            className={"pointerOverEffect"}
-                            variant="contained"
-                            color="secondary"
-                            style={{
-                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                borderRadius: '0px',
-                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                            }}
-                            onClick={()=>{
-                                onCancel();
-                            }}>
-                                {t("Cancel")}
-                        </Button>
-                    </div>
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
+                            <Button
+                                className={"pointerOverEffect"}
+                                variant="contained"
+                                color="secondary"
+                                style={{
+                                    width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                    borderRadius: '0px',
+                                    marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                                }}
+                                onClick={()=>{
+                                    onCancel();
+                                }}>
+                                    {t("Cancel")}
+                            </Button>
+                            <Button
+                                disabled={sendingInProgress}
+                                className={"pointerOverEffect"}
+                                variant="contained"
+                                color="primary"
+                                style={{
+                                    width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                    borderRadius: '0px',
+                                    marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                                }}
+                                onClick={async ()=>{
+                                    await props.submitForm();
+                                }}>
+                                {sendingInProgress === true && (
+                                    <CircularProgress 
+                                        color={'inherit'} 
+                                        style={{
+                                            height: '28px',
+                                            width: '28px'
+                                    }}/>
+                                )}
+                                {sendingInProgress === false && (
+                                <>
+                                    {t("Save")}
+                                </>
+                                )}
+                            </Button>
+                        </div>
                 </>
             </Form>
             )}

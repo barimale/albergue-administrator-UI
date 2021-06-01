@@ -178,7 +178,9 @@ const AddForm = (props: AddFormProps) => {
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
     const { userToken } = useContext(AuthContext);
-    const [initialValues, setInitialValues] = useState<ItemDetails>({} as ItemDetails);
+    const defaultValues = {} as ItemDetails;
+    defaultValues.active = true;
+    const [initialValues, setInitialValues] = useState<ItemDetails>(defaultValues);
 
     useEffect(()=>{
         const initialDetails: Array<ItemTranslatableDetails> = languages.flatMap(p => {
