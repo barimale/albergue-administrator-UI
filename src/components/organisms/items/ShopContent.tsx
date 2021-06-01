@@ -77,14 +77,14 @@ interface Column {
       width: 70,
       isTranslatable: true
     },
-    {
-      id: 'images',
-      label: 'Images',
-      width: 100,
-      align: 'center',
-      isTranslatable: false,
-      isArray: true
-    },
+    // {
+    //   id: 'images',
+    //   label: 'Images',
+    //   width: 100,
+    //   align: 'center',
+    //   isTranslatable: false,
+    //   isArray: true
+    // },
     {
       id: 'categoryId',
       label: 'Category',
