@@ -205,7 +205,7 @@ const EditForm = (props: EditFormProps) => {
                     <InformationTooltip
                         information={"All fields are editable."}
                     />
-                    <AddFormContent {...props} 
+                    <EditFormContent {...props} 
                         onFinished={() => {}}
                         onActiveTabChanged={() => {}}
                     />   
@@ -254,7 +254,7 @@ const EditForm = (props: EditFormProps) => {
                                 )}
                                 {sendingInProgress === false && (
                                 <>
-                                    {t("Update")}
+                                    {t("Save")}
                                 </>
                                 )}
                             </Button>
@@ -273,7 +273,7 @@ interface AddFormContentProps extends FormikProps<Category>{
     onFinished: ()=> void;
 }
 
-const AddFormContent = (props: AddFormContentProps) =>{
+const EditFormContent = (props: AddFormContentProps) =>{
     const { onActiveTabChanged, onFinished } = props;
     const { languages } = useLanguages();
     const steps: Array<string> = props.values.translatableDetails.flatMap((p: CategoryTranslatableDetails) => {
@@ -284,7 +284,7 @@ const AddFormContent = (props: AddFormContentProps) =>{
         }
 
         return "";
-    });
+    }).filter(p => p !== "");
     
     const enIndex = languages.findIndex(pp => pp.alpha2Code.toLowerCase() === 'en');
     const [textInEN, setTextInEN] = useState<string | undefined>(props.values.translatableDetails[enIndex]?.name);
@@ -319,12 +319,13 @@ const AddFormContent = (props: AddFormContentProps) =>{
             width: '100%',
         }}>
             <IconedStepper 
-            onActiveTabChanged={onActiveTabChanged}
-            onFinished={onFinished}
-            steps={steps} 
-            stepsContent={stepsContent} 
-            stepsIcon={icons} 
-            orientation={"horizontal"} />
+                onActiveTabChanged={onActiveTabChanged}
+                onFinished={onFinished}
+                steps={steps} 
+                stepsContent={stepsContent} 
+                stepsIcon={icons} 
+                orientation={"horizontal"} 
+            />
         </div>
     }
     </DeviceContextConsumer>
