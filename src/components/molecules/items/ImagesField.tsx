@@ -13,14 +13,20 @@ import {
   Input,
 } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SingleLineImagesGrid } from "../images/SingleLineImagesGrid";
 import { thirdMain } from "../../../customTheme";
 
 export const ImagesField = (props: FormikProps<ItemDetails>) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [selectedFiles, setSelectedFiles] = useState<Array<ItemImageDetails>>(new Array<ItemImageDetails>());
+  const defaultValues = props.initialValues.images.length > 0 ? props.initialValues.images : new Array<ItemImageDetails>();
+  const [selectedFiles, setSelectedFiles] = useState<Array<ItemImageDetails>>(defaultValues);
+
+  useEffect(()=>{
+    debugger
+    props.setFieldValue('images', selectedFiles);
+  }, [selectedFiles]);
 
   function getFileFromInput(file: File): Promise<any> {
     return new Promise(function (resolve, reject) {
@@ -44,7 +50,7 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     if(node && node.files !== null){
       
       const clean = new Promise((resolve, reject) => {
-        setSelectedFiles(new Array<ItemImageDetails>());
+        // setSelectedFiles(new Array<ItemImageDetails>());
         resolve('Success!');
       });
 
@@ -67,7 +73,6 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
       clean.then(async () => {
         await Promise.all(loads)
           .then(async (result: ItemImageDetails[])=>{
-            props.setFieldValue('images', result);
             setSelectedFiles(result);
         });
       });
@@ -97,7 +102,12 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         />
         <>
           {selectedFiles.length > 0 ? (
-            <SingleLineImagesGrid images={selectedFiles}/>
+            <SingleLineImagesGrid 
+              images={selectedFiles}
+              onChange={(value: Array<ItemImageDetails>)=>{
+                debugger
+                setSelectedFiles(value);
+              }}/>
           ):(
             <div style={{ height: '200px', textAlign: 'center', alignItems: 'center', display: 'flex'}}>
               <Typography style={{width: '100%'}}>{t("Preview arena")}</Typography>

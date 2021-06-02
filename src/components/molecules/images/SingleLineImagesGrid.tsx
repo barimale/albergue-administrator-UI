@@ -1,16 +1,22 @@
 import { GridList, GridListTile, GridListTileBar, RootRef, IconButton } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ItemImageDetails } from "../../organisms/items/AddItemModal";
 import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from "react-beautiful-dnd";
 import CloseIcon from '@material-ui/icons/Close';
 
 type SingleLineImagesGridProps = {
     images: Array<ItemImageDetails>;
+    onChange: (modified: Array<ItemImageDetails>) => void;
 }
 
 export const SingleLineImagesGrid = (props: SingleLineImagesGridProps) =>{
-    const { images } = props;
+    const { images, onChange } = props;
     const [ internalImages, setInternalImages ] = useState<Array<ItemImageDetails>>(images);
+
+    useEffect(()=>{
+      debugger
+      onChange(internalImages);
+    }, [internalImages.length]);
 
     const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
 
