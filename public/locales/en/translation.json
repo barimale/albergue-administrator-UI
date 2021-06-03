@@ -5,5 +5,8 @@
         "Line1": "ALBERGUE",
         "Line2": "DE PEREGRINOS",
         "Line3": "PORTO"
-    }
+    },
+    "Description": "Description",
+    "Details": "Details",
+    "Price": "Price"
 }

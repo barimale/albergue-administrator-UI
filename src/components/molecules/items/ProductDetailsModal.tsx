@@ -10,10 +10,10 @@ import GridListTile from '@material-ui/core/GridListTile';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@material-ui/core/styles';
 import { ModalTitle } from './ModalTitle';
-import { Fab, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { ItemDetails, ItemImageDetails } from '../../organisms/items/AddItemModal';
-import DynamicLanguageSetter from "./DynamicLanguageSetter";
+import InternalLanguageSetter from "./InternalLanguageSetter";
 import { LoadingInProgress } from '../common/LoadingInProgress';
 import internali18n from '../../../internali18n';
 
@@ -252,7 +252,8 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
                   }}>
                     {t('Close').toUpperCase()}
                   </Button>
-                  <DynamicLanguageSetter />
+                  <InternalLanguageSetter/>
+                  {/* <DynamicLanguageSetter /> */}
                 </div>
               </div>
             </div>

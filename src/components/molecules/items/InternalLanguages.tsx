@@ -1,0 +1,75 @@
+import MenuItem from '@material-ui/core/MenuItem';
+import { useTranslation } from 'react-i18next';
+import { Button, useTheme } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+
+type InternalLanguagesProps ={  
+  handleClose: () => void;
+  onLanguageChange: (lng: string) => void;
+}
+
+export const InternalLanguages = (props: InternalLanguagesProps) => {
+  const { onLanguageChange } = props;
+  const { i18n } = useTranslation('externals');
+
+  return (
+  <>
+    {i18n.languages.sort((a: string, b: string) => b.localeCompare(a)).map((language: string, index: number) => {
+      return  (
+        <>
+          <MenuItem key={index}>
+              <InternalLanguage 
+                language={language} 
+                handleClose={props.handleClose} 
+                onLanguageChange={onLanguageChange}
+              />
+          </MenuItem>
+          {index !== (i18n.languages.length-1) && (
+            <Divider orientation="horizontal" />
+          )}
+        </>);
+      }
+    )}
+  </>);
+}
+
+interface InternalLanguageProps extends InternalLanguagesProps{
+  language: string;
+}
+
+const InternalLanguage = (props: InternalLanguageProps) => {
+  const { onLanguageChange } = props;
+  const { i18n: internali18n } = useTranslation('externals');
+  const {language } = props;
+  const theme = useTheme();
+    
+  const changeLanguage = async (lng: string) =>{
+      await internali18n.changeLanguage(lng)
+      .then(()=>{
+        onLanguageChange(lng);
+      }).catch((error: any)=>{
+        console.log(error);
+      });
+  };
+
+  return (
+    <Button 
+      className={"pointerOverEffect"}
+      style={{
+        height:'100%',
+        width: '100%',
+        color: `${theme.palette.common.black}`,
+        textDecoration: 'none',
+        textAlign: 'center',
+        paddingLeft:'10px',
+        paddingRight: '10px'
+      }}
+      onClick={async () => {
+        props.handleClose();
+        await changeLanguage(language);
+      }}>
+        <img id={`myImage-${language}`} alt={language} src={`http://www.geonames.org/flags/x/${language.toLowerCase() === "en" ? "gb" : language.toLowerCase()}.gif`} style={{height: '30px', width: '30px', borderRadius: '50%'}}/>
+        {language.toUpperCase()}
+    </Button>
+  );
+}

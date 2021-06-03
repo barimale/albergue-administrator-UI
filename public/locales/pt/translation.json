@@ -1,10 +1,12 @@
 {
-    "Close": "Perto",
+    "Close": "Close",
     "Menu": "Menu",
     "Header title":{
         "Line1": "ALBERGUE",
         "Line2": "DE PEREGRINOS",
         "Line3": "PORTO"
     },
-    "Description": "DescriptionPT"
+    "Description": "Description PT",
+    "Details": "Details PT",
+    "Price": "Price PT"
 }
