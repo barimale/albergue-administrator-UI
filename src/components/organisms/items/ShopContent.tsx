@@ -1,5 +1,5 @@
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
-import { useTranslation } from 'react-i18next';
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -29,6 +29,7 @@ import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/Read
 import { greenColor } from '../../../customTheme';
 import { ReadOnlyImagesField } from "../../molecules/common/ReadOnlyImagesField";
 import useCategories from '../../../hooks/useCategories';
+import internali18n from "../../../internali18n";
 
 export const ShopContent = () =>{
     return(
@@ -220,6 +221,7 @@ const StickyHeadTable = () => {
             />
         ):(
           <>
+          <I18nextProvider i18n={internali18n}>
             <TableContainer>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
@@ -345,6 +347,7 @@ const StickyHeadTable = () => {
               onChangePage={handleChangePage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
             />
+            </I18nextProvider>
           </>
         ))}
       </div>

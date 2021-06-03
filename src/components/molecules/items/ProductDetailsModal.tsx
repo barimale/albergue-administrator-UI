@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -10,9 +10,12 @@ import GridListTile from '@material-ui/core/GridListTile';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@material-ui/core/styles';
 import { ModalTitle } from './ModalTitle';
-import { Typography } from '@material-ui/core';
+import { Fab, Typography } from '@material-ui/core';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { ItemDetails, ItemImageDetails } from '../../organisms/items/AddItemModal';
+import DynamicLanguageSetter from "./DynamicLanguageSetter";
+import { LoadingInProgress } from '../common/LoadingInProgress';
+import internali18n from '../../../internali18n';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,8 +73,19 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
   const [open, setOpen] = React.useState(false);
   const maxHeight = window.innerHeight * 0.9;
   const images = item.images;
-  const { t } = useTranslation();
+  const { t } = useTranslation('translation');
+  const { t: innerT } = useTranslation('externals');
   const theme = useTheme();
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+
+  useEffect(()=>{
+    // WIP: add instead of init
+    if(internali18n && internali18n.isInitialized === false){
+      internali18n.init();
+    }
+
+    setIsLoading(false);
+  }, []);
 
   useEffect(()=>{
     setOpen(isDisplayed);
@@ -83,162 +97,172 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
   };
 
   return (
-    <DeviceContextConsumer>
-    {context =>
-      <Modal
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        disableBackdropClick={true}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 100,
-        }}
-      >
-        <Fade in={open}>
-        <>
-          <div 
-            className={classes.paper}
-            style={{
-              borderLeft: `20px solid ${theme.palette.primary.main}`,
-              maxHeight: maxHeight,
-              width: context === DeviceType.isDesktopOrLaptop ? (images.length === 1 ? '50%' : '75%') : '95%'
-            }}>
-            <ModalTitle title={t(`${item.id||""}.name`)} close={(event: any)=> {
-              event.stopPropagation();
-              handleClose();
-            }}/>
+    <>
+    {isLoading.valueOf() === true ?(
+      <div className="App">
+        <LoadingInProgress/>
+      </div>
+    ):(
+      <DeviceContextConsumer>
+      {context =>
+        <Modal
+          className={classes.modal}
+          open={open}
+          onClose={handleClose}
+          disableBackdropClick={true}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 100,
+          }}
+        >
+          <Fade in={open}>
+          <>
             <div 
+              className={classes.paper}
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-            }}>
-            <GridList 
-              cellHeight={window.innerHeight*0.34} 
-              className={classes.gridList} 
-              cols={context === DeviceType.isDesktopOrLaptop ?(images.length > 1 ? (images.length > 2 ? 1.5 : 2) : 1):(images.length > 1 ? 1.5 : 1)}>
-              {images.map((tile: ItemImageDetails, index: number) => (
-                <GridListTile key={index} cols={1} style={{
-                  width: 'max-content !important'
-                }}>
-                  <img 
-                    src={tile.imageData} 
-                    alt={item.id! + '_' + index} 
-                    style={{
-                      height: '100%',
-                      width: 'auto',
-                      textAlign: 'center'
-                  }}/>
-                </GridListTile>
-              ))}
-            </GridList>
-            <div 
-              style={{
-                padding: '20px',
-                paddingTop: '10px'
-            }}>
-              <Typography 
-                style={{
-                  fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '18px' : '20px',
-                  paddingBottom: '10px',
-                  paddingTop: '3px'
+                borderLeft: `20px solid ${theme.palette.primary.main}`,
+                maxHeight: maxHeight,
+                width: context === DeviceType.isDesktopOrLaptop ? (images.length === 1 ? '50%' : '75%') : '95%'
               }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    width: 'max-content'
-                }}>
-                  {t('Price') + ': ' + (item.active.valueOf() === false ? '-' : item.price.toFixed(2))}
-                  <EuroSymbolIcon 
-                    style={{
-                      paddingLeft: '4px',
-                      height:'18px',
-                      color: 'black',
-                      width: 'auto'
-                  }}/>
-                </div>
-              </Typography>
+              <ModalTitle title={innerT !== undefined ? innerT(`${item.id||""}.name`) : "N/A"} close={(event: any)=> {
+                event.stopPropagation();
+                handleClose();
+              }}/>
               <div 
-                className={classes.scroolableContent}
                 style={{
-                  height:window.innerHeight*0.15,
-                  border: '0.5px solid gray',
-                  padding: '10px',
-                  marginRight: '30px'
-                }}>
-                <h4 style={{
-                  fontFamily: 'Signoria-Bold',
-                  margin: '0px'
-                }}>{t('Description')}</h4>
-                <p style={{
-                  maxHeight: maxHeight,
-                  textAlign: 'justify',
-                  fontFamily: 'Signoria-Bold',
-                  overflowY: 'auto',
-                  paddingLeft: '5px',
-                  paddingRight: '5px',
-                  whiteSpace: 'pre-line',
-                  fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
-                }}>
-                  <div dangerouslySetInnerHTML={{ __html: t(`${item.id||""}.description`)}} />
-                </p>
-                <h4 
-                  style={{
-                    fontFamily: 'Signoria-Bold',
-                    margin: '0px',
-                    paddingTop: '20px'
-                }}>
-                  {t('Details')}
-                </h4>
-                <p style={{
-                  maxHeight: maxHeight,
-                  textAlign: 'justify',
-                  fontFamily: 'Signoria-Bold',
-                  overflowY: 'auto',
-                  paddingLeft: '5px',
-                  paddingRight: '5px',
-                  whiteSpace: 'pre-line',
-                  fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
-                }}>
-                  <div dangerouslySetInnerHTML={{ __html: t(`${item.id||""}.shortDescription`) }} />
-                </p>
-              </div>
-              <div style={{
-                paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row'
+                  display: 'flex',
+                  flexDirection: 'column',
               }}>
-                <Button
-                  className={"pointerOverEffect"}
-                  variant="contained"
+              <GridList 
+                cellHeight={window.innerHeight*0.34} 
+                className={classes.gridList} 
+                cols={context === DeviceType.isDesktopOrLaptop ?(images.length > 1 ? (images.length > 2 ? 1.5 : 2) : 1):(images.length > 1 ? 1.5 : 1)}>
+                {images.map((tile: ItemImageDetails, index: number) => (
+                  <GridListTile key={index} cols={1} style={{
+                    width: 'max-content !important'
+                  }}>
+                    <img 
+                      src={tile.imageData} 
+                      alt={item.id! + '_' + index} 
+                      style={{
+                        height: '100%',
+                        width: 'auto',
+                        textAlign: 'center'
+                    }}/>
+                  </GridListTile>
+                ))}
+              </GridList>
+              <div 
+                style={{
+                  padding: '20px',
+                  paddingTop: '10px'
+              }}>
+                <Typography 
                   style={{
-                    color: `${theme.palette.common.black}`,
-                    borderRadius: '0px',
-                    paddingLeft: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                    paddingRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                    marginRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                    backgroundColor: `${theme.palette.common.white}`,
-                    fontSize: '16px'
-                  }}
-                  onClick={(event: any)=>{
-                    event.stopPropagation();
-                    handleClose();
+                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '18px' : '20px',
+                    paddingBottom: '10px',
+                    paddingTop: '3px'
                 }}>
-                  {t('Close').toUpperCase()}
-                </Button>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                      width: 'max-content'
+                  }}>
+                    {t('Price') + ': ' + (item.active.valueOf() === false ? '-' : item.price.toFixed(2))}
+                    <EuroSymbolIcon 
+                      style={{
+                        paddingLeft: '4px',
+                        height:'18px',
+                        color: 'black',
+                        width: 'auto'
+                    }}/>
+                  </div>
+                </Typography>
+                <div 
+                  className={classes.scroolableContent}
+                  style={{
+                    height:window.innerHeight*0.15,
+                    border: '0.5px solid gray',
+                    padding: '10px',
+                    marginRight: '30px'
+                  }}>
+                  <h4 style={{
+                    fontFamily: 'Signoria-Bold',
+                    margin: '0px'
+                  }}>{t('Description')}</h4>
+                  <p style={{
+                    maxHeight: maxHeight,
+                    textAlign: 'justify',
+                    fontFamily: 'Signoria-Bold',
+                    overflowY: 'auto',
+                    paddingLeft: '5px',
+                    paddingRight: '5px',
+                    whiteSpace: 'pre-line',
+                    fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
+                  }}>
+                    <div dangerouslySetInnerHTML={{ __html: innerT !== undefined ? innerT(`${item.id||""}.description`) : "N/A"}} />
+                  </p>
+                  <h4 
+                    style={{
+                      fontFamily: 'Signoria-Bold',
+                      margin: '0px',
+                      paddingTop: '20px'
+                  }}>
+                    {t('Details')}
+                  </h4>
+                  <p style={{
+                    maxHeight: maxHeight,
+                    textAlign: 'justify',
+                    fontFamily: 'Signoria-Bold',
+                    overflowY: 'auto',
+                    paddingLeft: '5px',
+                    paddingRight: '5px',
+                    whiteSpace: 'pre-line',
+                    fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
+                  }}>
+                    <div dangerouslySetInnerHTML={{ __html: innerT !== undefined ? innerT(`${item.id||""}.shortDescription`) : "N/A" }} />
+                  </p>
+                </div>
+                <div style={{
+                  paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}>
+                  <Button
+                    className={"pointerOverEffect"}
+                    variant="contained"
+                    style={{
+                      color: `${theme.palette.common.black}`,
+                      borderRadius: '0px',
+                      paddingLeft: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+                      paddingRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+                      marginRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+                      backgroundColor: `${theme.palette.common.white}`,
+                      fontSize: '16px'
+                    }}
+                    onClick={(event: any)=>{
+                      event.stopPropagation();
+                      handleClose();
+                  }}>
+                    {t('Close').toUpperCase()}
+                  </Button>
+                  <DynamicLanguageSetter />
+                </div>
               </div>
             </div>
-          </div>
-          </div>
-        </>
-      </Fade>
-    </Modal>
-    }
-    </DeviceContextConsumer>
+            </div>
+          </>
+        </Fade>
+      </Modal>
+      }
+      </DeviceContextConsumer>
+    )}
+    </>
   );
 }

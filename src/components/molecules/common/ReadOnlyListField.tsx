@@ -18,27 +18,8 @@ type ReadOnlyListFieldProps = {
 
 export const ReadOnlyListField = (props: ReadOnlyListFieldProps) => {
   const { items } = props;
-  const { i18n } = useTranslation();
-  const [ filterBy, setFilterBy] = useState<string>(i18n.language);
   const [ sortedItems, setSortedItems ] = useState<ReadOnlyListItem[]>(items);
   const id = "ReadOnlyListField" + Math.random().toString();
-
-  useEffect(()=>{
-    setFilterBy(i18n.language.toLowerCase());
-  },[i18n.language]);
-
-  useEffect(()=>{
-    const first = items.find(p => p.alpha2Code.toLowerCase() === filterBy);
-    const rest = items.filter(p => p.alpha2Code.toLowerCase() !== filterBy);
-    if(first !== undefined){
-    const sorted1 = [first, ...rest.sort((a,b) => a.alpha2Code.localeCompare(b.alpha2Code))];
-    setSortedItems(sorted1);
-    }else{
-      const sorted2 = rest.sort((a,b) => a.alpha2Code.localeCompare(b.alpha2Code));
-    setSortedItems(sorted2);
-    }
-
-  },[filterBy]);
 
   return (
     <DeviceContextConsumer>

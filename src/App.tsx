@@ -1,5 +1,5 @@
 import './App.css';
-import i18n from './i18n';
+import maini18n from './i18n';
 import React, { useEffect } from 'react';
 import { LoadingInProgress } from "./components/molecules/common/LoadingInProgress";
 import LocalizedApp from "./LocalizedApp";
@@ -12,8 +12,8 @@ function App() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   useEffect(()=>{
-    if(i18n.isInitialized === false){
-      i18n.init();
+    if(maini18n.isInitialized === false){
+      maini18n.init();
     }
 
     setIsLoading(false);
@@ -27,7 +27,7 @@ function App() {
             <LoadingInProgress/>
           </div>
         ):(
-          <I18nextProvider i18n={i18n}>
+          <I18nextProvider i18n={maini18n}>
             <DeviceContextProvider>
               <AuthContextProvider>
                 <LocalizedApp />
