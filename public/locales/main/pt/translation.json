@@ -1,5 +1,5 @@
 {
-    "Close": "Close",
+    "Close": "Close mpt",
     "Menu": "Menu",
     "Header title":{
         "Line1": "ALBERGUE",
@@ -8,5 +8,8 @@
     },
     "Description": "Description PT",
     "Details": "Details PT",
-    "Price": "Price PT"
+    "Price": "Price PT",
+    "Items": "Items PT",
+    "Categories": "Categories PT",
+    "Supported languages": "Supported languages PT"
 }

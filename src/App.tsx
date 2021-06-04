@@ -1,5 +1,7 @@
 import './App.css';
 import maini18n from './i18n';
+import modali18n from './modali18n';
+import internali18n from './internali18n';
 import React, { useEffect } from 'react';
 import { LoadingInProgress } from "./components/molecules/common/LoadingInProgress";
 import LocalizedApp from "./LocalizedApp";
@@ -15,6 +17,14 @@ function App() {
     if(maini18n.isInitialized === false){
       maini18n.init();
     }
+
+    if(modali18n.isInitialized === false){
+      modali18n.init();
+    }
+
+    // if(internali18n.isInitialized === false){
+    //   internali18n.init();
+    // }
 
     setIsLoading(false);
   }, []);

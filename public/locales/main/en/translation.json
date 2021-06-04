@@ -8,5 +8,8 @@
     },
     "Description": "Description",
     "Details": "Details",
-    "Price": "Price"
+    "Price": "Price",
+    "Items": "Items",
+    "Categories": "Categories",
+    "Supported languages": "Supported languages"
 }

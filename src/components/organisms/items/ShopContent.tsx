@@ -29,7 +29,6 @@ import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/Read
 import { greenColor } from '../../../customTheme';
 import { ReadOnlyImagesField } from "../../molecules/common/ReadOnlyImagesField";
 import useCategories from '../../../hooks/useCategories';
-import internali18n from "../../../internali18n";
 
 export const ShopContent = () =>{
     return(
@@ -221,7 +220,6 @@ const StickyHeadTable = () => {
             />
         ):(
           <>
-          <I18nextProvider i18n={internali18n}>
             <TableContainer>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
@@ -347,7 +345,6 @@ const StickyHeadTable = () => {
               onChangePage={handleChangePage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-            </I18nextProvider>
           </>
         ))}
       </div>

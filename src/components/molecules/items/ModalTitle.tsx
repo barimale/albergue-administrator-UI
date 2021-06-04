@@ -12,7 +12,7 @@ type ModalTitleProps = {
 }
 
 export const ModalTitle = (props: ModalTitleProps) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('externals');
     const theme = useTheme();
 
     return (

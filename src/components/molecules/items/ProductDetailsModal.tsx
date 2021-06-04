@@ -7,15 +7,15 @@ import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceConte
 import Button from '@material-ui/core/Button';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import { useTranslation } from 'react-i18next';
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import { useTheme } from '@material-ui/core/styles';
 import { ModalTitle } from './ModalTitle';
 import { Typography } from '@material-ui/core';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { ItemDetails, ItemImageDetails } from '../../organisms/items/AddItemModal';
 import InternalLanguageSetter from "./InternalLanguageSetter";
-import { LoadingInProgress } from '../common/LoadingInProgress';
 import internali18n from '../../../internali18n';
+import modali18n from '../../../modali18n';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,19 +73,8 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
   const [open, setOpen] = React.useState(false);
   const maxHeight = window.innerHeight * 0.9;
   const images = item.images;
-  const { t } = useTranslation('translation');
-  const { t: innerT } = useTranslation('externals');
+  const { t } = useTranslation('modal');
   const theme = useTheme();
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-
-  useEffect(()=>{
-    // WIP: add instead of init
-    if(internali18n && internali18n.isInitialized === false){
-      internali18n.init();
-    }
-
-    setIsLoading(false);
-  }, []);
 
   useEffect(()=>{
     setOpen(isDisplayed);
@@ -98,11 +87,6 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
 
   return (
     <>
-    {isLoading.valueOf() === true ?(
-      <div className="App">
-        <LoadingInProgress/>
-      </div>
-    ):(
       <DeviceContextConsumer>
       {context =>
         <Modal
@@ -125,10 +109,12 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
                 maxHeight: maxHeight,
                 width: context === DeviceType.isDesktopOrLaptop ? (images.length === 1 ? '50%' : '75%') : '95%'
               }}>
-              <ModalTitle title={innerT !== undefined ? innerT(`${item.id||""}.name`) : "N/A"} close={(event: any)=> {
-                event.stopPropagation();
-                handleClose();
-              }}/>
+              <I18nextProvider i18n={internali18n}>
+                <ModalTitle title={`${item.id||""}.name`} close={(event: any)=> {
+                  event.stopPropagation();
+                  handleClose();
+                }}/>
+              </I18nextProvider>
               <div 
                 style={{
                   display: 'flex',
@@ -164,23 +150,9 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
                     paddingBottom: '10px',
                     paddingTop: '3px'
                 }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      alignContent: 'center',
-                      width: 'max-content'
-                  }}>
-                    {t('Price') + ': ' + (item.active.valueOf() === false ? '-' : item.price.toFixed(2))}
-                    <EuroSymbolIcon 
-                      style={{
-                        paddingLeft: '4px',
-                        height:'18px',
-                        color: 'black',
-                        width: 'auto'
-                    }}/>
-                  </div>
+                  <I18nextProvider i18n={modali18n}>
+                    <TranslatablePrice priceKey={'Price'} item={item}/>
+                  </I18nextProvider>
                 </Typography>
                 <div 
                   className={classes.scroolableContent}
@@ -190,10 +162,9 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
                     padding: '10px',
                     marginRight: '30px'
                   }}>
-                  <h4 style={{
-                    fontFamily: 'Signoria-Bold',
-                    margin: '0px'
-                  }}>{t('Description')}</h4>
+                    <I18nextProvider i18n={modali18n}>
+                      <TranslatableDescription descriptionKey={'Description'}/>
+                   </I18nextProvider>
                   <p style={{
                     maxHeight: maxHeight,
                     textAlign: 'justify',
@@ -204,28 +175,27 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
                     whiteSpace: 'pre-line',
                     fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
                   }}>
-                    <div dangerouslySetInnerHTML={{ __html: innerT !== undefined ? innerT(`${item.id||""}.description`) : "N/A"}} />
+                    <I18nextProvider i18n={internali18n}>
+                      <TranslatableContainer content={`${item.id||""}.description`}/>
+                    </I18nextProvider>
                   </p>
-                  <h4 
-                    style={{
+                    <I18nextProvider i18n={modali18n}>
+                      <TranslatableDetails detailsKey={'Details'}/>
+                    </I18nextProvider>
+                    <p style={{
+                      maxHeight: maxHeight,
+                      textAlign: 'justify',
                       fontFamily: 'Signoria-Bold',
-                      margin: '0px',
-                      paddingTop: '20px'
-                  }}>
-                    {t('Details')}
-                  </h4>
-                  <p style={{
-                    maxHeight: maxHeight,
-                    textAlign: 'justify',
-                    fontFamily: 'Signoria-Bold',
-                    overflowY: 'auto',
-                    paddingLeft: '5px',
-                    paddingRight: '5px',
-                    whiteSpace: 'pre-line',
-                    fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
-                  }}>
-                    <div dangerouslySetInnerHTML={{ __html: innerT !== undefined ? innerT(`${item.id||""}.shortDescription`) : "N/A" }} />
-                  </p>
+                      overflowY: 'auto',
+                      paddingLeft: '5px',
+                      paddingRight: '5px',
+                      whiteSpace: 'pre-line',
+                      fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
+                    }}>
+                      <I18nextProvider i18n={internali18n}>
+                        <TranslatableContainer content={`${item.id||""}.shortDescription`}/>
+                      </I18nextProvider>
+                    </p>
                 </div>
                 <div style={{
                   paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
@@ -234,26 +204,12 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
                   flexDirection: 'row',
                   justifyContent: 'space-between'
                 }}>
-                  <Button
-                    className={"pointerOverEffect"}
-                    variant="contained"
-                    style={{
-                      color: `${theme.palette.common.black}`,
-                      borderRadius: '0px',
-                      paddingLeft: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                      paddingRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                      marginRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                      backgroundColor: `${theme.palette.common.white}`,
-                      fontSize: '16px'
-                    }}
-                    onClick={(event: any)=>{
-                      event.stopPropagation();
-                      handleClose();
-                  }}>
-                    {t('Close').toUpperCase()}
-                  </Button>
-                  <InternalLanguageSetter/>
-                  {/* <DynamicLanguageSetter /> */}
+                  <I18nextProvider i18n={modali18n}>
+                    <TranslatableCloseButton handleClose={handleClose} closeKey={'Close'}/>
+                  </I18nextProvider>
+                  <I18nextProvider i18n={modali18n}>
+                    <InternalLanguageSetter />
+                  </I18nextProvider>
                 </div>
               </div>
             </div>
@@ -263,7 +219,125 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
       </Modal>
       }
       </DeviceContextConsumer>
-    )}
     </>
+  );
+}
+
+type TranslatablePriceProps = {
+  priceKey: string;
+  item: ItemDetails;
+}
+const TranslatablePrice = (props: TranslatablePriceProps) =>{
+  const { priceKey, item } = props;
+  const { t } = useTranslation('modal');
+
+  return(
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignContent: 'center',
+        width: 'max-content'
+    }}>
+      {t(priceKey) + ': ' + item.price.toFixed(2)}
+      <EuroSymbolIcon 
+        style={{
+          paddingLeft: '4px',
+          height:'18px',
+          color: 'black',
+          width: 'auto'
+      }}/>
+    </div>
+  );
+}
+
+type TranslatableContainerProps = {
+  content: string;
+}
+const TranslatableContainer = (props: TranslatableContainerProps) =>{
+  const { content } = props;
+  const { t } = useTranslation('externals');
+
+  return(
+    <>
+      <div dangerouslySetInnerHTML={{ __html: t(content)}} />
+    </>
+  );
+}
+
+type TranslatableDetailsProps = {
+  detailsKey: string;
+}
+
+const TranslatableDetails = (props: TranslatableDetailsProps) =>{
+  const { detailsKey } = props;
+  const { t } = useTranslation('modal');
+
+  return(
+      <h4 
+        style={{
+          fontFamily: 'Signoria-Bold',
+          margin: '0px',
+          paddingTop: '20px'
+      }}>
+        {t(detailsKey)}
+      </h4>
+  );
+}
+
+type TranslatableDescriptionProps = {
+  descriptionKey: string;
+}
+
+const TranslatableDescription = (props: TranslatableDescriptionProps) =>{
+  const { descriptionKey } = props;
+  const { t } = useTranslation('modal');
+
+  return(
+      <h4 
+        style={{
+          fontFamily: 'Signoria-Bold',
+          margin: '0px',
+          paddingTop: '20px'
+      }}>
+        {t(descriptionKey)}
+      </h4>
+  );
+}
+
+type TranslatableCloseButtonProps = {
+  closeKey: string;
+  handleClose: () => void;
+}
+
+const TranslatableCloseButton = (props: TranslatableCloseButtonProps) =>{
+  const { closeKey, handleClose } = props;
+  const { t } = useTranslation('translation');
+  const theme = useTheme();
+
+  return(
+    <DeviceContextConsumer>
+    {context =>
+      <Button
+        className={"pointerOverEffect"}
+        variant="contained"
+        style={{
+          color: `${theme.palette.common.black}`,
+          borderRadius: '0px',
+          paddingLeft: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+          paddingRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+          marginRight: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+          backgroundColor: `${theme.palette.common.white}`,
+          fontSize: '16px'
+        }}
+        onClick={(event: any)=>{
+          event.stopPropagation();
+          handleClose();
+      }}>
+        {t(closeKey).toUpperCase()}
+      </Button>
+    }
+    </DeviceContextConsumer>
   );
 }
