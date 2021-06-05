@@ -33,7 +33,7 @@ import { HubConnectionBuilder, LogLevel, IHttpConnectionOptions } from "@microso
 
 export const ShopContent = () =>{
   const { userToken } = useContext(AuthContext);
-
+  const [localesInProgress, setLocalesInProgress] = useState<boolean>(false);
   const options: IHttpConnectionOptions = {
     accessTokenFactory: () =>  `${userToken}`, 
     withCredentials: false
@@ -46,10 +46,12 @@ export const ShopContent = () =>{
 
   connection.on('OnFinishAsync', function (id: string) {
     console.log(id + " finished.");
+    setLocalesInProgress(false);
   });
 
   connection.on('OnStartAsync', function (id: string) {
     console.log(id + " started.");
+    setLocalesInProgress(true);
   });
 
   useEffect(()=>{
@@ -74,7 +76,7 @@ export const ShopContent = () =>{
                   width: '100%', 
                   height: '100%',
           }}>
-              <StickyHeadTable/>
+              <StickyHeadTable localesInProgress={localesInProgress}/>
           </div>
         }
         </DeviceContextConsumer>
@@ -147,7 +149,12 @@ interface Column {
     }
   });
   
-const StickyHeadTable = () => {
+type StickyHeadTableProps = {
+  localesInProgress: boolean;
+}
+  
+const StickyHeadTable = (props: StickyHeadTableProps) => {
+    const { localesInProgress } = props;
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -345,24 +352,27 @@ const StickyHeadTable = () => {
                                 flexDirection: 'row',
                                 justifyContent: 'flex-end'
                               }}>
-                            <PreviewActionComponent 
-                              item={row}
-                            />
-                            <EditActionComponent 
-                              item={row}
-                              onAgreeAction={async () => {
-                                setRandom(Math.random());
-                            }}/>
-                            <DeleteActionComponent
-                              id={row.id || ""}
-                              title={"Are You sure?"}
-                              question={"You are going to delete the item. All related translations will be deleted. This operation cannot be restored."}
-                              yesLabel={"Yes"}
-                              noLabel={"No"}
-                              onAgreeAction={async () => {
-                                await onDelete(row.id || "");
-                                setRandom(Math.random());
+                            <>
+                              <PreviewActionComponent 
+                                disabled={localesInProgress.valueOf()}
+                                item={row}
+                              />
+                              <EditActionComponent 
+                                item={row}
+                                onAgreeAction={async () => {
+                                  setRandom(Math.random());
                               }}/>
+                              <DeleteActionComponent
+                                id={row.id || ""}
+                                title={"Are You sure?"}
+                                question={"You are going to delete the item. All related translations will be deleted. This operation cannot be restored."}
+                                yesLabel={"Yes"}
+                                noLabel={"No"}
+                                onAgreeAction={async () => {
+                                  await onDelete(row.id || "");
+                                  setRandom(Math.random());
+                                }}/>
+                              </>
                             </div>
                         </TableCell>
                       </TableRow>
