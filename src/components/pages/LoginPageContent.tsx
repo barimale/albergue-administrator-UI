@@ -292,7 +292,7 @@ export const ApplicationName = () => {
                     textAlign: 'center',
                     fontFamily: 'Signoria-Bold',
                 }}>
-                {t("Administration console")}
+                {t("Administration") + " " + t("console")}
             </Typography>
         </div>
     }

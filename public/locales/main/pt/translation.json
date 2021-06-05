@@ -11,5 +11,16 @@
     "Price": "Price PT",
     "Items": "Items PT",
     "Categories": "Categories PT",
-    "Supported languages": "Supported languages PT"
+    "Supported languages": "Supported languages PT",
+    "ID":"ID PT",
+    "Availability": "AvailabilityPT",
+    "Category": "CategoryPT",
+    "Action": "ActionPT",
+    "Add item": "Add itemPT",
+    "Add language": "Add languagePT",
+    "Add category": "Add categoryPT",
+    "Name": "NamePT",
+    "Logout": "LogoutPT",
+    "Administrator": "AdministratorPT",
+    "console": "consolePT"
 }

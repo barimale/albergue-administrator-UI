@@ -230,7 +230,7 @@ const StickyHeadTable = () => {
                         align={column.align}
                         style={{width: column.width, minWidth: column.minWidth , fontWeight: 'bold'}}
                       >
-                        {column.label}
+                        {t(column.label)}
                       </TableCell>
                     ))}
                     <TableCell

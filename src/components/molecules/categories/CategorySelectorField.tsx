@@ -26,7 +26,11 @@ export const CategorySelectorField = (props: CategoryFormikProps) => {
     const defaultValue = categories
     .find(p => p.id !== undefined && p.id === props.initialValues.categoryId);
 
-    setDefaultCategoryName(defaultValue);
+    if(defaultValue !== undefined){
+      setDefaultCategoryName(defaultValue);
+    }else{
+      setDefaultCategoryName(categories[0]);
+    }
   }, [categories]);
 
   return (

@@ -11,5 +11,16 @@
     "Price": "Price",
     "Items": "Items",
     "Categories": "Categories",
-    "Supported languages": "Supported languages"
+    "Supported languages": "Supported languages",
+    "ID":"ID",
+    "Availability": "Availability",
+    "Category": "Category",
+    "Action": "Action",
+    "Add item": "Add item",
+    "Add language": "Add language",
+    "Add category": "Add category",
+    "Name": "Name",
+    "Logout": "Logout",
+    "Administrator": "Administrator",
+    "console": "Console"
 }
