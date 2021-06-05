@@ -8,20 +8,25 @@ import ProductDetailsModal from "./ProductDetailsModal";
 
 interface PreviewActionComponentProps {
   item: ItemDetails;
+  disabled: boolean;
 };
 export const PreviewActionComponent = (props: PreviewActionComponentProps) => {
-  const { item } = props;
+  const { item, disabled } = props;
   const [isShown, setIsShown] = useState<boolean>(false);
   const { t } = useTranslation();
 
   return (
     <>
-      <Tooltip title={t("Preview").toString()}>
-        <IconButton onClick={async () => {
-          setIsShown(!isShown);
-        }}>
-          <AspectRatioIcon />
-        </IconButton>
+      <Tooltip title={disabled.valueOf() === true ? t("Locales generation in progress").toString() : t("Preview").toString()}>
+        <span>
+          <IconButton 
+            disabled={disabled}
+            onClick={async () => {
+            setIsShown(!isShown);
+          }}>
+            <AspectRatioIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <ProductDetailsModal 
         item={item}
