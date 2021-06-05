@@ -29,8 +29,41 @@ import { ReadOnlyListField, ReadOnlyListItem } from '../../molecules/common/Read
 import { greenColor } from '../../../customTheme';
 import { ReadOnlyImagesField } from "../../molecules/common/ReadOnlyImagesField";
 import useCategories from '../../../hooks/useCategories';
+import { HubConnectionBuilder, LogLevel, IHttpConnectionOptions } from "@microsoft/signalr";
 
 export const ShopContent = () =>{
+  const { userToken } = useContext(AuthContext);
+
+  const options: IHttpConnectionOptions = {
+    accessTokenFactory: () =>  `${userToken}`, 
+    withCredentials: false
+  };
+  const connection = new HubConnectionBuilder()
+      .withUrl('http://localhost:5020/localesHub', options)
+      .configureLogging(LogLevel.Debug)
+      .withAutomaticReconnect()
+      .build();
+
+  connection.on('ReceiveMessage', function (message: string) {
+    // Html encode display name and message.
+    var encodedMsg = message;
+    debugger
+  });
+
+  useEffect(()=>{
+    connection.start()
+    .then(function () {
+      console.log('connection started');
+    }).catch((error: any)=>{
+      console.log(error);
+    });
+
+    return () => {
+      connection.stop();
+    }; 
+  }, []);
+
+     
     return(
         <DeviceContextConsumer>
         {context =>
