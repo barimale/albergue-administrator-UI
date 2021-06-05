@@ -6,3 +6,18 @@ Local IP: 192.168.2.100
 username: albergue
 password: albergue 
 ```
+
+# Development
+To provide external translations, crate a linkage between generated locales:
+```
+~/administrator-backend/locales/*
+```
+and:
+```
+/locales/externals/*.json
+```
+Execute bellowed command:
+```
+cd ./public/locales/
+mklink /d externals R:\locales
+```
