@@ -40,14 +40,16 @@ export const ShopContent = () =>{
   };
   const connection = new HubConnectionBuilder()
       .withUrl('http://localhost:5020/localesHub', options)
-      .configureLogging(LogLevel.Debug)
+      .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
       .build();
 
-  connection.on('ReceiveMessage', function (message: string) {
-    // Html encode display name and message.
-    var encodedMsg = message;
-    debugger
+  connection.on('OnFinishAsync', function (id: string) {
+    console.log(id + " finished.");
+  });
+
+  connection.on('OnStartAsync', function (id: string) {
+    console.log(id + " started.");
   });
 
   useEffect(()=>{
