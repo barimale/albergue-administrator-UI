@@ -8,6 +8,7 @@ import {
   makeStyles,
   Theme,
   Typography,
+  useTheme,
 } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ import { thirdMain } from "../../../customTheme";
 
 export const ImagesField = (props: FormikProps<ItemDetails>) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const classes = useStyles();
   const [meta, helpers] = useField('images');
   const defaultValues = props.initialValues.images.length > 0 ? props.initialValues.images : new Array<ItemImageDetails>();
@@ -107,7 +109,14 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
                 setSelectedFiles(value);
               }}/>
           ):(
-            <div style={{ height: '200px', textAlign: 'center', alignItems: 'center', display: 'flex'}}>
+            <div 
+              style={{ 
+                height: '200px', 
+                textAlign: 'center', 
+                alignItems: 'center', 
+                display: 'flex',
+                backgroundColor: 'gray'
+            }}>
               <Typography style={{width: '100%'}}>{t("Preview arena")}</Typography>
             </div>
           )}
@@ -126,9 +135,14 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
               <Typography style={{color: 'black', paddingLeft: '10px'}}>{t("Upload images")}</Typography>
             </IconButton>
             {helpers.error !== undefined && (
-              <p style={{color: 'red'}}>
+              <Typography 
+                style={{
+                  color: `${theme.palette.error.main}`,
+                  fontSize: '0.75rem',
+                  marginLeft: '14px'
+              }}>
                 {helpers.error}
-              </p>
+              </Typography>
             )}
           </label>
       </div>

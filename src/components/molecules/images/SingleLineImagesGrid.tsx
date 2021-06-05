@@ -71,7 +71,8 @@ export const SingleLineImagesGrid = (props: SingleLineImagesGridProps) =>{
                   transform: 'translateZ(0)',
                   paddingTop: '10px',
                   paddingBottom: '0px',
-                  margin: '0px !important'
+                  margin: '0px !important',
+                  backgroundColor: 'gray'
                 }}>
                   {internalImages.map((item: ItemImageDetails, index: number) => (
                     <Draggable key={item.id} draggableId={item.id || ""} index={index}>

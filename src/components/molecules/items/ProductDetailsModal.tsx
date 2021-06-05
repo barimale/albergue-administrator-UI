@@ -279,7 +279,7 @@ const TranslatableDetails = (props: TranslatableDetailsProps) =>{
         style={{
           fontFamily: 'Signoria-Bold',
           margin: '0px',
-          paddingTop: '20px'
+          paddingTop: '0px'
       }}>
         {t(detailsKey)}
       </h4>
@@ -299,7 +299,7 @@ const TranslatableDescription = (props: TranslatableDescriptionProps) =>{
         style={{
           fontFamily: 'Signoria-Bold',
           margin: '0px',
-          paddingTop: '20px'
+          paddingTop: '0px'
       }}>
         {t(descriptionKey)}
       </h4>

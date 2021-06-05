@@ -60,34 +60,36 @@ export const ItemDescriptionField = (props: ItemDescriptionFieldProps) => {
           name={`translatableDetails[${index}].description`}
           label={t("Item description")}
           margin="dense"
-          variant="outlined"
+          variant='outlined'
+          multiline
+          rows={6}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {suggestionIsLoading.valueOf() === true ? (
-                  <LoadingInProgress/>
-                ):(
-                  suggestion.isError.valueOf() === false ? (
-                    <IconButton
-                    disabled={lng.toLowerCase() === 'en'}
-                    onClick={()=>{
-                      props.setFieldValue(`translatableDetails[${index}].description`, suggestion.translation || "")
-                    }}
-                    onMouseDown={(event: any) => event.preventDefault()}
-                  >
-                    <GTranslateIcon/>
-                  </IconButton>
+                  {suggestionIsLoading.valueOf() === true ? (
+                    <LoadingInProgress/>
                   ):(
-                    <IconButton
-                    disabled={lng.toLowerCase() === 'en'}
-                    href={suggestion.translation}
-                    target={"_blank"}
-                    onMouseDown={(event: any) => event.preventDefault()}
-                  >
-                    <GTranslateIcon/>
-                  </IconButton>
-                  )
-                )}
+                    suggestion.isError.valueOf() === false ? (
+                      <IconButton
+                      disabled={lng.toLowerCase() === 'en'}
+                      onClick={()=>{
+                        props.setFieldValue(`translatableDetails[${index}].description`, suggestion.translation || "")
+                      }}
+                      onMouseDown={(event: any) => event.preventDefault()}
+                    >
+                      <GTranslateIcon/>
+                    </IconButton>
+                    ):(
+                      <IconButton
+                      disabled={lng.toLowerCase() === 'en'}
+                      href={suggestion.translation}
+                      target={"_blank"}
+                      onMouseDown={(event: any) => event.preventDefault()}
+                    >
+                      <GTranslateIcon/>
+                    </IconButton>
+                    )
+                  )}
             </InputAdornment>
           )}}
           error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails[index]!==undefined)}

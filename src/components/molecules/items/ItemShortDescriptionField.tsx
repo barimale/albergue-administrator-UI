@@ -60,6 +60,8 @@ export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps)
           label={t("Item short description")}
           margin="dense"
           variant="outlined"
+          multiline
+          rows={6}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
