@@ -17,6 +17,7 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
   const { i18n: modali18n} = useTranslation('modal');
+  const { i18n} = useTranslation('externals');
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -64,7 +65,7 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
                   justifyContent: 'flex-end'
               }}>
                 <TranslateIcon fontSize="small" style={{paddingRight: '10px', height: '100%'}}/>
-                {`${modali18n.language.toUpperCase()}`}
+                {`${i18n.language.toUpperCase()}`}
               </div>
             </div>
           </IconButton>

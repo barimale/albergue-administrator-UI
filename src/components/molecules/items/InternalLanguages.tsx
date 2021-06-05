@@ -4,6 +4,7 @@ import { Button, useTheme } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import { Typography } from '@material-ui/core';
 import internali18n from '../../../internali18n';
+import { useEffect } from 'react';
 
 type InternalLanguagesProps ={  
   handleClose: () => void;
@@ -13,6 +14,10 @@ type InternalLanguagesProps ={
 export const InternalLanguages = (props: InternalLanguagesProps) => {
   const { onLanguageChange } = props;
   const { i18n } = useTranslation('externals');
+
+  useEffect(()=>{
+    debugger
+  },[i18n.languages.length]);
 
   return (
   <I18nextProvider i18n={internali18n}>

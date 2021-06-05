@@ -16,6 +16,8 @@ import { ItemDetails, ItemImageDetails } from '../../organisms/items/AddItemModa
 import InternalLanguageSetter from "./InternalLanguageSetter";
 import internali18n from '../../../internali18n';
 import modali18n from '../../../modali18n';
+import useLanguages from '../../../hooks/useLanguages';
+import { Language } from "../../organisms/languages/LanguagesContent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,13 +70,51 @@ type ProductDetailsModalProps = {
 }
 
 export default function ProductDetailsModal(props: ProductDetailsModalProps) {
-  const classes = useStyles();
   const { isDisplayed, onHide, item } = props;
+  const classes = useStyles();
+  const { languages } = useLanguages();
+  const languageIds = item.translatableDetails.flatMap(p => p.languageId);
+  const [alphacodes, setAlphaCodes] = useState<Array<string>>(new Array<string>());
+
   const [open, setOpen] = React.useState(false);
   const maxHeight = window.innerHeight * 0.9;
   const images = item.images;
-  const { t } = useTranslation('modal');
   const theme = useTheme();
+
+  useEffect(()=>{
+    const languageIds = item.translatableDetails.flatMap(p => p.languageId);
+    const filteredAlphacodes = languageIds.flatMap(p => {
+      var result = languages.find((pp: Language) => pp.id === p);
+      if(result !== undefined){
+        return result.alpha2Code.toLowerCase();
+      }else{
+        return "";
+      }
+    }).filter(ppp => ppp !== "");
+
+    setAlphaCodes(filteredAlphacodes);
+  }, [languages]);
+
+  useEffect(()=>{
+    if(alphacodes.length > 0){
+      internali18n
+      .loadLanguages(alphacodes)
+          .then(()=>{
+            console.log('resources reloaded.');
+            internali18n
+              .reloadResources(alphacodes, 'externals')
+              .catch((error: any) =>{
+                debugger
+                console.log(error);
+              });
+          }).catch((error: any)=>{
+            debugger
+            console.log(error);
+          });
+      // setIsLoading(false);
+    }
+    
+  }, [alphacodes]);
 
   useEffect(()=>{
     setOpen(isDisplayed);
