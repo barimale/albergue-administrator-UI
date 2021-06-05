@@ -1,8 +1,7 @@
-import { FormikProps } from "formik";
+import { FormikProps, useField } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
 import { MyTextField } from "../../atoms/MyTextField";
-import { Category } from "../../organisms/categories/CategoriesContent";
 import React, { useEffect, useState } from "react";
 import { IconButton, Typography } from "@material-ui/core";
 import useLanguages, { TranslateResponse } from "../../../hooks/useLanguages";
@@ -20,6 +19,7 @@ interface ItemShortDescriptionFieldProps extends FormikProps<ItemDetails>{
 export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps) => {
   const { index, textInEN, lng } = props;
   const { t } = useTranslation();
+  const [meta, helpers] = useField<string>(`translatableDetails[${index}].shortDescription`);
   const [suggestion, setSuggestion] = useState<TranslateResponse>({isError: false, translation: ""});
   const [suggestionIsLoading, setSuggestionIsLoading] = useState<boolean>(false);
   const { translate } = useLanguages();
@@ -89,15 +89,9 @@ export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps)
                 )}
             </InputAdornment>)
           }}
-          //WIP
-          // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}
-          // helperText={props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index]}
+          error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails[index]!==undefined)}
+          helperText={helpers.error !== undefined && helpers.error}
           fullWidth />
-          {/* {suggestion.isError === true && (
-            <Typography style={{fontSize: '14px'}}>
-              {suggestion.translation}
-            </Typography>
-          )} */}
       </>
     }
     </DeviceContextConsumer>

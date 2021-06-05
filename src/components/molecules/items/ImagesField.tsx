@@ -1,16 +1,13 @@
-import { FormikProps } from "formik";
+import { FormikProps, useField } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
 import { ItemDetails, ItemImageDetails } from "../../organisms/items/AddItemModal";
 import * as React from "react";
 import {
-  Button,
   IconButton,
-  Tooltip,
   makeStyles,
   Theme,
   Typography,
-  Input,
 } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
 import { useEffect, useState } from "react";
@@ -20,6 +17,7 @@ import { thirdMain } from "../../../customTheme";
 export const ImagesField = (props: FormikProps<ItemDetails>) => {
   const { t } = useTranslation();
   const classes = useStyles();
+  const [meta, helpers] = useField('images');
   const defaultValues = props.initialValues.images.length > 0 ? props.initialValues.images : new Array<ItemImageDetails>();
   const [selectedFiles, setSelectedFiles] = useState<Array<ItemImageDetails>>(defaultValues);
 
@@ -127,6 +125,11 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
               <PhotoCamera />
               <Typography style={{color: 'black', paddingLeft: '10px'}}>{t("Upload images")}</Typography>
             </IconButton>
+            {helpers.error !== undefined && (
+              <p style={{color: 'red'}}>
+                {helpers.error}
+              </p>
+            )}
           </label>
       </div>
     }

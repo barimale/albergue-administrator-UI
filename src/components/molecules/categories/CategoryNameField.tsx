@@ -1,4 +1,4 @@
-import { FormikProps } from "formik";
+import { FormikProps, useField } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
 import { MyTextField } from "../../atoms/MyTextField";
@@ -18,8 +18,9 @@ interface CategoryNameFieldProps extends FormikProps<Category>{
 
 export const CategoryNameField = (props: CategoryNameFieldProps) => {
   const { index, textInEN, lng } = props;
+  const [meta, helpers] = useField<string>(`translatableDetails[${index}].name`);
   const { t } = useTranslation();
-
+  
   return (
     <DeviceContextConsumer>
       {context =>
@@ -43,11 +44,8 @@ export const CategoryNameField = (props: CategoryNameFieldProps) => {
                   </IconButton>
             </InputAdornment>)
           }}
-          //WIP
-          // const ticketErrors = errors.tickets?.length && errors.tickets[i] || {};
-          // const ticketTouched = touched.tickets?.length && touched.tickets[i] || {};
-          error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails![index]!==undefined)}
-          // helperText={(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails[index] !== undefined && props.touched?.translatableDetails[index]) && (props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails![index] !== undefined && props.errors?.translatableDetails![index])}
+          error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails[index]!==undefined)}
+          helperText={helpers.error !== undefined && helpers.error}
           fullWidth />
       </>
     }

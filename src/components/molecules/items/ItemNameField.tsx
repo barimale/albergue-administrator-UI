@@ -1,4 +1,4 @@
-import { FormikProps } from "formik";
+import { FormikProps, useField } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
 import { MyTextField } from "../../atoms/MyTextField";
@@ -20,6 +20,7 @@ interface ItemNameFieldProps extends FormikProps<ItemDetails>{
 export const ItemNameField = (props: ItemNameFieldProps) => {
   const { index, textInEN, lng } = props;
   const { t } = useTranslation();
+  const [meta, helpers] = useField<string>(`translatableDetails[${index}].name`);
   const [suggestion, setSuggestion] = useState<TranslateResponse>({isError: false, translation: ""});
   const [suggestionIsLoading, setSuggestionIsLoading] = useState<boolean>(false);
   const { translate } = useLanguages();
@@ -89,15 +90,9 @@ export const ItemNameField = (props: ItemNameFieldProps) => {
                 )}
             </InputAdornment>)
           }}
-          //WIP
-          // error={Boolean(props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index])}
-          // helperText={props.touched?.translatableDetails?[index] && props.errors?.translatableDetails?[index]}
+          error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails[index]!==undefined)}
+          helperText={helpers.error !== undefined && helpers.error}
           fullWidth />
-          {/* {suggestion.isError === true && (
-            <Typography style={{fontSize: '14px'}}>
-              {suggestion.translation}
-            </Typography>
-          )} */}
       </>
     }
     </DeviceContextConsumer>
