@@ -13,7 +13,7 @@ internali18n
     backend: {
       loadPath: '/locales/externals/{{lng}}.json',
       addPath: '/locales/externals/{{lng}}.json',
-      reloadInterval: 100
+      reloadInterval: 10000
     },
     react: {
       bindI18n: 'languageChanged',
