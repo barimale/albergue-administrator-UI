@@ -4,34 +4,35 @@ import { Button, useTheme } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import { Typography } from '@material-ui/core';
 import internali18n from '../../../internali18n';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-type InternalLanguagesProps ={  
+type InternalLanguagesProps = {  
+  languages: Array<string>;
   handleClose: () => void;
   onLanguageChange: (lng: string) => void;
 }
 
 export const InternalLanguages = (props: InternalLanguagesProps) => {
-  const { onLanguageChange } = props;
-  const { i18n } = useTranslation('externals');
+  const { onLanguageChange, languages } = props;
+  const [lngs, setLngs] = useState<Array<string>>(languages);
 
   useEffect(()=>{
-    debugger
-  },[i18n.languages.length]);
+    setLngs(languages);
+  },[languages]);
 
   return (
   <I18nextProvider i18n={internali18n}>
-    {i18n.languages.sort((a: string, b: string) => b.localeCompare(a)).map((language: string, index: number) => {
+    {lngs?.sort((a: string, b: string) => b.localeCompare(a))?.map((language: string, index: number) => {
       return  (
         <>
           <MenuItem key={index}>
               <InternalLanguage 
-                language={language} 
+                language={language}
                 handleClose={props.handleClose} 
                 onLanguageChange={onLanguageChange}
               />
           </MenuItem>
-          {index !== (i18n.languages.length-1) && (
+          {index !== (lngs.length-1) && (
             <Divider orientation="horizontal" />
           )}
         </>);
@@ -40,8 +41,10 @@ export const InternalLanguages = (props: InternalLanguagesProps) => {
   </I18nextProvider>);
 }
 
-interface InternalLanguageProps extends InternalLanguagesProps{
+interface InternalLanguageProps{
   language: string;
+  handleClose: () => void;
+  onLanguageChange: (lng: string) => void;
 }
 
 const InternalLanguage = (props: InternalLanguageProps) => {
@@ -53,9 +56,11 @@ const InternalLanguage = (props: InternalLanguageProps) => {
   const changeLanguage = async (lng: string) =>{
       await i18n.changeLanguage(lng)
       .then(()=>{
-        onLanguageChange(i18n.language);
+        console.log("Language changed");
       }).catch((error: any)=>{
         console.log(error);
+      }).finally(()=>{
+        onLanguageChange(i18n.language);
       });
   };
 
@@ -72,8 +77,8 @@ const InternalLanguage = (props: InternalLanguageProps) => {
         paddingRight: '10px'
       }}
       onClick={async () => {
-        props.handleClose();
         await changeLanguage(language);
+        props.handleClose();
       }}>
         <img 
           id={`myImage-${language}`} 

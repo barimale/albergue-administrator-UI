@@ -18,6 +18,7 @@ import internali18n from '../../../internali18n';
 import modali18n from '../../../modali18n';
 import useLanguages from '../../../hooks/useLanguages';
 import { Language } from "../../organisms/languages/LanguagesContent";
+import { LoadingInProgress } from "../common/LoadingInProgress";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,11 +70,19 @@ type ProductDetailsModalProps = {
     item: ItemDetails;
 }
 
-export default function ProductDetailsModal(props: ProductDetailsModalProps) {
+export default function ProductDetailsModal(props: ProductDetailsModalProps){
+  return(
+    <I18nextProvider i18n={internali18n}>
+      <ProductDetailsModalContent {...props}/>
+    </I18nextProvider>
+  );
+}
+
+ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
   const { isDisplayed, onHide, item } = props;
   const classes = useStyles();
   const { languages } = useLanguages();
-  const languageIds = item.translatableDetails.flatMap(p => p.languageId);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [alphacodes, setAlphaCodes] = useState<Array<string>>(new Array<string>());
 
   const [open, setOpen] = React.useState(false);
@@ -97,22 +106,24 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
 
   useEffect(()=>{
     if(alphacodes.length > 0){
-      internali18n
-      .loadLanguages(alphacodes)
+      debugger
+      alphacodes.forEach(p => {
+        internali18n.loadLanguages([p])
           .then(()=>{
-            console.log('resources reloaded.');
-            internali18n
-              .reloadResources(alphacodes, 'externals')
-              .catch((error: any) =>{
-                debugger
-                console.log(error);
-              });
-          }).catch((error: any)=>{
-            debugger
-            console.log(error);
-          });
-      // setIsLoading(false);
+            console.log("Language loaded: " + p);
+          })
+          .catch((error: any) => console.log(error));
+      });
+
+      internali18n
+        .reloadResources(alphacodes, 'externals')
+        .catch((error: any) =>{
+          debugger
+          console.log(error);
+        });
     }
+
+    setIsLoading(false);
     
   }, [alphacodes]);
 
@@ -141,120 +152,124 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps) {
           }}
         >
           <Fade in={open}>
-          <>
-            <div 
-              className={classes.paper}
-              style={{
-                borderLeft: `20px solid ${theme.palette.primary.main}`,
-                maxHeight: maxHeight,
-                width: context === DeviceType.isDesktopOrLaptop ? (images.length === 1 ? '50%' : '75%') : '95%'
-              }}>
-              <I18nextProvider i18n={internali18n}>
-                <ModalTitle title={`${item.id||""}.name`} close={(event: any)=> {
-                  event.stopPropagation();
-                  handleClose();
-                }}/>
-              </I18nextProvider>
-              <div 
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-              }}>
-              <GridList 
-                cellHeight={window.innerHeight*0.34} 
-                className={classes.gridList} 
-                cols={context === DeviceType.isDesktopOrLaptop ?(images.length > 1 ? (images.length > 2 ? 1.5 : 2) : 1):(images.length > 1 ? 1.5 : 1)}>
-                {images.map((tile: ItemImageDetails, index: number) => (
-                  <GridListTile key={index} cols={1} style={{
-                    width: 'max-content !important'
-                  }}>
-                    <img 
-                      src={tile.imageData} 
-                      alt={item.id! + '_' + index} 
-                      style={{
-                        height: '100%',
-                        width: 'auto',
-                        textAlign: 'center'
-                    }}/>
-                  </GridListTile>
-                ))}
-              </GridList>
-              <div 
-                style={{
-                  padding: '20px',
-                  paddingTop: '10px'
-              }}>
-                <Typography 
-                  style={{
-                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '18px' : '20px',
-                    paddingBottom: '10px',
-                    paddingTop: '3px'
-                }}>
-                  <I18nextProvider i18n={modali18n}>
-                    <TranslatablePrice priceKey={'Price'} item={item}/>
-                  </I18nextProvider>
-                </Typography>
+            {isLoading.valueOf() === true ? (
+              <LoadingInProgress />
+            ):(
+              <>
                 <div 
-                  className={classes.scroolableContent}
+                  className={classes.paper}
                   style={{
-                    height:window.innerHeight*0.15,
-                    border: '0.5px solid gray',
-                    padding: '10px',
-                    marginRight: '30px'
-                  }}>
-                    <I18nextProvider i18n={modali18n}>
-                      <TranslatableDescription descriptionKey={'Description'}/>
-                   </I18nextProvider>
-                  <p style={{
+                    borderLeft: `20px solid ${theme.palette.primary.main}`,
                     maxHeight: maxHeight,
-                    textAlign: 'justify',
-                    fontFamily: 'Signoria-Bold',
-                    overflowY: 'auto',
-                    paddingLeft: '5px',
-                    paddingRight: '5px',
-                    whiteSpace: 'pre-line',
-                    fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
+                    width: context === DeviceType.isDesktopOrLaptop ? (images.length === 1 ? '50%' : '75%') : '95%'
                   }}>
-                    <I18nextProvider i18n={internali18n}>
-                      <TranslatableContainer content={`${item.id||""}.description`}/>
-                    </I18nextProvider>
-                  </p>
-                    <I18nextProvider i18n={modali18n}>
-                      <TranslatableDetails detailsKey={'Details'}/>
-                    </I18nextProvider>
-                    <p style={{
-                      maxHeight: maxHeight,
-                      textAlign: 'justify',
-                      fontFamily: 'Signoria-Bold',
-                      overflowY: 'auto',
-                      paddingLeft: '5px',
-                      paddingRight: '5px',
-                      whiteSpace: 'pre-line',
-                      fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
+                  <I18nextProvider i18n={internali18n}>
+                    <ModalTitle title={`${item.id||""}.name`} close={(event: any)=> {
+                      event.stopPropagation();
+                      handleClose();
+                    }}/>
+                  </I18nextProvider>
+                  <div 
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                  }}>
+                  <GridList 
+                    cellHeight={window.innerHeight*0.34} 
+                    className={classes.gridList} 
+                    cols={context === DeviceType.isDesktopOrLaptop ?(images.length > 1 ? (images.length > 2 ? 1.5 : 2) : 1):(images.length > 1 ? 1.5 : 1)}>
+                    {images.map((tile: ItemImageDetails, index: number) => (
+                      <GridListTile key={index} cols={1} style={{
+                        width: 'max-content !important'
+                      }}>
+                        <img 
+                          src={tile.imageData} 
+                          alt={item.id! + '_' + index} 
+                          style={{
+                            height: '100%',
+                            width: 'auto',
+                            textAlign: 'center'
+                        }}/>
+                      </GridListTile>
+                    ))}
+                  </GridList>
+                  <div 
+                    style={{
+                      padding: '20px',
+                      paddingTop: '10px'
+                  }}>
+                    <Typography 
+                      style={{
+                        fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '18px' : '20px',
+                        paddingBottom: '10px',
+                        paddingTop: '3px'
                     }}>
-                      <I18nextProvider i18n={internali18n}>
-                        <TranslatableContainer content={`${item.id||""}.shortDescription`}/>
+                      <I18nextProvider i18n={modali18n}>
+                        <TranslatablePrice priceKey={'Price'} item={item}/>
                       </I18nextProvider>
-                    </p>
+                    </Typography>
+                    <div 
+                      className={classes.scroolableContent}
+                      style={{
+                        height:window.innerHeight*0.15,
+                        border: '0.5px solid gray',
+                        padding: '10px',
+                        marginRight: '30px'
+                      }}>
+                        <I18nextProvider i18n={modali18n}>
+                          <TranslatableDescription descriptionKey={'Description'}/>
+                      </I18nextProvider>
+                      <p style={{
+                        maxHeight: maxHeight,
+                        textAlign: 'justify',
+                        fontFamily: 'Signoria-Bold',
+                        overflowY: 'auto',
+                        paddingLeft: '5px',
+                        paddingRight: '5px',
+                        whiteSpace: 'pre-line',
+                        fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
+                      }}>
+                        <I18nextProvider i18n={internali18n}>
+                          <TranslatableContainer content={`${item.id||""}.description`}/>
+                        </I18nextProvider>
+                      </p>
+                        <I18nextProvider i18n={modali18n}>
+                          <TranslatableDetails detailsKey={'Details'}/>
+                        </I18nextProvider>
+                        <p style={{
+                          maxHeight: maxHeight,
+                          textAlign: 'justify',
+                          fontFamily: 'Signoria-Bold',
+                          overflowY: 'auto',
+                          paddingLeft: '5px',
+                          paddingRight: '5px',
+                          whiteSpace: 'pre-line',
+                          fontSize: context === DeviceType.isDesktopOrLaptop ? '14px' : '10px'
+                        }}>
+                          <I18nextProvider i18n={internali18n}>
+                            <TranslatableContainer content={`${item.id||""}.shortDescription`}/>
+                          </I18nextProvider>
+                        </p>
+                    </div>
+                    <div style={{
+                      paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}>
+                      <I18nextProvider i18n={modali18n}>
+                        <TranslatableCloseButton handleClose={handleClose} closeKey={'Close'}/>
+                      </I18nextProvider>
+                      <I18nextProvider i18n={modali18n}>
+                        <InternalLanguageSetter languages={alphacodes}/>
+                      </I18nextProvider>
+                    </div>
+                  </div>
                 </div>
-                <div style={{
-                  paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between'
-                }}>
-                  <I18nextProvider i18n={modali18n}>
-                    <TranslatableCloseButton handleClose={handleClose} closeKey={'Close'}/>
-                  </I18nextProvider>
-                  <I18nextProvider i18n={modali18n}>
-                    <InternalLanguageSetter />
-                  </I18nextProvider>
                 </div>
-              </div>
-            </div>
-            </div>
-          </>
+              </>
+          )}
         </Fade>
       </Modal>
       }

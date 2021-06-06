@@ -10,11 +10,10 @@ internali18n
   .init({
     debug: true,
     defaultNS: 'externals',
-    // preload:  ['en', 'pt'],
-    // fallbackLng: ['en', 'pt'],
-    // supportedLngs: ['en', 'pt'],
     backend: {
-      loadPath: '/locales/{{ns}}/{{lng}}.json'
+      loadPath: '/locales/externals/{{lng}}.json',
+      addPath: '/locales/externals/{{lng}}.json',
+      reloadInterval: 100
     },
     react: {
       bindI18n: 'languageChanged',

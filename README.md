@@ -8,7 +8,7 @@ password: albergue
 ```
 
 # Development
-To provide external translations, crate a linkage between generated locales:
+To provide external translations, create a linkage between generated locales:
 ```
 ~/administrator-backend/locales/*
 ```

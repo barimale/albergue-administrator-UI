@@ -1,0 +1,26 @@
+{
+    "Close": "Close",
+    "Menu": "Menu",
+    "Header title":{
+        "Line1": "ALBERGUE",
+        "Line2": "DE PEREGRINOS",
+        "Line3": "PORTO"
+    },
+    "Description": "Description",
+    "Details": "Details",
+    "Price": "Price",
+    "Items": "Items",
+    "Categories": "Categories",
+    "Supported languages": "Supported languages",
+    "ID":"ID",
+    "Availability": "Availability",
+    "Category": "Category",
+    "Action": "Action",
+    "Add item": "Add item",
+    "Add language": "Add language",
+    "Add category": "Add category",
+    "Name": "Name",
+    "Logout": "Logout",
+    "Administrator": "Administrator",
+    "console": "Console"
+}

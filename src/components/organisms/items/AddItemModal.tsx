@@ -546,6 +546,7 @@ const AddFormContent = (props: AddFormContentProps) =>{
                 steps={steps} 
                 stepsContent={stepsContent} 
                 orientation={"horizontal"} />
+                {/* <p>{props.errors !== undefined && JSON.stringify(props.errors)}</p> */}
           </div>
         }
         </DeviceContextConsumer>

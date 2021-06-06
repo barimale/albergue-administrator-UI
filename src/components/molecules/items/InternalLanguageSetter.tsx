@@ -11,9 +11,11 @@ import modali18n from "../../../modali18n";
 
 type InternalLanguageSetterProps = {
   onLanguageChanged?: (lng: string) => void;
+  languages: Array<string>;
 }
 
 const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
+  const { languages } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
   const { i18n: modali18n} = useTranslation('modal');
@@ -91,6 +93,7 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
             }}
           >
               <InternalLanguages 
+                languages={languages}
                 handleClose={handleClose} 
                 onLanguageChange={async (lng: string)=>{
                   if(modali18n.languages.findIndex(p => p === lng) > -1){
