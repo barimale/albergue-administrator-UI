@@ -25,7 +25,8 @@ maini18n
       transSupportBasicHtmlNodes: true,
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
       useSuspense: false,
-    }
+    },
+    initImmediate: true
   });
 
 export default maini18n;

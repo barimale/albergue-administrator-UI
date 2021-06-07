@@ -22,10 +22,6 @@ function App() {
       modali18n.init();
     }
 
-    // if(internali18n.isInitialized === false){
-    //   internali18n.init();
-    // }
-
     setIsLoading(false);
   }, []);
   
