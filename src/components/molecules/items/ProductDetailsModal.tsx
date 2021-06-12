@@ -121,6 +121,8 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps){
           debugger
           console.log(error);
         });
+
+        internali18n.changeLanguage(modali18n.language);
     }
 
     setIsLoading(false);
