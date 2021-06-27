@@ -113,7 +113,7 @@ export default function IconedStepper(props: StepperProps) {
             <Step key={label}>
               <StepLabel 
                   StepIconComponent={stepsIcon !== undefined ? stepsIcon[index] : undefined}>
-                  {t(label)}
+                  {label}
               </StepLabel>
               {(orientation === undefined || (orientation !== undefined && orientation === 'vertical')) && (
                 <StepContent>

@@ -210,75 +210,56 @@ const AddForm = (props: AddFormProps) => {
                         onFinished={() => setIsWizardComplete(true)}
                         onActiveTabChanged={() => setIsWizardComplete(false)}
                     />
-                    {isWizardComplete.valueOf() === false && (
+                    <div 
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
                         <Button
-                        className={"pointerOverEffect"}
-                        variant="contained"
-                        color="secondary"
-                        style={{
-                            width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                            borderRadius: '0px',
-                            marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                            fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                        }}
-                        onClick={()=>{
-                            onCancel();
-                        }}>
-                            {t("Cancel")}
-                    </Button>
-                    )}
-                    {isWizardComplete.valueOf() === true && (
-                        <div 
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between'
-                        }}>
-                            <Button
-                                className={"pointerOverEffect"}
-                                variant="contained"
-                                color="secondary"
-                                style={{
-                                    width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                    borderRadius: '0px',
-                                    marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                                }}
-                                onClick={()=>{
-                                    onCancel();
-                                }}>
-                                    {t("Cancel")}
-                            </Button>
-                            <Button
-                                disabled={sendingInProgress}
-                                className={"pointerOverEffect"}
-                                variant="contained"
-                                color="primary"
-                                style={{
-                                    width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                                    borderRadius: '0px',
-                                    marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                                    fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                                }}
-                                onClick={async ()=>{
-                                    await props.submitForm();
-                                }}>
-                                {sendingInProgress === true && (
-                                    <CircularProgress 
-                                        color={'inherit'} 
-                                        style={{
-                                            height: '28px',
-                                            width: '28px'
-                                    }}/>
-                                )}
-                                {sendingInProgress === false && (
-                                <>
-                                    {t("Add")}
-                                </>
-                                )}
-                            </Button>
-                        </div>
-                    )} 
+                            className={"pointerOverEffect"}
+                            variant="contained"
+                            color="secondary"
+                            style={{
+                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                borderRadius: '0px',
+                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                            }}
+                            onClick={()=>{
+                                onCancel();
+                            }}>
+                                {t("Cancel")}
+                        </Button>
+                        <Button
+                            disabled={sendingInProgress}
+                            className={"pointerOverEffect"}
+                            variant="contained"
+                            color="primary"
+                            style={{
+                                width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
+                                borderRadius: '0px',
+                                marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
+                                fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
+                            }}
+                            onClick={async ()=>{
+                                await props.submitForm();
+                            }}>
+                            {sendingInProgress === true && (
+                                <CircularProgress 
+                                    color={'inherit'} 
+                                    style={{
+                                        height: '28px',
+                                        width: '28px'
+                                }}/>
+                            )}
+                            {sendingInProgress === false && (
+                            <>
+                                {t("Add")}
+                            </>
+                            )}
+                        </Button>
+                    </div>
                 </>
             </Form>
             )}

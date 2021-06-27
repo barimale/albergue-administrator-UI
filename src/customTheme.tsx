@@ -66,6 +66,19 @@ export const theme = createMuiTheme({
         backgroundColor: `${primaryMain}`,
         height: '3px'
       }
+    },
+    MuiStepLabel: {
+      label:{
+        color: 'grey !important'
+      },
+      active:{
+        fontWeight: 'bold',
+        color: 'black !important',
+        fontSize: '18px'
+      },
+      completed:{
+        // color: 'green !important'
+      }
     }
   },
 });

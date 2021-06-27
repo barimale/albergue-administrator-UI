@@ -272,24 +272,6 @@ const AddForm = (props: AddFormProps) => {
                     onFinished={() => setIsWizardComplete(true)}
                     onActiveTabChanged={() => setIsWizardComplete(false)}
                     />
-                    {isWizardComplete.valueOf() === false && (
-                        <Button
-                        className={"pointerOverEffect"}
-                        variant="contained"
-                        color="secondary"
-                        style={{
-                            width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '125px' : '116px',
-                            borderRadius: '0px',
-                            marginTop: context.valueOf() === DeviceType.isDesktopOrLaptop ? '20px' : '7px',
-                            fontSize: context.valueOf() === DeviceType.isDesktopOrLaptop ? '16px' : '14px'
-                        }}
-                        onClick={()=>{
-                            onCancel();
-                        }}>
-                            {t("Cancel")}
-                    </Button>
-                    )}        
-                    {isWizardComplete.valueOf() === true && ( 
                     <div 
                     style={{
                         display: 'flex',
@@ -339,7 +321,7 @@ const AddForm = (props: AddFormProps) => {
                             </>
                             )}
                         </Button>
-                    </div>)}
+                    </div>
                 </>
             </Form>
             )}
@@ -509,9 +491,9 @@ const TranslatableItemDescription = (props: TranslatableItemDescriptionProps) =>
   
 const AddFormContent = (props: AddFormContentProps) =>{
     const { onActiveTabChanged, onFinished } = props;
-    // //WIP continue
     const categories = useCategories();
-    const steps = ['General', 'Name', 'Short description', 'Description', 'Images'];
+    const { t } = useTranslation();
+    const steps = [t('General'), t('Name'), t('Short description'), t('Description'), t('Images')];
     const stepsContent: Array<JSX.Element> = [
     <div style={{
         borderRadius: '4px',
@@ -546,7 +528,6 @@ const AddFormContent = (props: AddFormContentProps) =>{
                 steps={steps} 
                 stepsContent={stepsContent} 
                 orientation={"horizontal"} />
-                {/* <p>{props.errors !== undefined && JSON.stringify(props.errors)}</p> */}
           </div>
         }
         </DeviceContextConsumer>

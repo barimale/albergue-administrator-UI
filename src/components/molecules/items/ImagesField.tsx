@@ -126,6 +126,10 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
               color="primary"
               aria-label="upload picture"
               component="span"
+              onClick={(event: any)=>{
+                // event.preventDefault();
+                // event.stopPropagation();
+              }}
               style={{
                 borderRadius: '0px'
               }}
