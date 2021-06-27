@@ -59,5 +59,8 @@
     "Login":"Login",
     "Username":"Username",
     "Password":"Password",
-    "Sign in":"Sign in"
+    "Sign in":"Sign in",
+    "You are going to delete the language. All related translations will be deleted. This operation cannot be restored.":"You are going to delete the language. All related translations will be deleted. This operation cannot be restored.",
+    "You are going to delete the item. All related translations will be deleted. This operation cannot be restored.":"You are going to delete the item. All related translations will be deleted. This operation cannot be restored."
+
 }

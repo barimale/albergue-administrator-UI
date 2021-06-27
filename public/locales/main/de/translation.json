@@ -59,5 +59,7 @@
     "Login":"Anmeldung",
     "Username":"Nutzername",
     "Password":"Passwort",
-    "Sign in":"Einloggen"
+    "Sign in":"Einloggen",
+    "You are going to delete the language. All related translations will be deleted. This operation cannot be restored.":"Sie werden die Sprache löschen. Alle zugehörigen Übersetzungen werden gelöscht. Dieser Vorgang kann nicht wiederhergestellt werden.",
+    "You are going to delete the item. All related translations will be deleted. This operation cannot be restored.":"Sie werden das Element löschen. Alle zugehörigen Übersetzungen werden gelöscht. Dieser Vorgang kann nicht wiederhergestellt werden."
 }
