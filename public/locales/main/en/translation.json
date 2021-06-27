@@ -55,5 +55,9 @@
     "Item short description":"Item short description",
     "Item description":"Item description",
     "Upload images": "Upload images",
-    "images field must have at least 1 items":"Images field must have at least 1 items"
+    "images field must have at least 1 items":"Images field must have at least 1 items",
+    "Login":"Login",
+    "Username":"Username",
+    "Password":"Password",
+    "Sign in":"Sign in"
 }

@@ -55,5 +55,9 @@
     "Item short description":"Artikelkurzbeschreibung",
     "Item description":"Artikelbeschreibung",
     "Upload images": "Bilder hochladen",
-    "images field must have at least 1 items":"Das Bildfeld muss mindestens 1 Element enthalten."
+    "images field must have at least 1 items":"Das Bildfeld muss mindestens 1 Element enthalten.",
+    "Login":"Anmeldung",
+    "Username":"Nutzername",
+    "Password":"Passwort",
+    "Sign in":"Einloggen"
 }

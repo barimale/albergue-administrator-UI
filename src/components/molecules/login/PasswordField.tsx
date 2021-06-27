@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FormikProps } from "formik";
+import { FormikProps, useField } from "formik";
 import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
 import { useTranslation } from "react-i18next";
 import { MyTextField } from "../../atoms/MyTextField";
@@ -10,6 +10,7 @@ import { IconButton, InputAdornment, TextField, withStyles } from "@material-ui/
 
 export const PasswordField = (props: FormikProps<LoginDetails>) => {
   const { t } = useTranslation();
+  const [meta, helpers] = useField<string>(`password`);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const handleClickShowPassword = () => {
@@ -32,7 +33,7 @@ export const PasswordField = (props: FormikProps<LoginDetails>) => {
           margin="dense"
           color="primary"
           error={Boolean(props.touched.password && props.errors.password)}
-          helperText={props.touched.password && props.errors.password}
+          helperText={helpers.error !== undefined && t(helpers.error)}
           InputProps={{
             endAdornment: (
             <InputAdornment position="end">

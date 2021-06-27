@@ -55,5 +55,9 @@
     "Item short description":"Korte artikelbeschrijving",
     "Item description":"Artikelbeschrijving",
     "Upload images": "Upload afbeeldingen",
-    "images field must have at least 1 items":"Afbeeldingenveld moet minimaal 1 items bevatten"
+    "images field must have at least 1 items":"Afbeeldingenveld moet minimaal 1 items bevatten",
+    "Login":"Log in",
+    "Username":"Gebruikersnaam",
+    "Password":"Wachtwoord",
+    "Sign in":"Inloggen"
 }

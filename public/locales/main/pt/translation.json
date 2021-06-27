@@ -22,7 +22,7 @@
     "Name": "Nome",
     "Logout": "Sair",
     "Administrator": "Administrador",
-    "console": "console",
+    "console": "Console",
     "Rows per page": "Linhas por página",
     "Locales generation in progress":"Geração de localidades em andamento",
     "Preview":"Antevisão",
@@ -55,5 +55,9 @@
     "Item short description":"Breve descrição do item",
     "Item description":"Descrição do item",
     "Upload images": "Enviar imagens",
-    "images field must have at least 1 items":"O campo de imagens deve ter pelo menos 1 item"
+    "images field must have at least 1 items":"O campo de imagens deve ter pelo menos 1 item",
+    "Login":"Conecte-se",
+    "Username":"Nome do usuário",
+    "Password":"Senha",
+    "Sign in":"Entrar"
 }
