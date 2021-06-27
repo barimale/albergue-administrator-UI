@@ -2,5 +2,6 @@
     "Description": "Beschreibung",
     "Details": "Einzelheiten",
     "Price": "Preis",
-    "Close":"Schließen"
+    "Close":"Schließen",
+    "To see language-specific preview choose the alpha code":"Um eine sprachspezifische Vorschau anzuzeigen, wählen Sie den Alpha-Code"
 }

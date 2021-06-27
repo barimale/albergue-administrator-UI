@@ -19,7 +19,7 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
   const { languages } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
-  const { i18n: modali18n} = useTranslation('modal');
+  const { i18n: modali18n, t} = useTranslation('modal');
   const { i18n} = useTranslation('externals');
 
   const handleClick = (event: any) => {
@@ -44,7 +44,7 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
             style={{
               paddingLeft: '20px'
           }}>
-            {'To see language-specific preview choose the alpha code'}
+            {t('To see language-specific preview choose the alpha code')}
           </Typography>
           <ArrowForwardIcon/>
             <IconButton
