@@ -83,18 +83,22 @@ export default function IconedStepper(props: StepperProps) {
     }}>
       {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
       <>
-        <Button
-          disabled={activeStep === 0}
-          onClick={handleBack}
-          style={{
-            borderRadius: '4px', 
-            cursor: activeStep === 0 ? 'not-allowed !important' : 'pointer',
-            border: `1px solid ${activeStep === 0 ? RGBToRGBA(hexToRgb(thirdMain), 0.25) : thirdMain}`,
-            height: 'max-content'}}
-        >
-          <KeyboardArrowLeftIcon style={{height: '14px', width: 'auto', paddingRight: '2px'}}/>
-          {t("Back")}
-        </Button>
+        <div style={{
+          paddingLeft: '22px'
+        }}>
+          <Button
+            disabled={activeStep === 0}
+            onClick={handleBack}
+            style={{
+              borderRadius: '4px', 
+              cursor: activeStep === 0 ? 'not-allowed !important' : 'pointer',
+              border: `1px solid ${activeStep === 0 ? RGBToRGBA(hexToRgb(thirdMain), 0.25) : thirdMain}`,
+              height: 'max-content'}}
+          >
+            <KeyboardArrowLeftIcon style={{height: '14px', width: 'auto', paddingRight: '2px'}}/>
+            {t("Back")}
+          </Button>
+        </div>
       </>)}
       <div>
         <Stepper
@@ -149,19 +153,21 @@ export default function IconedStepper(props: StepperProps) {
         )}
       </div>
       {(orientation === undefined || (orientation !== undefined && orientation === 'horizontal')) && (
-        <>
-        <Button
-          disabled={activeStep === (steps.length - 1)}
-          onClick={handleNext}
-          style={{
-            borderRadius: '4px', 
-            border: `1px solid ${thirdMain}`,
-            height: 'max-content'}}
-        >
-          {t("Next")}
-          <KeyboardArrowRightIcon style={{height: '14px', width: 'auto', paddingLeft: '2px'}}/>
-        </Button>
-      </>)}
+        <div style={{
+          paddingRight: '22px'
+        }}>
+          <Button
+            disabled={activeStep === (steps.length - 1)}
+            onClick={handleNext}
+            style={{
+              borderRadius: '4px', 
+              border: `1px solid ${thirdMain}`,
+              height: 'max-content'}}
+          >
+            {t("Next")}
+            <KeyboardArrowRightIcon style={{height: '14px', width: 'auto', paddingLeft: '2px'}}/>
+          </Button>
+      </div>)}
     </div>
   );
 }

@@ -74,7 +74,7 @@ const AddCategoryModalContent = (props: AddCategoryModalProps) =>{
       >
           <Box boxShadow={10} style={{
               height: 'auto',
-              width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '40%' : '90%',
+              width: context.valueOf() === DeviceType.isDesktopOrLaptop ? '45%' : '90%',
           }}>
             <Fade 
                 in={isDisplayed} 
