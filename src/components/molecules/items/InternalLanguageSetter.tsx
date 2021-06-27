@@ -3,12 +3,13 @@ import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import sizeMe from 'react-sizeme';
 import { useTranslation } from 'react-i18next';
-import { Fade, useTheme } from '@material-ui/core';
+import { Fade, hexToRgb, useTheme } from '@material-ui/core';
 import { InternalLanguages } from './InternalLanguages';
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 import TranslateIcon from '@material-ui/icons/Translate';
 import Typography from "@material-ui/core/Typography";
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { RGBToRGBA } from '../../../utilities';
 
 type InternalLanguageSetterProps = {
   onLanguageChanged?: (lng: string) => void;
@@ -38,7 +39,8 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          border: '1px solid blue'
+          border: '3px dotted #FFD700',
+          backgroundColor: `${RGBToRGBA(hexToRgb('#FFD700'), 0.2)}`
         }}>
           <Typography
             style={{
@@ -46,7 +48,7 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
           }}>
             {t('To see language-specific preview choose the alpha code')}
           </Typography>
-          <ArrowForwardIcon/>
+          <ArrowForwardIcon style={{color: 'grey', paddingLeft: '10px'}}/>
             <IconButton
             style={{
               color: `${theme.palette.common.black}`,
