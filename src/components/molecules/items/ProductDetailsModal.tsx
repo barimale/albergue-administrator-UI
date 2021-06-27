@@ -106,7 +106,6 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps){
 
   useEffect(()=>{
     if(alphacodes.length > 0){
-      debugger
       alphacodes.forEach(p => {
         internali18n.loadLanguages([p])
           .then(()=>{
@@ -118,7 +117,6 @@ export default function ProductDetailsModal(props: ProductDetailsModalProps){
       internali18n
         .reloadResources(alphacodes, 'externals')
         .catch((error: any) =>{
-          debugger
           console.log(error);
         });
 
@@ -370,7 +368,7 @@ type TranslatableCloseButtonProps = {
 
 const TranslatableCloseButton = (props: TranslatableCloseButtonProps) =>{
   const { closeKey, handleClose } = props;
-  const { t } = useTranslation('translation');
+  const { t } = useTranslation('modal');
   const theme = useTheme();
 
   return(

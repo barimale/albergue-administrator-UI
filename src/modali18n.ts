@@ -11,9 +11,9 @@ modali18n
   .use(initReactI18next)
   .init({
     defaultNS: 'modal',
-    preload:  ['en', 'pt'],
-    fallbackLng: ['en', 'pt'],
-    supportedLngs: ['en', 'pt'],
+    preload:  ['en', 'pt', 'nl', 'de'],
+    fallbackLng: ['en', 'pt', 'nl', 'de'],
+    supportedLngs: ['en', 'pt', 'nl', 'de'],
     debug: true,
     backend: {
       loadPath: '/locales/{{ns}}/{{lng}}/{{ns}}.json'

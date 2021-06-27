@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import sizeMe from 'react-sizeme';
-import { I18nextProvider, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Fade, useTheme } from '@material-ui/core';
 import { InternalLanguages } from './InternalLanguages';
 import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 import TranslateIcon from '@material-ui/icons/Translate';
-import modali18n from "../../../modali18n";
+import Typography from "@material-ui/core/Typography";
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 type InternalLanguageSetterProps = {
   onLanguageChanged?: (lng: string) => void;
@@ -34,7 +35,18 @@ const InternalLanguageSetter = (props: InternalLanguageSetterProps) => {
     { context =>
       <>
         <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          border: '1px solid blue'
         }}>
+          <Typography
+            style={{
+              paddingLeft: '20px'
+          }}>
+            {'To see language-specific preview choose the alpha code'}
+          </Typography>
+          <ArrowForwardIcon/>
             <IconButton
             style={{
               color: `${theme.palette.common.black}`,

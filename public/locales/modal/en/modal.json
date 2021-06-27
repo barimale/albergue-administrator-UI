@@ -1,5 +1,6 @@
 {
     "Description": "Description",
     "Details": "Details",
-    "Price": "Price"
+    "Price": "Price",
+    "Close":"Close"
 }
