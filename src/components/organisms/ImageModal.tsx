@@ -150,7 +150,6 @@ export default function ImageModal(props: ImageModalProps) {
                 style={{
                   paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
                   display: 'flex',
-                  // height: context === DeviceType.isDesktopOrLaptop ? window.innerHeight*0.15: window.innerHeight*0.15,
                   alignItems: 'center',
                   fontFamily: 'Signika',
                   justifyItems: 'center',
@@ -165,7 +164,7 @@ export default function ImageModal(props: ImageModalProps) {
                     event.stopPropagation();
                     handleClose();
                   }}
-                >{t('Close')}</Button>
+                >{t("Close")}</Button>
               </div>
             </div>
           </div>

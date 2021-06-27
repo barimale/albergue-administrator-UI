@@ -105,7 +105,6 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
             <SingleLineImagesGrid 
               images={selectedFiles}
               onChange={(value: Array<ItemImageDetails>)=>{
-                debugger
                 setSelectedFiles(value);
               }}/>
           ):(
@@ -141,7 +140,7 @@ function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
                   fontSize: '0.75rem',
                   marginLeft: '14px'
               }}>
-                {helpers.error}
+                {t(helpers.error)}
               </Typography>
             )}
           </label>

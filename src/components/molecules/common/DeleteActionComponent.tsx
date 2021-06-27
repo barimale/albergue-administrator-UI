@@ -21,7 +21,7 @@ export const DeleteActionComponent = (props: ActionComponentProps) => {
 
   return (
     <>
-      <Tooltip title={t(disabled !== undefined && disabled === true ? "Default language cannot be deleted" : "Delete").toString()}>
+      <Tooltip title={t(disabled !== undefined && disabled === true ? t("Default language cannot be deleted") : t("Delete")).toString()}>
         <span>
           <IconButton 
           disabled={disabled !== undefined ? disabled : undefined}

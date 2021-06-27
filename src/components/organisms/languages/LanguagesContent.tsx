@@ -336,6 +336,7 @@ interface Column {
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
+                labelRowsPerPage={t("Rows per page")}
                 page={page}
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}

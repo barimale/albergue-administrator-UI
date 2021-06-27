@@ -31,7 +31,7 @@ export const NationalityField = (props: CountriedFormikProps) => {
               onOpen={props.handleBlur}
               renderInput={(params) => <TextField
                 {...params}
-                helperText={props.touched.alpha2Code && props.errors.alpha2Code}
+                helperText={t(props.touched.alpha2Code?.toString() || "") && t(props.errors.alpha2Code?.toString() || "")}
                 error={Boolean(props.touched.alpha2Code && props.errors.alpha2Code)}
                 fullWidth
                 label={t("Language")}

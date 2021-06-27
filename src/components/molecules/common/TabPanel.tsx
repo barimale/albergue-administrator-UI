@@ -9,7 +9,7 @@ interface TabPanelProps {
     tabPrefix: string;
   }
   
-export  function TabPanel(props: TabPanelProps) {
+export function TabPanel(props: TabPanelProps) {
     const { children, value, index, parentId, tabPrefix,   ...other } = props;
   
     return (

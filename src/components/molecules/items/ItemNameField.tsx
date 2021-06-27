@@ -91,7 +91,7 @@ export const ItemNameField = (props: ItemNameFieldProps) => {
             </InputAdornment>)
           }}
           error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails[index]!==undefined)}
-          helperText={helpers.error !== undefined && helpers.error}
+          helperText={helpers.error !== undefined && t(helpers.error)}
           fullWidth />
       </>
     }
