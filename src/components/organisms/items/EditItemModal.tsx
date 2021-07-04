@@ -26,6 +26,7 @@ import useCategories from '../../../hooks/useCategories';
 import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from '../../../hooks/useLanguages';
 import { ItemImageDetails } from './AddItemModal';
+import { administratorBackendUrl } from '../../../App';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -187,7 +188,7 @@ const EditForm = (props: EditFormProps) => {
             setSendingInProgress(true);
             
             await axios.put(
-                "http://localhost:5020/api/shop/Item/UpdateItem", 
+                `${administratorBackendUrl}/api/shop/Item/UpdateItem`, 
                 value, 
                 {
                     // wip:set timeout globally

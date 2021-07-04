@@ -11,7 +11,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from "react";
 import SearchAppBar from "../../molecules/items/SearchAppBar";
-import ClearIcon from '@material-ui/icons/Clear';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
@@ -30,6 +29,7 @@ import { greenColor } from '../../../customTheme';
 import { ReadOnlyImagesField } from "../../molecules/common/ReadOnlyImagesField";
 import useCategories from '../../../hooks/useCategories';
 import { HubConnectionBuilder, LogLevel, IHttpConnectionOptions } from "@microsoft/signalr";
+import { administratorBackendUrl } from '../../../App';
 
 export const ShopContent = () =>{
   const { userToken } = useContext(AuthContext);
@@ -39,7 +39,7 @@ export const ShopContent = () =>{
     withCredentials: false
   };
   const connection = new HubConnectionBuilder()
-      .withUrl('http://localhost:5020/localesHub', options)
+      .withUrl(`${administratorBackendUrl}/localesHub`, options)
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
       .build();
@@ -177,7 +177,7 @@ const StickyHeadTable = (props: StickyHeadTableProps) => {
     useEffect(() => {
         const getData = async () => {
             return await axios.get(
-                "http://localhost:5020/api/shop/Item/GetAllItems", 
+                `${administratorBackendUrl}/api/shop/Item/GetAllItems`, 
                 {
                     cancelToken: source.token,
                     headers: {
@@ -216,7 +216,7 @@ const StickyHeadTable = (props: StickyHeadTableProps) => {
 
     const onDelete = async (id: string) =>{
       await axios.delete(
-        `http://localhost:5020/api/shop/Item/DeleteItem/${id}`,
+        `${administratorBackendUrl}/api/shop/Item/DeleteItem/${id}`,
         {
             cancelToken: source.token,
             headers: {

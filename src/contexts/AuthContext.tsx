@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import axios, { AxiosResponse } from 'axios';
+import { administratorBackendUrl } from '../App';
 
 const TOKEN_KEY = 'userToken';
 
@@ -61,7 +62,7 @@ const AuthContextProvider = ({ children }: any) => {
       const authContext = ({
           signIn: async (data: {username: string, password: string}) => {
             return await axios.post(
-              "http://localhost:5020/api/User/Login", 
+              `${administratorBackendUrl}/api/User/Login`, 
               data, 
               {
                   headers:{
@@ -82,7 +83,7 @@ const AuthContextProvider = ({ children }: any) => {
           signOut: async () => {
               try{
                 return await axios.post(
-                  "http://localhost:5020/api/User/Logout", 
+                  `${administratorBackendUrl}/api/User/Logout`, 
                   {}, 
                   {
                       headers: {

@@ -25,6 +25,7 @@ import { InformationTooltip } from "../../molecules/common/InformationTooltip";
 import useCategories from '../../../hooks/useCategories';
 import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from '../../../hooks/useLanguages';
+import { administratorBackendUrl } from '../../../App';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -211,7 +212,7 @@ const AddForm = (props: AddFormProps) => {
             setSendingInProgress(true);
             
             await axios.post(
-                "http://localhost:5020/api/shop/Item/AddItem", 
+                `${administratorBackendUrl}/api/shop/Item/AddItem`, 
                 value, 
                 {
                     timeout: 30000,

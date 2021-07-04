@@ -17,6 +17,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { useContext } from "react";
 import { ModalTitle } from '../../molecules/common/ModalTitle';
 import { InformationTooltip } from "../../molecules/common/InformationTooltip";
+import { administratorBackendUrl } from '../../../App';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -137,8 +138,8 @@ const AddForm = (props: AddFormProps) => {
         try{
             setSendingInProgress(true);
         
-            var result = await axios.post(
-                "http://localhost:5020/api/shop/Language/AddLanguage", 
+            await axios.post(
+                `${administratorBackendUrl}/api/shop/Language/AddLanguage`, 
                 value, 
                 {
                     cancelToken: source.token,

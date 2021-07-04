@@ -25,6 +25,7 @@ import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { ReadOnlyListField, ReadOnlyListItem } from "../../molecules/common/ReadOnlyListField";
 import { SizeMe } from 'react-sizeme';
 import { useTableStyles } from "../languages/LanguagesContent";
+import { administratorBackendUrl } from '../../../App';
 
 export const CategoriesContent = () => {
     return(
@@ -101,7 +102,7 @@ const StickyHeadTable = () => {
     useEffect(() => {
         const getData = async () => {
             return await axios.get(
-                "http://localhost:5020/api/shop/Category/GetAllCategories", 
+              `${administratorBackendUrl}/api/shop/Category/GetAllCategories`, 
                 {
                     cancelToken: source.token,
                     headers: {
@@ -140,7 +141,7 @@ const StickyHeadTable = () => {
 
     const onDelete = async (id: string) =>{
       await axios.delete(
-        `http://localhost:5020/api/shop/Category/DeleteCategory/${id}`,
+        `${administratorBackendUrl}/api/shop/Category/DeleteCategory/${id}`,
         {
             cancelToken: source.token,
             headers: {

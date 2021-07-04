@@ -24,6 +24,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import { thirdMain, darkBlueColor } from '../../../customTheme';
 import { SizeMe } from 'react-sizeme';
 import Typography from '@material-ui/core/Typography';
+import { administratorBackendUrl } from '../../../App';
 
 export const LanguagesContent = () =>{
     return(
@@ -99,7 +100,7 @@ interface Column {
     useEffect(() => {
         const getData = async () => {
             return await axios.get(
-                "http://localhost:5020/api/shop/Language/GetAllLanguages", 
+                `${administratorBackendUrl}/api/shop/Language/GetAllLanguages`, 
                 {
                     cancelToken: source.token,
                     headers: {
@@ -138,7 +139,7 @@ interface Column {
 
     const onDelete = async (id: string) =>{
       await axios.delete(
-        `http://localhost:5020/api/shop/Language/DeleteLanguage/${id}`,
+        `${administratorBackendUrl}/api/shop/Language/DeleteLanguage/${id}`,
         {
             cancelToken: source.token,
             headers: {

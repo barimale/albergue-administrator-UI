@@ -10,6 +10,8 @@ import CustomMuiThemeProvider from './customTheme';
 import { DeviceContextProvider } from './contexts/DeviceContext';
 import { AuthContextProvider } from './contexts/AuthContext';
 
+export const administratorBackendUrl = process.env.REACT_APP_ADMINISTRATOR_BACKEND_APP;
+
 function App() {  
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 

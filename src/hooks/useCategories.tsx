@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import { useContext } from "react";
 import { Category } from "../components/organisms/categories/CategoriesContent";
+import { administratorBackendUrl } from '../App';
 
 function useCategories() {
   const [categories, setCategories ] = useState<Array<Category>>(new Array<Category>());
@@ -13,7 +14,7 @@ function useCategories() {
   useEffect(() => {
       const getData = async () => {
           return await axios.get(
-            "http://localhost:5020/api/shop/Category/GetAllCategories", 
+            `${administratorBackendUrl}/api/shop/Category/GetAllCategories`, 
               {
                   cancelToken: source.token,
                   headers: {

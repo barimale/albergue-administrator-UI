@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import { useContext } from "react";
 import { Language } from "../components/organisms/languages/LanguagesContent";
+import { administratorBackendUrl } from '../App';
 
 export type TranslateResponse = {
   translation: string;
@@ -18,7 +19,7 @@ function useLanguages() {
   useEffect(() => {
       const getData = async () => {
           return await axios.get(
-              "http://localhost:5020/api/shop/Language/GetAllLanguages", 
+              `${administratorBackendUrl}/api/shop/Language/GetAllLanguages`, 
               {
                   cancelToken: source.token,
                   headers: {

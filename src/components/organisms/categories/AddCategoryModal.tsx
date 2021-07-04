@@ -19,6 +19,7 @@ import { ModalTitle } from '../../molecules/common/ModalTitle';
 import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from "../../../hooks/useLanguages";
 import { InformationTooltip } from "../../molecules/common/InformationTooltip";
+import { administratorBackendUrl } from '../../../App';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -150,7 +151,7 @@ const AddForm = (props: AddFormProps) => {
             value.keyName = foundLng !== undefined ? foundLng.name : "Missing Name";
         
             return await axios.post(
-                "http://localhost:5020/api/shop/Category/AddCategory", 
+                `${administratorBackendUrl}/api/shop/Category/AddCategory`, 
                 value, 
                 {
                     cancelToken: source.token,

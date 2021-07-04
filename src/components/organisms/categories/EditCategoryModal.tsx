@@ -20,6 +20,7 @@ import IconedStepper from "../../molecules/common/IconedStepper";
 import useLanguages from "../../../hooks/useLanguages";
 import { InformationTooltip } from "../../molecules/common/InformationTooltip";
 import { Language } from '../languages/LanguagesContent';
+import { administratorBackendUrl } from '../../../App';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -148,7 +149,7 @@ const EditForm = (props: EditFormProps) => {
             value.keyName = foundLng !== undefined ? foundLng.name : "Missing Name";
 
             return await axios.put(
-                "http://localhost:5020/api/shop/Category/UpdateCategory", 
+                `${administratorBackendUrl}/api/shop/Category/UpdateCategory`, 
                 value, 
                 {
                     cancelToken: source.token,
