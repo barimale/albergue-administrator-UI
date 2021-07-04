@@ -56,7 +56,7 @@ const Language = (props: LanguageProps) => {
         props.handleClose();
         await changeLanguage(language);
       }}>
-        {/* <img id='myImage' src={`http://www.geonames.org/flags/x/${language}.gif`} style={{height: '20px', width: '20px', borderRadius: '50%', paddingRight: '5px'}}/> */}
+        <img id='myImage' src={`http://www.geonames.org/flags/x/${language.toLowerCase() === 'en' ? 'gb' : language.toLowerCase()}.gif`} style={{height: '14px', width: '20px', borderRadius: '0%', paddingRight: '10px'}}/>
         {language.toUpperCase()}
     </Button>
   );
