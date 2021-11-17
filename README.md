@@ -19,5 +19,5 @@ and:
 Execute bellowed command:
 ```
 cd ./public/locales/
-mklink /d externals R:\locales
+Mklink /d externals R:\locales
 ```
