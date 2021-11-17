@@ -55,6 +55,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
+    "setup": "yarn install --force",
     "start": "set PORT=3008 &&  react-scripts start .env.development",
     "build": "react-scripts build",
     "test": "react-scripts test",
