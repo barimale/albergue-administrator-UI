@@ -11,12 +11,12 @@ maini18n
   .use(initReactI18next)
   .init({
     defaultNS: 'translation',
-    preload:  ['en', 'pt', 'nl', 'de'],
+    preload: ['en', 'pt', 'nl', 'de'],
     fallbackLng: ['en', 'pt', 'nl', 'de'],
     supportedLngs: ['en', 'pt', 'nl', 'de'],
     debug: true,
     backend: {
-      loadPath: '/locales/main/{{lng}}/{{ns}}.json'
+      loadPath: '/locales/main/{{lng}}/{{ns}}.json',
     },
     react: {
       bindI18n: 'languageChanged',
@@ -26,7 +26,7 @@ maini18n
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
       useSuspense: false,
     },
-    initImmediate: true
+    initImmediate: true,
   });
 
 export default maini18n;

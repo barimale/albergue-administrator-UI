@@ -1,46 +1,43 @@
-import { useState, useEffect } from 'react'
-import axios, { AxiosResponse } from 'axios';
+import { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
-import { useContext } from "react";
-import { Category } from "../components/organisms/categories/CategoriesContent";
+
+import { Category } from '../components/organisms/categories/CategoriesContent';
 import { administratorBackendUrl } from '../App';
 
-function useCategories() {
-  const [categories, setCategories ] = useState<Array<Category>>(new Array<Category>());
+function useCategories () {
+  const [categories, setCategories] = useState<Category[]>([]);
   const cancelToken = axios.CancelToken;
   const source = cancelToken.source();
   const { userToken } = useContext(AuthContext);
 
   useEffect(() => {
-      const getData = async () => {
-          return await axios.get(
-            `${administratorBackendUrl}/api/shop/Category/GetAllCategories`, 
-              {
-                  cancelToken: source.token,
-                  headers: {
-                      'Authorization': `Bearer ${userToken}` 
-                    }
-              }
-          ).then((result: any)=>{
-              return result.data;
-          })
-          .catch((thrown: any)=>{
-              console.log('Request canceled', thrown.message);
-              return new Array<Category>();
-          });
-      };
+    const getData = async () => axios.get(
+      `${administratorBackendUrl}/api/shop/Category/GetAllCategories`,
+      {
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      },
+    ).then((result: any) => result.data)
+      .catch((thrown: any) => {
+        // eslint-disable-next-line no-console
+        console.log('Request canceled', thrown.message);
+        return [];
+      });
 
-      getData()
-          .then((result: any)=>{
-            setCategories(result);
-          }).catch(()=>{
-            setCategories(new Array<Category>());
-          });
+    getData()
+      .then((result: any) => {
+        setCategories(result);
+      }).catch(() => {
+        setCategories([]);
+      });
 
-      return () => {
-        source.cancel("Axios request cancelled");
-      };
-    }, []);
+    return () => {
+      source.cancel('Axios request cancelled');
+    };
+  }, []);
 
   return categories;
 }

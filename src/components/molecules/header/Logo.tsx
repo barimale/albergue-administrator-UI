@@ -1,12 +1,10 @@
 import React from 'react';
-import { DeviceContextConsumer, DeviceType } from "../../../contexts/DeviceContext";
-import { useRef } from 'react';
-import useOverEffectHook from '../../../hooks/useOverEffectHook';
+import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 
-export const Logo = (props: any) => {
-  return (
-    <DeviceContextConsumer>
-      {context => <div
+export const Logo = (props: any) => (
+  <DeviceContextConsumer>
+    {(context) => (
+      <div
         {...props}
         style={{
           display: 'flex',
@@ -16,18 +14,20 @@ export const Logo = (props: any) => {
           alignItems: 'center',
           transition: 'width 0.2s, height 0.2s',
           WebkitTapHighlightColor: 'transparent',
-        }}>
+        }}
+      >
         <img
-          src={'/logo.webp'}
-          alt={"logo"}
+          src="/logo.webp"
+          alt="logo"
           style={{
             border: context === DeviceType.isDesktopOrLaptop ? '3px white solid' : '1px white solid',
             borderRadius: '50%',
             WebkitTapHighlightColor: 'transparent',
             height: context === DeviceType.isDesktopOrLaptop ? '55px' : `${42 - 2}px`,
-            objectFit: 'scale-down'
-          }} />
-      </div>}
-    </DeviceContextConsumer>
-  );
-};
+            objectFit: 'scale-down',
+          }}
+        />
+      </div>
+    )}
+  </DeviceContextConsumer>
+);

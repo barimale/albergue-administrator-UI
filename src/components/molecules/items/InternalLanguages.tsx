@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import { I18nextProvider, useTranslation } from 'react-i18next';
-import { Button, useTheme } from '@material-ui/core';
+import { Button, useTheme, Typography } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import { Typography } from '@material-ui/core';
-import internali18n from '../../../internali18n';
-import { useEffect, useState } from 'react';
 
-type InternalLanguagesProps = {  
+import internali18n from '../../../internali18n';
+
+type InternalLanguagesProps = {
   languages: Array<string>;
   handleClose: () => void;
   onLanguageChange: (lng: string) => void;
@@ -16,30 +17,30 @@ export const InternalLanguages = (props: InternalLanguagesProps) => {
   const { onLanguageChange, languages } = props;
   const [lngs, setLngs] = useState<Array<string>>(languages);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLngs(languages);
-  },[languages]);
+  }, [languages]);
 
   return (
-  <I18nextProvider i18n={internali18n}>
-    {lngs?.sort((a: string, b: string) => b.localeCompare(a))?.map((language: string, index: number) => {
-      return  (
-        <>
-          <MenuItem key={index}>
-              <InternalLanguage 
+    <I18nextProvider i18n={internali18n}>
+      {lngs?.sort((a: string, b: string) => b.localeCompare(a))
+        ?.map((language: string, index: number) => (
+          <>
+            <MenuItem key={language}>
+              <InternalLanguage
                 language={language}
-                handleClose={props.handleClose} 
+                handleClose={props.handleClose}
                 onLanguageChange={onLanguageChange}
               />
-          </MenuItem>
-          {index !== (lngs.length-1) && (
+            </MenuItem>
+            {index !== (lngs.length - 1) && (
             <Divider orientation="horizontal" />
-          )}
-        </>);
-      }
-    )}
-  </I18nextProvider>);
-}
+            )}
+          </>
+        ))}
+    </I18nextProvider>
+  );
+};
 
 interface InternalLanguageProps{
   language: string;
@@ -52,49 +53,52 @@ const InternalLanguage = (props: InternalLanguageProps) => {
   const { i18n } = useTranslation('externals');
   const { language } = props;
   const theme = useTheme();
-    
-  const changeLanguage = async (lng: string) =>{
-      await i18n.changeLanguage(lng)
-      .then(()=>{
-        console.log("Language changed");
-      }).catch((error: any)=>{
+
+  const changeLanguage = async (lng: string) => {
+    await i18n.changeLanguage(lng)
+      .then(() => {
+        console.log('Language changed');
+      }).catch((error: any) => {
         console.log(error);
-      }).finally(()=>{
+      }).finally(() => {
         onLanguageChange(i18n.language);
       });
   };
 
   return (
-    <Button 
-      className={"pointerOverEffect"}
+    <Button
+      className="pointerOverEffect"
       style={{
-        height:'100%',
+        height: '100%',
         width: '100%',
         color: `${theme.palette.common.black}`,
         textDecoration: 'none',
         textAlign: 'center',
-        paddingLeft:'10px',
-        paddingRight: '10px'
+        paddingLeft: '10px',
+        paddingRight: '10px',
       }}
       onClick={async () => {
         await changeLanguage(language);
         props.handleClose();
-      }}>
-        <img 
-          id={`myImage-${language}`} 
-          alt={language} 
-          src={`http://www.geonames.org/flags/x/${language.toLowerCase() === "en" ? "gb" : language.toLowerCase()}.gif`} 
-          style={{
-            height: '23px', 
-            width: '23px', 
-            borderRadius: '50%'
-        }}/>
-        <Typography 
-          style={{
-            paddingLeft: '10px'
-        }}>
-          {language.toUpperCase()}
-        </Typography>
+      }}
+    >
+      <img
+        id={`myImage-${language}`}
+        alt={language}
+        src={`http://www.geonames.org/flags/x/${language.toLowerCase() === 'en' ? 'gb' : language.toLowerCase()}.gif`}
+        style={{
+          height: '23px',
+          width: '23px',
+          borderRadius: '50%',
+        }}
+      />
+      <Typography
+        style={{
+          paddingLeft: '10px',
+        }}
+      >
+        {language.toUpperCase()}
+      </Typography>
     </Button>
   );
-}
+};

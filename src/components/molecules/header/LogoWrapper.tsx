@@ -1,10 +1,10 @@
 import React from 'react';
-import { DeviceContextConsumer, DeviceType } from "../../../contexts/DeviceContext";
+import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 
-export const LogoWrapper = (props: any) => {
-  return (
-    <DeviceContextConsumer>
-      {context => <div
+export const LogoWrapper = (props: any) => (
+  <DeviceContextConsumer>
+    {(context) => (
+      <div
         {...props}
         style={{
           flexDirection: 'row',
@@ -14,10 +14,11 @@ export const LogoWrapper = (props: any) => {
           alignItems: 'center',
           alignContent: 'center',
           width: 'auto',
-          height: '100%'
-        }}>
+          height: '100%',
+        }}
+      >
         {props.children}
-      </div>}
-    </DeviceContextConsumer>
-  );
-};
+      </div>
+    )}
+  </DeviceContextConsumer>
+);

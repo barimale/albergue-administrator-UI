@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { FormikProps, useField } from "formik";
-import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
-import { useTranslation } from "react-i18next";
-import { MyTextField } from "../../atoms/MyTextField";
-import { LoginDetails } from "../../pages/LoginPageContent";
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
+import { FormikProps, useField } from 'formik';
+import { useTranslation } from 'react-i18next';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { IconButton, InputAdornment, TextField, withStyles } from "@material-ui/core";
+import { IconButton, InputAdornment } from '@material-ui/core';
+import { LoginDetails } from '../../pages/LoginPageContent';
+import { MyTextField } from '../../atoms/MyTextField';
+import { DeviceContextConsumer } from '../../../contexts/DeviceContext';
 
 export const PasswordField = (props: FormikProps<LoginDetails>) => {
   const { t } = useTranslation();
-  const [meta, helpers] = useField<string>(`password`);
+  const [meta, helpers] = useField<string>('password');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const handleClickShowPassword = () => {
@@ -23,12 +24,11 @@ export const PasswordField = (props: FormikProps<LoginDetails>) => {
 
   return (
     <DeviceContextConsumer>
-      {context => 
-      <>
+      {(context) => (
         <MyTextField
           id="password"
           name="password"
-          label={t("Password")}
+          label={t('Password')}
           type={isPasswordVisible.valueOf() ? 'text' : 'password'}
           margin="dense"
           color="primary"
@@ -36,19 +36,20 @@ export const PasswordField = (props: FormikProps<LoginDetails>) => {
           helperText={helpers.error !== undefined && t(helpers.error)}
           InputProps={{
             endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {isPasswordVisible.valueOf() === true ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          )}}
-          fullWidth/>
-      </>
-    }
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {isPasswordVisible.valueOf() === true ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          fullWidth
+        />
+      )}
     </DeviceContextConsumer>
   );
 };

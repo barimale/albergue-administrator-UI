@@ -35,6 +35,7 @@
     "leaflet-gpx": "^1.5.1",
     "leaflet-iconmaterial": "^1.1.0",
     "leaflet.awesome-markers": "^2.0.5",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-detectable-overflow": "^0.5.0",
@@ -54,20 +55,20 @@
     "web-vitals": "^1.0.1",
     "yup": "^0.32.9"
   },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "scripts": {
-    "setup": "yarn install --force",
+    "setup": "rimraf ./node_modules && rimraf ./yarn.lock && yarn install --force",
     "start": "set PORT=3008 &&  react-scripts start .env.development",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "yarn build && firebase deploy",
     "deploy-miniserver": "yarn build && scp -r ./build/* albergue@192.168.2.100:/var/www/albergueperegrinosporto.pt"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -90,6 +91,17 @@
     "@types/react-responsive": "^8.0.2",
     "@types/react-router-dom": "^5.1.7",
     "@types/react-transition-group": "^4.4.1",
-    "@types/styled-components": "^5.1.9"
+    "@types/styled-components": "^5.1.9",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb": "^19.0.2",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0"
   }
 }

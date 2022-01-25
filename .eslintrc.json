@@ -1,0 +1,60 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "airbnb"
+        // "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "@typescript-eslint/eslint-plugin"
+    ],
+    "rules": {
+        "linebreak-style": "off",
+        "func-names":"off",
+        "react/jsx-pascal-case": [0, "always"],
+        "react/require-default-props": [2, { "forbidDefaultForRequired": true, "ignoreFunctionalComponents":true }],
+        "react/jsx-filename-extension": [0, { "allow": "as-needed" }],
+        "react/destructuring-assignment": [0, "always"],
+        "object-curly-newline": ["error", {
+            "ObjectExpression": "always",
+            "ObjectPattern": { "multiline": true },
+            "ImportDeclaration": "never",
+            "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+        }],
+        "react/jsx-props-no-spreading": [0, {
+            "html": "enforce",
+            "custom": "enforce",
+            "explicitSpread": "enforce"
+        }],
+        "object-curly-spacing": ["warn", "always"],
+        "import/no-unresolved": [0, { "commonjs": true}],
+        "import/prefer-default-export": "off",
+        "import/extensions": ["off", "never" ],
+        "space-before-function-paren": ["error", {
+            "anonymous": "always",
+            "named": "always",
+            "asyncArrow": "always"
+        }],
+        "react/function-component-definition": [0, {
+            "namedComponents": [ "function-declaration", "function-expression", "arrow-function"],
+            "unnamedComponents": ["function-expression", "arrow-function"]
+          }],
+        "no-use-before-define": "off",
+        "no-restricted-exports": "off",
+        "no-shadow" : "off"
+    }
+}

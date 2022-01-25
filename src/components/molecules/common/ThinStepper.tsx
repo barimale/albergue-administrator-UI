@@ -8,12 +8,11 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 const useStyles = makeStyles({
   root: {
     width: '100%',
-    // maxWidth: 400,
     flexGrow: 1,
   },
 });
 
-export default function ThinStepper() {
+export default function ThinStepper () {
   const classes = useStyles();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -33,18 +32,18 @@ export default function ThinStepper() {
       position="static"
       activeStep={activeStep}
       className={classes.root}
-      nextButton={
+      nextButton={(
         <Button size="small" onClick={handleNext} disabled={activeStep === 5}>
           Next
           {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
         </Button>
-      }
-      backButton={
+      )}
+      backButton={(
         <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
           {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
           Back
         </Button>
-      }
+      )}
     />
   );
 }

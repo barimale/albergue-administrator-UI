@@ -1,14 +1,15 @@
-import { FormikProps, useField } from "formik";
-import { DeviceContextConsumer } from "../../../contexts/DeviceContext";
-import { useTranslation } from "react-i18next";
-import { MyTextField } from "../../atoms/MyTextField";
-import React, { useEffect, useState } from "react";
-import { IconButton, Typography } from "@material-ui/core";
-import useLanguages, { TranslateResponse } from "../../../hooks/useLanguages";
+/* eslint-disable no-unused-vars */
+import { FormikProps, useField } from 'formik';
+import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from 'react';
+import { IconButton } from '@material-ui/core';
 import GTranslateIcon from '@material-ui/icons/GTranslate';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { LoadingInProgress } from "../common/LoadingInProgress";
-import { ItemDetails } from "../../organisms/items/AddItemModal";
+import useLanguages, { TranslateResponse } from '../../../hooks/useLanguages';
+import { MyTextField } from '../../atoms/MyTextField';
+import { DeviceContextConsumer } from '../../../contexts/DeviceContext';
+import { LoadingInProgress } from '../common/LoadingInProgress';
+import { ItemDetails } from '../../organisms/items/AddItemModal';
 
 interface ItemShortDescriptionFieldProps extends FormikProps<ItemDetails>{
   index: number;
@@ -20,44 +21,43 @@ export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps)
   const { index, textInEN, lng } = props;
   const { t } = useTranslation();
   const [meta, helpers] = useField<string>(`translatableDetails[${index}].shortDescription`);
-  const [suggestion, setSuggestion] = useState<TranslateResponse>({isError: false, translation: ""});
+  const [suggestion, setSuggestion] = useState<TranslateResponse>({
+    isError: false, translation: '',
+  });
   const [suggestionIsLoading, setSuggestionIsLoading] = useState<boolean>(false);
   const { translate } = useLanguages();
-  var controller = new AbortController();
-  var signal = controller.signal;
+  const controller = new AbortController();
+  const { signal } = controller;
 
-  useEffect(()=>{
-    const getData = async() =>{
-      return await translate('en', lng.toLowerCase(), textInEN || "", signal);
-    }
+  useEffect(() => {
+    const getData = async () => translate('en', lng.toLowerCase(), textInEN || '', signal);
 
-    if(textInEN !== undefined && lng.toLowerCase() !== 'en'){
+    if (textInEN !== undefined && lng.toLowerCase() !== 'en') {
       setSuggestionIsLoading(true);
-      getData().then((res: TranslateResponse) =>{
-        if(res.isError === true){
+      getData().then((res: TranslateResponse) => {
+        if (res.isError === true) {
           res.translation = `https://translate.google.pl/?sl=en&tl=${lng.toLowerCase()}&text=${textInEN}&op=translate`;
         }
         setSuggestion(res);
         setSuggestionIsLoading(false);
-      }).catch((error: any)=>{
-          console.log(error);
+      }).catch((error: any) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
       });
     }
 
     return () => {
       controller.abort();
-     }; 
-
+    };
   }, [textInEN]);
 
   return (
     <DeviceContextConsumer>
-      {context =>
-      <>
+      {() => (
         <MyTextField
           id={`translatableDetails[${index}].shortDescription`}
           name={`translatableDetails[${index}].shortDescription`}
-          label={t("Item short description")}
+          label={t('Item short description')}
           margin="dense"
           variant="outlined"
           multiline
@@ -65,37 +65,42 @@ export const ItemShortDescriptionField = (props: ItemShortDescriptionFieldProps)
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {suggestionIsLoading.valueOf() === true ? (
-                  <LoadingInProgress/>
-                ):(
-                  suggestion.isError.valueOf() === false ? (
+                <>
+                  {suggestionIsLoading && (
+                  <LoadingInProgress />
+                  )}
+                  {!suggestionIsLoading && !suggestion.isError && (
                     <IconButton
-                    disabled={lng.toLowerCase() === 'en'}
-                    onClick={()=>{
-                      props.setFieldValue(`translatableDetails[${index}].shortDescription`, suggestion.translation || "")
-                    }}
-                    onMouseDown={(event: any) => event.preventDefault()}
-                  >
-                    <GTranslateIcon/>
-                  </IconButton>
-                  ):(
+                      disabled={lng.toLowerCase() === 'en'}
+                      onClick={() => {
+                        props.setFieldValue(`translatableDetails[${index}].shortDescription`, suggestion.translation || '');
+                      }}
+                      onMouseDown={(event: any) => event.preventDefault()}
+                    >
+                      <GTranslateIcon />
+                    </IconButton>
+                  )}
+                  {!suggestionIsLoading && suggestion.isError && (
                     <IconButton
-                    disabled={lng.toLowerCase() === 'en'}
-                    href={suggestion.translation}
-                    target={"_blank"}
-                    onMouseDown={(event: any) => event.preventDefault()}
-                  >
-                    <GTranslateIcon/>
-                  </IconButton>
-                  )
-                )}
-            </InputAdornment>)
+                      disabled={lng.toLowerCase() === 'en'}
+                      href={suggestion.translation}
+                      target="_blank"
+                      onMouseDown={(event: any) => event.preventDefault()}
+                    >
+                      <GTranslateIcon />
+                    </IconButton>
+                  )}
+                </>
+              </InputAdornment>),
           }}
-          error={Boolean(props.touched?.translatableDetails !== undefined && props.touched?.translatableDetails![index] !== undefined)||(props.errors?.translatableDetails !== undefined && props.errors?.translatableDetails[index]!==undefined)}
+          error={Boolean(props.touched?.translatableDetails !== undefined
+            && props.touched?.translatableDetails![index] !== undefined)
+            || (props.errors?.translatableDetails !== undefined
+              && props.errors?.translatableDetails[index] !== undefined)}
           helperText={helpers.error !== undefined && t(helpers.error)}
-          fullWidth />
-      </>
-    }
+          fullWidth
+        />
+      )}
     </DeviceContextConsumer>
   );
 };

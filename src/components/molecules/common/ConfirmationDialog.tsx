@@ -17,16 +17,16 @@ export type ConfirmationDialogProps = {
     isVisible: boolean;
 }
 
-export default function ConfirmationDialog(props: ConfirmationDialogProps) {
-  const { title, question, onDisagree, onAgree, noLabel, yesLabel, isVisible} = props;
+export default function ConfirmationDialog (props: ConfirmationDialogProps) {
+  const { title, question, onDisagree, onAgree, noLabel, yesLabel, isVisible } = props;
   const { t } = useTranslation();
 
   const handleClose = (decision: boolean) => {
-    if(decision === true){
-        onAgree();
-        }else{
-        onDisagree();
-        }
+    if (decision === true) {
+      onAgree();
+    } else {
+      onDisagree();
+    }
   };
 
   return (
@@ -43,14 +43,21 @@ export default function ConfirmationDialog(props: ConfirmationDialogProps) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {
+          <Button
+            onClick={() => {
               handleClose(false);
-            }} color="primary">
+            }}
+            color="primary"
+          >
             {t(noLabel)}
           </Button>
-          <Button onClick={() => {
+          <Button
+            onClick={() => {
               handleClose(true);
-            }} color="primary" autoFocus>
+            }}
+            color="primary"
+            autoFocus
+          >
             {t(yesLabel)}
           </Button>
         </DialogActions>

@@ -11,12 +11,12 @@ modali18n
   .use(initReactI18next)
   .init({
     defaultNS: 'modal',
-    preload:  ['en', 'pt', 'nl', 'de'],
+    preload: ['en', 'pt', 'nl', 'de'],
     fallbackLng: ['en', 'pt', 'nl', 'de'],
     supportedLngs: ['en', 'pt', 'nl', 'de'],
     debug: true,
     backend: {
-      loadPath: '/locales/{{ns}}/{{lng}}/{{ns}}.json'
+      loadPath: '/locales/{{ns}}/{{lng}}/{{ns}}.json',
     },
     react: {
       bindI18n: 'languageChanged',
@@ -25,7 +25,7 @@ modali18n
       transSupportBasicHtmlNodes: true,
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
       useSuspense: false,
-    }
+    },
   });
 
 export default modali18n;

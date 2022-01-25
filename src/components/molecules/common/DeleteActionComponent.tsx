@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
-import ConfirmationDialog from "./ConfirmationDialog";
 import Tooltip from '@material-ui/core/Tooltip';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import ConfirmationDialog from './ConfirmationDialog';
 
 interface ActionComponentProps {
   onAgreeAction: (id: string) => void;
@@ -13,7 +14,7 @@ interface ActionComponentProps {
   noLabel: string;
   yesLabel: string;
   disabled?: boolean;
-};
+}
 export const DeleteActionComponent = (props: ActionComponentProps) => {
   const { id, onAgreeAction, disabled } = props;
   const [isShown, setIsShown] = useState<boolean>(false);
@@ -21,13 +22,14 @@ export const DeleteActionComponent = (props: ActionComponentProps) => {
 
   return (
     <>
-      <Tooltip title={t(disabled !== undefined && disabled === true ? t("Default language cannot be deleted") : t("Delete")).toString()}>
+      <Tooltip title={t(disabled !== undefined && disabled === true ? t('Default language cannot be deleted') : t('Delete')).toString()}>
         <span>
-          <IconButton 
-          disabled={disabled !== undefined ? disabled : undefined}
-          onClick={async () => {
-            setIsShown(!isShown);
-          }}>
+          <IconButton
+            disabled={disabled !== undefined ? disabled : undefined}
+            onClick={async () => {
+              setIsShown(!isShown);
+            }}
+          >
             <ClearIcon />
           </IconButton>
         </span>
@@ -41,7 +43,8 @@ export const DeleteActionComponent = (props: ActionComponentProps) => {
         onAgree={async () => {
           await onAgreeAction(id);
           setIsShown(false);
-        }} />
+        }}
+      />
     </>
   );
 };

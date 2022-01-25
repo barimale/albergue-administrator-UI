@@ -4,45 +4,42 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { IconButton } from '@material-ui/core';
-import { DeviceContextConsumer, DeviceType } from '../../contexts/DeviceContext';
 import Button from '@material-ui/core/Button';
-import useTheme from "@material-ui/core/styles/useTheme";
 import { useMediaQuery } from 'react-responsive';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import { useTranslation } from 'react-i18next';
+import { DeviceContextConsumer, DeviceType } from '../../contexts/DeviceContext';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-around',
-      overflow: 'hidden',
-      padding: '32px',
-      paddingTop: '0px',
-      maxHeight: '80%',
-    },
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    scroolableContent: {
-      width: '100%',
-      maxHeight: '100%',
-      overflowX: 'hidden',
-      scrollbarColor: `${theme.palette.secondary.light} ${theme.palette.common.white}`,
-    },
-    paper: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      overflow: 'hidden',
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-  }),
-);
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    padding: '32px',
+    paddingTop: '0px',
+    maxHeight: '80%',
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scroolableContent: {
+    width: '100%',
+    maxHeight: '100%',
+    overflowX: 'hidden',
+    scrollbarColor: `${theme.palette.secondary.light} ${theme.palette.common.white}`,
+  },
+  paper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
 
 type ImageModalProps = {
     isDisplayed: boolean;
@@ -50,20 +47,21 @@ type ImageModalProps = {
     item: any;
 }
 
-export default function ImageModal(props: ImageModalProps) {
+export default function ImageModal (props: ImageModalProps) {
   const classes = useStyles();
   const { isDisplayed, onHide, item } = props;
   const [open, setOpen] = React.useState(false);
   const maxHeight = window.innerHeight * 0.9;
   const images = item.src;
-  const [ isExpandedMode, setIsExpandedMode] = React.useState<boolean>(false);
-  const isWideDevice = useMediaQuery({ minDeviceWidth: 444 });
-  const theme = useTheme();
+  const [isExpandedMode, setIsExpandedMode] = React.useState<boolean>(false);
+  const isWideDevice = useMediaQuery({
+    minDeviceWidth: 444,
+  });
   const { t } = useTranslation();
 
-  useEffect(()=>{
+  useEffect(() => {
     setOpen(isDisplayed);
-  }, [ isDisplayed ]);
+  }, [isDisplayed]);
 
   const handleClose = () => {
     setIsExpandedMode(false);
@@ -73,104 +71,115 @@ export default function ImageModal(props: ImageModalProps) {
 
   return (
     <DeviceContextConsumer>
-    {context =>
-      <Modal
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        disableBackdropClick={true}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 100,
-        }}
-      >
-        <Fade in={open}>
-        <>
-          <div 
-            className={classes.paper}
-            style={{
-              height: maxHeight,
-              // borderTop: context === DeviceType.isDesktopOrLaptop ? `8px solid ${theme.palette.primary.main}` : `4px solid ${theme.palette.primary.main}`,
-              width: context === DeviceType.isDesktopOrLaptop ? (images.length === 1 ? '50%' : '55%') : '95%'
-            }}>
-              <div 
+      {(context) => (
+        <Modal
+          className={classes.modal}
+          open={open}
+          onClose={handleClose}
+          disableBackdropClick
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 100,
+          }}
+        >
+          <Fade in={open}>
+            <div
+              className={classes.paper}
+              style={{
+                height: maxHeight,
+                // eslint-disable-next-line no-nested-ternary
+                width: context === DeviceType.isDesktopOrLaptop ? (images.length === 1 ? '50%' : '55%') : '95%',
+              }}
+            >
+              <div
                 style={{
                   display: 'flex',
                   justifyContent: 'flex-start',
                   flexDirection: 'column',
                   width: '100%',
-                  height: '100%'
+                  height: '100%',
                 }}
               >
                 <div
                   style={{
                     width: '100%',
-                }}>
-                  <div 
+                  }}
+                >
+                  <div
                     style={{
                       float: 'left',
                       fontFamily: 'Signoria-Bold',
-                      verticalAlign:'baseline',
+                      verticalAlign: 'baseline',
                       fontSize: context === DeviceType.isDesktopOrLaptop ? '20px' : '14px',
                       marginTop: context === DeviceType.isDesktopOrLaptop ? '12px' : '4px',
                       marginBottom: context === DeviceType.isDesktopOrLaptop ? '12px' : '4px',
-                      }}
+                    }}
                   >
                     {t(item.description)}
+                    <p>{isWideDevice}</p>
                   </div>
                   <IconButton
                     style={{
-                      float:'right',
+                      float: 'right',
                       padding: '0px',
                       marginRight: context === DeviceType.isDesktopOrLaptop ? '-9px' : '-7px',
                     }}
-                    onClick={(event: any)=>{
+                    onClick={(event: any) => {
                       event.stopPropagation();
                       handleClose();
-                  }}>
-                    <CloseOutlinedIcon/>
+                    }}
+                  >
+                    <CloseOutlinedIcon />
                   </IconButton>
                 </div>
-              <div 
-              style={{
-                width: '100%',
-                }}>
-                  <img src={item.src} style={{
-                    height:  window.innerHeight*0.75,
-                    transition: 'height 0.4s ease',
-                    msTransition: 'height 0.4s ease',
-                    MozTransition: 'height 0.4s ease',
-                    WebkitTransition: 'height 0.4s ease',
-                    objectFit: isExpandedMode === true ? 'scale-down' : 'scale-down',
+                <div
+                  style={{
                     width: '100%',
-                  }}/>
-              </div>
-              <div 
-                style={{
-                  paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontFamily: 'Signika',
-                  justifyItems: 'center',
-                  width: '100%',
-                  flexDirection: 'row'
-                }}>
-                <Button
-                  className={"pointerOverEffect"}
-                  variant="contained"
-                  color="primary" 
-                  onClick={(event: any)=>{
-                    event.stopPropagation();
-                    handleClose();
                   }}
-                >{t("Close")}</Button>
+                >
+                  <img
+                    src={item.src}
+                    alt=""
+                    style={{
+                      height: window.innerHeight * 0.75,
+                      transition: 'height 0.4s ease',
+                      msTransition: 'height 0.4s ease',
+                      MozTransition: 'height 0.4s ease',
+                      WebkitTransition: 'height 0.4s ease',
+                      objectFit: isExpandedMode === true ? 'scale-down' : 'scale-down',
+                      width: '100%',
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    paddingTop: context === DeviceType.isDesktopOrLaptop ? '20px' : '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontFamily: 'Signika',
+                    justifyItems: 'center',
+                    width: '100%',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <Button
+                    className="pointerOverEffect"
+                    variant="contained"
+                    color="primary"
+                    onClick={(event: any) => {
+                      event.stopPropagation();
+                      handleClose();
+                    }}
+                  >
+                    {t('Close')}
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </>
-        </Fade>
-      </Modal>}
+          </Fade>
+        </Modal>
+      )}
     </DeviceContextConsumer>
   );
 }

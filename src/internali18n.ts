@@ -13,7 +13,7 @@ internali18n
     backend: {
       loadPath: '/locales/externals/{{lng}}.json',
       addPath: '/locales/externals/{{lng}}.json',
-      reloadInterval: 10000
+      reloadInterval: 10000,
     },
     react: {
       bindI18n: 'languageChanged',
@@ -21,7 +21,7 @@ internali18n
       transEmptyNodeValue: '',
       transSupportBasicHtmlNodes: true,
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
-      useSuspense: false
+      useSuspense: false,
     },
   });
 

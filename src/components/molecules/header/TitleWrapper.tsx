@@ -1,10 +1,10 @@
 import React from 'react';
-import { DeviceContextConsumer, DeviceType } from "../../../contexts/DeviceContext";
+import { DeviceContextConsumer, DeviceType } from '../../../contexts/DeviceContext';
 
-export const TitleWrapper = (props: any) => {
-  return (
-    <DeviceContextConsumer>
-      {context => <div
+export const TitleWrapper = (props: any) => (
+  <DeviceContextConsumer>
+    {(context) => (
+      <div
         {...props}
         style={{
           flexDirection: 'row',
@@ -18,9 +18,10 @@ export const TitleWrapper = (props: any) => {
           position: context === DeviceType.isDesktopOrLaptop ? 'relative' : 'absolute',
           WebkitTransform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)',
           transform: context === DeviceType.isDesktopOrLaptop ? 'unset' : 'translate(-50%, 0%)',
-        }}>
+        }}
+      >
         {props.children}
-      </div>}
-    </DeviceContextConsumer>
-  );
-};
+      </div>
+    )}
+  </DeviceContextConsumer>
+);

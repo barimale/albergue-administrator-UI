@@ -1,13 +1,13 @@
-import { useState, useEffect, RefObject } from 'react'
+/* eslint-disable consistent-return */
+import { useState, useEffect, RefObject } from 'react';
 
-function useTouched<T extends HTMLElement = HTMLElement>(
+function useTouched<T extends HTMLElement = HTMLElement> (
   elementRef: RefObject<T>,
 ): boolean {
+  const [value, setValue] = useState<boolean>(false);
 
-  const [value, setValue] = useState<boolean>(false)
-
-  const handleTouchedIn = () => setValue(true)
-  const handleTouchedOut = () => setValue(false)
+  const handleTouchedIn = () => setValue(true);
+  const handleTouchedOut = () => setValue(false);
 
   useEffect(() => {
     const node = elementRef?.current;
@@ -19,9 +19,9 @@ function useTouched<T extends HTMLElement = HTMLElement>(
       return () => {
         node.removeEventListener('touchstart', handleTouchedIn);
         node.removeEventListener('touchend', handleTouchedOut);
-      }
+      };
     }
-  }, [elementRef])
+  }, [elementRef]);
 
   return !!value;
 }

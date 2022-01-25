@@ -1,15 +1,15 @@
 import './App.css';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { MainLayout } from './components/templates/MainLayout';
 import SecuredRoutes from './routes/SecuredRoutes';
-import { BrowserRouter } from 'react-router-dom';
 
-function SecuredApp() {  
-  
+function SecuredApp () {
   return (
     <div className="App">
       <BrowserRouter>
         <MainLayout>
-          <SecuredRoutes/>
+          <SecuredRoutes />
         </MainLayout>
       </BrowserRouter>
     </div>
