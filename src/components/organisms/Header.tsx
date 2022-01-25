@@ -27,7 +27,11 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TopMenu () {
+interface Props{
+  siderWidth: number;
+}
+
+function TopMenu ({ siderWidth }: Props) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -85,7 +89,10 @@ function TopMenu () {
                     }}
                   />
                   {context === DeviceType.isDesktopOrLaptop && (
-                  <LogoWrapper>
+                  <LogoWrapper style={{
+                    width: siderWidth,
+                  }}
+                  >
                     <Logo
                       style={{
                         paddingRight: 30,
@@ -102,7 +109,7 @@ function TopMenu () {
                       flexDirection: 'column',
                     }}
                   >
-                    <LanguageSetter top={size?.size?.height || 0} width={size.size.width} />
+                    <LanguageSetter top={size?.size?.height || 0} />
                     <UserMenu />
                   </div>
                 </Toolbar>
