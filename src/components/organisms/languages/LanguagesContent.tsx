@@ -285,7 +285,7 @@ const StickyHeadTable = () => {
                                           paddingRight: '10px',
                                         }}
                                       >
-                                        {`${toRoman(index + 1)}.`}
+                                        {`${toRoman(index)}.`}
                                       </Typography>
                                       <Tooltip title={value?.toString() || ''}>
                                         <FingerprintIcon />

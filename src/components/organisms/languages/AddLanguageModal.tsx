@@ -271,7 +271,7 @@ const AddFormContent = (props: FormikProps<Language>) => {
 
   useEffect(() => {
     const getData = async () => axios.get(
-      'https://restcountries.eu/rest/v2/all',
+      'https://restcountries.com/v2/all',
       {
         cancelToken: source.token,
       },
