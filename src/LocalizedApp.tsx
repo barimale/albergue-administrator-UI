@@ -1,37 +1,38 @@
 import './App.css';
-import { AuthContext } from './contexts/AuthContext';
-import Routes from './routes/Routes';
 import { BrowserRouter } from 'react-router-dom';
 import React, { useEffect, useContext } from 'react';
-import { LoadingInProgress } from "./components/molecules/common/LoadingInProgress";
+import { AuthContext } from './contexts/AuthContext';
+import Routes from './routes/Routes';
+import { LoadingInProgress } from './components/molecules/common/LoadingInProgress';
 import SecuredApp from './SecuredApp';
 
-function LocalizedApp() {  
+function LocalizedApp () {
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean | undefined>(undefined);
-  const {isSignedIn} = useContext(AuthContext);
+  const { isSignedIn } = useContext(AuthContext);
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsLoggedIn(isSignedIn);
   }, [isSignedIn]);
-  
+
   return (
-    <>
-      {isLoggedIn === undefined ? (
+    isLoggedIn === undefined ? (
+      <div className="App">
+        <LoadingInProgress />
+      </div>
+    ) : (
+      <>
+        {isLoggedIn && (
+        <SecuredApp />
+        )}
+        {!isLoggedIn && (
         <div className="App">
-          <LoadingInProgress/>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
         </div>
-      ):(
-        isLoggedIn.valueOf() === true ?(
-          <SecuredApp/>
-        ):(
-          <div className="App">
-            <BrowserRouter>
-                <Routes/>
-            </BrowserRouter>
-          </div>
-        )
-      )}
-    </>
+        )}
+      </>
+    )
   );
 }
 
