@@ -10,7 +10,7 @@ export function MyInputField (props: any): JSX.Element {
 
   return (
     <DeviceContextConsumer>
-      {(context) => (
+      {() => (
         <Input {...field} {...props} style={props.style} />
       )}
     </DeviceContextConsumer>
