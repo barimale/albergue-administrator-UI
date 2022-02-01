@@ -31,7 +31,7 @@ interface Props{
   siderWidth: number;
 }
 
-function TopMenu ({ siderWidth }: Props) {
+function Header ({ siderWidth }: Props) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -125,4 +125,4 @@ function TopMenu ({ siderWidth }: Props) {
 
 export default sizeMe({
   monitorHeight: true, monitorWidth: true,
-})(TopMenu);
+})(Header);
