@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import { Fade, hexToRgb, Box, Button, CircularProgress, Typography } from '@material-ui/core';
 
-import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { Form, Formik, FormikProps } from 'formik';
+
 import VpnKeyTwoToneIcon from '@material-ui/icons/VpnKeyTwoTone';
 import * as Yup from 'yup';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,6 +17,7 @@ import { PasswordField } from '../molecules/login/PasswordField';
 import LanguageSetter from '../molecules/header/LanguageSetter';
 import { DeviceContextConsumer, DeviceType } from '../../contexts/DeviceContext';
 import { AuthContext } from '../../contexts/AuthContext';
+import { RGBToRGBA } from '../../utilities';
 
 const useStyles = makeStyles(() => createStyles({
   root: {
@@ -190,10 +191,20 @@ const LoginForm = () => {
                     display: 'flex',
                     flexDirection: 'row',
                     gap: '25px',
+                    border: '3px dotted #FFD700',
+                    justifyContent: 'space-around',
+                    fontFamily: 'Signoria-Bold',
+                    fontSize: '11px',
+                    backgroundColor: `${RGBToRGBA(hexToRgb('#FFD700'), 0.2)}`,
                   }}
                 >
-                  <p>Login: Admin, Password: Admin?123</p>
-                  <p>It is a demo website: inserted data is periodically deleted.</p>
+                  <p style={{
+                    paddingLeft: '25px',
+                  }}
+                  >
+                    Login: Admin, Password: Admin?123
+                  </p>
+                  <p>This is a demo website: inserted data is periodically deleted.</p>
                   <p>
                     Shop website:
                     {' '}

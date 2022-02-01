@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import React, { useEffect, useContext } from 'react';
@@ -18,34 +19,31 @@ function LocalizedApp () {
   return (
     <DeviceContextConsumer>
       {(context) => (
-        isLoggedIn === undefined ? (
-          <div
-            className="App"
-            style={{
-              scale: context.valueOf() === DeviceType.isTabletOrMobile ? '0.5' : 'unset',
-            }}
-          >
-            <LoadingInProgress />
-          </div>
+        context.valueOf() === DeviceType.isTabletOrMobile ? (
+          <p>Mobile and Tablet not supported.</p>
         ) : (
-          <>
-            {isLoggedIn && (
-            <SecuredApp />
-            )}
-            {!isLoggedIn && (
+          isLoggedIn === undefined ? (
             <div
               className="App"
-              style={{
-                scale: context.valueOf() === DeviceType.isTabletOrMobile ? '0.5' : 'unset',
-              }}
             >
-              <BrowserRouter>
-                <Routes />
-              </BrowserRouter>
+              <LoadingInProgress />
             </div>
-            )}
-          </>
-        )
+          ) : (
+            <>
+              {isLoggedIn && (
+              <SecuredApp />
+              )}
+              {!isLoggedIn && (
+              <div
+                className="App"
+              >
+                <BrowserRouter>
+                  <Routes />
+                </BrowserRouter>
+              </div>
+              )}
+            </>
+          ))
       )}
     </DeviceContextConsumer>
   );
