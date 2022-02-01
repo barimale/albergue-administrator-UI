@@ -5,6 +5,7 @@ import { AuthContext } from './contexts/AuthContext';
 import Routes from './routes/Routes';
 import { LoadingInProgress } from './components/molecules/common/LoadingInProgress';
 import SecuredApp from './SecuredApp';
+import { DeviceContextConsumer, DeviceType } from './contexts/DeviceContext';
 
 function LocalizedApp () {
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean | undefined>(undefined);
@@ -15,24 +16,38 @@ function LocalizedApp () {
   }, [isSignedIn]);
 
   return (
-    isLoggedIn === undefined ? (
-      <div className="App">
-        <LoadingInProgress />
-      </div>
-    ) : (
-      <>
-        {isLoggedIn && (
-        <SecuredApp />
-        )}
-        {!isLoggedIn && (
-        <div className="App">
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
-        </div>
-        )}
-      </>
-    )
+    <DeviceContextConsumer>
+      {(context) => (
+        isLoggedIn === undefined ? (
+          <div
+            className="App"
+            style={{
+              scale: context.valueOf() === DeviceType.isTabletOrMobile ? '0.5' : 'unset',
+            }}
+          >
+            <LoadingInProgress />
+          </div>
+        ) : (
+          <>
+            {isLoggedIn && (
+            <SecuredApp />
+            )}
+            {!isLoggedIn && (
+            <div
+              className="App"
+              style={{
+                scale: context.valueOf() === DeviceType.isTabletOrMobile ? '0.5' : 'unset',
+              }}
+            >
+              <BrowserRouter>
+                <Routes />
+              </BrowserRouter>
+            </div>
+            )}
+          </>
+        )
+      )}
+    </DeviceContextConsumer>
   );
 }
 
