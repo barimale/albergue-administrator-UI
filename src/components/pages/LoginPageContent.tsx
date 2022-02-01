@@ -189,6 +189,21 @@ const LoginForm = () => {
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
+                    gap: '25px',
+                  }}
+                >
+                  <p>Login: Admin, Password: Admin?123</p>
+                  <p>It is a demo website: inserted data is periodically deleted.</p>
+                  <p>
+                    Shop website:
+                    {' '}
+                    <a href="https://shop-albergue-porto.web.app" target="_blank" rel="noreferrer">https://shop-albergue-porto.web.app</a>
+                  </p>
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
                   }}
                 >
                   <Button
