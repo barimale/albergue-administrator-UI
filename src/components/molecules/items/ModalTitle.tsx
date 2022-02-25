@@ -30,6 +30,7 @@ export const ModalTitle = (props: ModalTitleProps) => {
           paddingTop: '10px',
           paddingBottom: '10px',
           backgroundColor: `${thirdMain}`,
+          borderLeft: `20px solid ${theme.palette.primary.main}`,
         }}
         >
           <Typography

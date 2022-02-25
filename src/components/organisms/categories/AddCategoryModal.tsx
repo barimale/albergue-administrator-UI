@@ -125,6 +125,7 @@ type AddFormProps = {
 const AddForm = (props: AddFormProps) => {
   const { close } = props;
   const [sendingInProgress, setSendingInProgress] = useState<boolean>(false);
+  // eslint-disable-next-line no-unused-vars
   const [isWizardComplete, setIsWizardComplete] = useState<boolean>(false);
   const theme = useTheme();
   const { t } = useTranslation();
@@ -230,7 +231,6 @@ const AddForm = (props: AddFormProps) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <p>{isWizardComplete.toString()}</p>
                   <Button
                     className="pointerOverEffect"
                     variant="contained"

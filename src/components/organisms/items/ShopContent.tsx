@@ -247,6 +247,7 @@ const StickyHeadTable = (props: StickyHeadTableProps) => {
     <Paper className={classes.root}>
       <div style={{
         padding: '0px',
+        height: 'auto',
       }}
       >
         <SearchAppBar onChange={() => setRandom(Math.random())} />
@@ -307,7 +308,7 @@ const StickyHeadTable = (props: StickyHeadTableProps) => {
                                       paddingRight: '10px',
                                     }}
                                   >
-                                    {`${toRoman(index + 1)}.`}
+                                    {`${toRoman(page * rowsPerPage + index + 1)}.`}
                                   </Typography>
                                   <Tooltip title={value?.toString() || ''}>
                                     <FingerprintIcon />

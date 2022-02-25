@@ -154,7 +154,6 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
               <div
                 className={classes.paper}
                 style={{
-                  borderLeft: `20px solid ${theme.palette.primary.main}`,
                   maxHeight,
                   // eslint-disable-next-line no-nested-ternary
                   width: context === DeviceType.isDesktopOrLaptop
@@ -175,6 +174,7 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
+                    borderLeft: `20px solid ${theme.palette.primary.main}`,
                   }}
                 >
                   <GridList
