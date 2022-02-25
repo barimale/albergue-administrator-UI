@@ -39,6 +39,7 @@ const LanguageSetter = ({ top, width }: Props) => {
                 color: `${theme.palette.common.white}`,
                 height: '100%',
                 paddingRight: '32px',
+                borderRadius: '0px',
               }}
               aria-controls="language-menu"
               aria-haspopup="true"
