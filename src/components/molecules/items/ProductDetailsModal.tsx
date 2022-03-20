@@ -119,6 +119,8 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
         });
     }
 
+    setIsLoading(true);
+
     if (alphacodes.length > 0 && isDisplayed) {
       ReloadLanguagesAsync();
       internali18n.changeLanguage(modali18n.language);
