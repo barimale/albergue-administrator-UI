@@ -22,7 +22,7 @@ internali18n
         // mode: 'no-cors',
         mode: 'cors', credentials: 'same-origin', cache: 'default',
       },
-      // reloadInterval: 10000,
+      // reloadInterval: 1000,
     },
     react: {
       bindI18n: 'languageChanged',

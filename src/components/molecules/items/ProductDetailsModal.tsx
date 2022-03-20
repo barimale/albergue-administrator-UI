@@ -103,21 +103,24 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
   }, [languages]);
 
   useEffect(() => {
-    if (alphacodes.length > 0 && isDisplayed) {
-      alphacodes.forEach((p) => {
-        internali18n.loadLanguages([p])
+    async function ReloadLanguagesAsync () {
+      alphacodes.forEach(async (p) => {
+        await internali18n.loadLanguages([p])
           .then(() => {
             console.log(`Language loaded: ${p}`);
           })
           .catch((error: any) => console.log(error));
       });
 
-      internali18n
+      await internali18n
         .reloadResources(alphacodes, 'externals')
         .catch((error: any) => {
           console.log(error);
         });
+    }
 
+    if (alphacodes.length > 0 && isDisplayed) {
+      ReloadLanguagesAsync();
       internali18n.changeLanguage(modali18n.language);
     }
 
