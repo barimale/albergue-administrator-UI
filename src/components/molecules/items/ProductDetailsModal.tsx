@@ -103,7 +103,7 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
   }, [languages]);
 
   useEffect(() => {
-    if (alphacodes.length > 0) {
+    if (alphacodes.length > 0 && isDisplayed) {
       alphacodes.forEach((p) => {
         internali18n.loadLanguages([p])
           .then(() => {
@@ -122,7 +122,7 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
     }
 
     setIsLoading(false);
-  }, [alphacodes]);
+  }, [alphacodes, isDisplayed]);
 
   useEffect(() => {
     setOpen(isDisplayed);
