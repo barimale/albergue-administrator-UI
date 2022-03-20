@@ -89,6 +89,33 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
   const { images } = item;
   const theme = useTheme();
 
+  async function ReloadLanguagesAsync () {
+    alphacodes.forEach(async (p) => {
+      await internali18n.loadLanguages([p])
+        .then(() => {
+          console.log(`Language loaded: ${p}`);
+        })
+        .catch((error: any) => console.log(error));
+    });
+
+    await internali18n
+      .reloadResources(alphacodes, 'externals')
+      .catch((error: any) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    if (alphacodes.length > 0) {
+      ReloadLanguagesAsync();
+      internali18n.changeLanguage(modali18n.language);
+    }
+
+    setIsLoading(false);
+  }, []);
+
   useEffect(() => {
     const languageIds = item.translatableDetails.flatMap((p) => p.languageId);
     const filteredAlphacodes = languageIds.flatMap((p) => {
@@ -103,31 +130,15 @@ const ProductDetailsModalContent = (props: ProductDetailsModalProps) => {
   }, [languages]);
 
   useEffect(() => {
-    async function ReloadLanguagesAsync () {
-      alphacodes.forEach(async (p) => {
-        await internali18n.loadLanguages([p])
-          .then(() => {
-            console.log(`Language loaded: ${p}`);
-          })
-          .catch((error: any) => console.log(error));
-      });
-
-      await internali18n
-        .reloadResources(alphacodes, 'externals')
-        .catch((error: any) => {
-          console.log(error);
-        });
-    }
-
     setIsLoading(true);
 
-    if (alphacodes.length > 0 && isDisplayed) {
+    if (alphacodes.length > 0) {
       ReloadLanguagesAsync();
       internali18n.changeLanguage(modali18n.language);
     }
 
     setIsLoading(false);
-  }, [alphacodes, isDisplayed]);
+  }, [alphacodes]);
 
   useEffect(() => {
     setOpen(isDisplayed);
