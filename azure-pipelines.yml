@@ -1,0 +1,42 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Install Node.js 14.x'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js 18.x'
+
+- task: CmdLine@2
+  inputs:
+    script: 'npm install -g firebase-tools'
+    workingDirectory: '$(Agent.ToolsDirectory)'
+  displayName: 'install firebase tools'
+
+- bash: |
+    echo "##vso[task.setvariable variable=GOOGLE_APPLICATION_CREDENTIALS;]./.gcloudconfig/key.json"
+  displayName: 'Set path to the key to google cloud credentials'
+
+- task: CmdLine@2
+  inputs:
+    script: 'firebase deploy -m "$(Build.BuildNumber)"'
+#    workingDirectory: '$(System.DefaultWorkingDirectory)\\'
+  displayName: 'firebase publish -m "$(Build.BuildNumber)"'
