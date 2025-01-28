@@ -1,4 +1,8 @@
 # albergue-administrator-UI
+## Prereqs
+```
+- NodeJS 14.20.0
+```
 ## Development
 To provide external translations, create a linkage between generated locales:
 ```
