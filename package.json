@@ -62,7 +62,7 @@
     ]
   },
   "scripts": {
-    "setup": "rimraf ./node_modules && rimraf ./yarn.lock && yarn install --force",
+    "setup": "npm install --force",
     "start": "set PORT=3008 &&  react-scripts start .env.development",
     "build": "react-scripts build",
     "test": "react-scripts test",
