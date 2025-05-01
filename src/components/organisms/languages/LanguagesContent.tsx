@@ -82,6 +82,7 @@ export const useTableStyles = makeStyles({
     width: '100%',
     height: '100%',
     padding: '0px',
+    overflowY: 'hidden',
   },
   container: {
     padding: '0px',
