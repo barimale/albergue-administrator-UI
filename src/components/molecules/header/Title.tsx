@@ -30,7 +30,7 @@ export const Title = () => {
             style={{
               color: `${theme.palette.common.white}`,
               WebkitTapHighlightColor: 'transparent',
-              fontSize: context === DeviceType.isDesktopOrLaptop ? '26px' : '17px',
+              fontSize: context === DeviceType.isDesktopOrLaptop ? '20px' : '17px',
               textAlign: 'center',
               fontFamily: 'Signoria-Bold',
               display: 'flex',
@@ -38,20 +38,7 @@ export const Title = () => {
             }}
           >
             {t('Administrator').toUpperCase()}
-          </Typography>
-          <Typography
-            className={classes.title}
-            align="left"
-            style={{
-              color: `${theme.palette.common.white}`,
-              WebkitTapHighlightColor: 'transparent',
-              fontSize: context === DeviceType.isDesktopOrLaptop ? '26px' : '17px',
-              textAlign: 'center',
-              fontFamily: 'Signoria-Bold',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+            {' '}
             {t('console').toUpperCase()}
           </Typography>
         </div>

@@ -84,8 +84,8 @@ function Header ({ siderWidth }: Props) {
                       margin: '0px',
                       backgroundColor: 'transparent',
                       boxShadow: theme.shadows[2],
-                      height: '50px',
-                      marginTop: '-50px',
+                      height: '20px',
+                      marginTop: '-20px',
                     }}
                   />
                   {context === DeviceType.isDesktopOrLaptop && (
@@ -106,7 +106,7 @@ function Header ({ siderWidth }: Props) {
                   <div
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
+                      flexDirection: 'row',
                     }}
                   >
                     <LanguageSetter top={size?.size?.height || 0} />

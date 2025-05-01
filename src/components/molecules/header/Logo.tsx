@@ -23,7 +23,7 @@ export const Logo = (props: any) => (
             border: context === DeviceType.isDesktopOrLaptop ? '3px white solid' : '1px white solid',
             borderRadius: '50%',
             WebkitTapHighlightColor: 'transparent',
-            height: context === DeviceType.isDesktopOrLaptop ? '55px' : `${42 - 2}px`,
+            height: context === DeviceType.isDesktopOrLaptop ? '40px' : `${42 - 2}px`,
             objectFit: 'scale-down',
           }}
         />
